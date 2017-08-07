@@ -11,6 +11,11 @@
     * contains project for functional testing
     * has example and tutorial apps/plugins
 
+## Docs
+
+see https://9ci.github.io/gorm-rest-api/
+
+
 
 
 
