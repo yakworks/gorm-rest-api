@@ -1,0 +1,6 @@
+rootProject.name='grails-funcytown'
+
+include ':gorm-rest-api'
+project(':gorm-rest-api').projectDir = new File('../../plugin')
+
+//project(':foobar-plugin').projectDir = new File('../foobar-plugin')
