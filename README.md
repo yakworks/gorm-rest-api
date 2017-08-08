@@ -15,6 +15,9 @@
 
 see https://9ci.github.io/gorm-rest-api/
 
+using our [mkdocs theme](https://9ci.github.io/mkdocs-material-components/) to build the docs. make sure python and pip are installed and run `pip install -r pip-requirements.txt` then you can run `mkdocs serve` to view docs for dev.
+
+
 
 
 
