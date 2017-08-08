@@ -1,0 +1,1465 @@
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <meta name="description" content="Utils and Rest Stuff">
+      
+      
+        <link rel="canonical" href="http://9ci.github.io/gorm-rest-api/design-principles/http-method-mapping/">
+      
+      
+        <meta name="author" content="Joshua Burnett">
+      
+      
+        <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-components-1.7.6">
+    
+    
+      
+        <title>Http Method Mapping - Gorm Rest Api</title>
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.js"></script>
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application.palette.css">
+      
+      <link rel="stylesheet" href="../../assets/stylesheets/material-components-web.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/mdc-web.css">
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    
+  </head>
+  
+  
+  
+  
+    <body data-md-color-primary="blue-grey" data-md-color-accent="indigo">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <a href="http://9ci.github.io/gorm-rest-api/" title="Gorm Rest Api" class="md-icon md-icon--home md-header-nav__button">
+          </a>
+        
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+            
+              
+                <span class="md-header-nav__parent">
+                  Design Principles
+                </span>
+              
+            
+            Http Method Mapping
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" accesskey="s" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">close</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result" data-md-lang-search="">
+          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/9ci/gorm-rest-api" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      9ci/gorm-rest-api
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    
+      <i class="md-icon md-icon--home md-nav__button"></i>
+    
+    Gorm Rest Api
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/9ci/gorm-rest-api" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      9ci/gorm-rest-api
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../swagger-openapi/" title="OpenAPI/Schema Notes" class="md-nav__link">
+      OpenAPI/Schema Notes
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Design Principles
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Design Principles
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../guidelines/" title="Guidelines" class="md-nav__link">
+      Guidelines
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../object-props/" title="Object, Naming, Props" class="md-nav__link">
+      Object, Naming, Props
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Http Method Mapping
+      </label>
+    
+    <a href="./" title="Http Method Mapping" class="md-nav__link md-nav__link--active">
+      Http Method Mapping
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#resources" title="Resources" class="md-nav__link">
+    Resources
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#must-avoid-actions-think-about-resources" title="Must: Avoid Actions — Think About Resources" class="md-nav__link">
+    Must: Avoid Actions — Think About Resources
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#should-model-complete-business-processes" title="Should: Model complete business processes" class="md-nav__link">
+    Should: Model complete business processes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#should-define-useful-resources" title="Should: Define useful resources" class="md-nav__link">
+    Should: Define useful resources
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#must-keep-urls-verb-free" title="Must: Keep URLs Verb-Free" class="md-nav__link">
+    Must: Keep URLs Verb-Free
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#must-use-domain-specific-resource-names" title="Must: Use Domain-Specific Resource Names" class="md-nav__link">
+    Must: Use Domain-Specific Resource Names
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#must-identify-resources-and-sub-resources-via-path-segments" title="Must: Identify resources and Sub-Resources via Path Segments" class="md-nav__link">
+    Must: Identify resources and Sub-Resources via Path Segments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#should-limit-number-of-resources" title="Should: Limit number of Resources" class="md-nav__link">
+    Should: Limit number of Resources
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#should-limit-number-of-sub-resource-levels" title="Should: Limit number of Sub-Resource Levels" class="md-nav__link">
+    Should: Limit number of Sub-Resource Levels
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-http-methods-correctly" title="Use HTTP Methods Correctly" class="md-nav__link">
+    Use HTTP Methods Correctly
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get" title="GET" class="md-nav__link">
+    GET
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-with-body" title="GET with Body" class="md-nav__link">
+    GET with Body
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#put" title="PUT" class="md-nav__link">
+    PUT
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post" title="POST" class="md-nav__link">
+    POST
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patch" title="PATCH" class="md-nav__link">
+    PATCH
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete" title="DELETE" class="md-nav__link">
+    DELETE
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#head" title="HEAD" class="md-nav__link">
+    HEAD
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#options" title="OPTIONS" class="md-nav__link">
+    OPTIONS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fulfill-safeness-and-idempotency-properties" title="Fulfill Safeness and Idempotency Properties" class="md-nav__link">
+    Fulfill Safeness and Idempotency Properties
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-specific-http-status-codes" title="Use Specific HTTP Status Codes" class="md-nav__link">
+    Use Specific HTTP Status Codes
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#success-codes" title="Success Codes" class="md-nav__link">
+    Success Codes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redirection-codes" title="Redirection Codes" class="md-nav__link">
+    Redirection Codes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-side-error-codes" title="Client Side Error Codes" class="md-nav__link">
+    Client Side Error Codes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server-side-error-codes" title="Server Side Error Codes:" class="md-nav__link">
+    Server Side Error Codes:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#provide-error-documentation" title="Provide Error Documentation" class="md-nav__link">
+    Provide Error Documentation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-207-for-batch-or-bulk-requests" title="Use 207 for Batch or Bulk Requests" class="md-nav__link">
+    Use 207 for Batch or Bulk Requests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-429-with-headers-for-rate-limits" title="Use 429 with Headers for Rate Limits" class="md-nav__link">
+    Use 429 with Headers for Rate Limits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explicitly-define-the-collection-format-of-query-parameters" title="Explicitly define the Collection Format of Query Parameters" class="md-nav__link">
+    Explicitly define the Collection Format of Query Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../schema/" title="OpenAPI / Schema" class="md-nav__link">
+      OpenAPI / Schema
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../api-docs-template/" title="Sample API Docs" class="md-nav__link">
+      Sample API Docs
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Tutorials
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Tutorials
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorial/stock/" title="Grails OOB(out of the box)" class="md-nav__link">
+      Grails OOB(out of the box)
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../glossary/" title="Glossary" class="md-nav__link">
+      Glossary
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#resources" title="Resources" class="md-nav__link">
+    Resources
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#must-avoid-actions-think-about-resources" title="Must: Avoid Actions — Think About Resources" class="md-nav__link">
+    Must: Avoid Actions — Think About Resources
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#should-model-complete-business-processes" title="Should: Model complete business processes" class="md-nav__link">
+    Should: Model complete business processes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#should-define-useful-resources" title="Should: Define useful resources" class="md-nav__link">
+    Should: Define useful resources
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#must-keep-urls-verb-free" title="Must: Keep URLs Verb-Free" class="md-nav__link">
+    Must: Keep URLs Verb-Free
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#must-use-domain-specific-resource-names" title="Must: Use Domain-Specific Resource Names" class="md-nav__link">
+    Must: Use Domain-Specific Resource Names
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#must-identify-resources-and-sub-resources-via-path-segments" title="Must: Identify resources and Sub-Resources via Path Segments" class="md-nav__link">
+    Must: Identify resources and Sub-Resources via Path Segments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#should-limit-number-of-resources" title="Should: Limit number of Resources" class="md-nav__link">
+    Should: Limit number of Resources
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#should-limit-number-of-sub-resource-levels" title="Should: Limit number of Sub-Resource Levels" class="md-nav__link">
+    Should: Limit number of Sub-Resource Levels
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-http-methods-correctly" title="Use HTTP Methods Correctly" class="md-nav__link">
+    Use HTTP Methods Correctly
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get" title="GET" class="md-nav__link">
+    GET
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-with-body" title="GET with Body" class="md-nav__link">
+    GET with Body
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#put" title="PUT" class="md-nav__link">
+    PUT
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post" title="POST" class="md-nav__link">
+    POST
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patch" title="PATCH" class="md-nav__link">
+    PATCH
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete" title="DELETE" class="md-nav__link">
+    DELETE
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#head" title="HEAD" class="md-nav__link">
+    HEAD
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#options" title="OPTIONS" class="md-nav__link">
+    OPTIONS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fulfill-safeness-and-idempotency-properties" title="Fulfill Safeness and Idempotency Properties" class="md-nav__link">
+    Fulfill Safeness and Idempotency Properties
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-specific-http-status-codes" title="Use Specific HTTP Status Codes" class="md-nav__link">
+    Use Specific HTTP Status Codes
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#success-codes" title="Success Codes" class="md-nav__link">
+    Success Codes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redirection-codes" title="Redirection Codes" class="md-nav__link">
+    Redirection Codes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-side-error-codes" title="Client Side Error Codes" class="md-nav__link">
+    Client Side Error Codes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server-side-error-codes" title="Server Side Error Codes:" class="md-nav__link">
+    Server Side Error Codes:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#provide-error-documentation" title="Provide Error Documentation" class="md-nav__link">
+    Provide Error Documentation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-207-for-batch-or-bulk-requests" title="Use 207 for Batch or Bulk Requests" class="md-nav__link">
+    Use 207 for Batch or Bulk Requests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-429-with-headers-for-rate-limits" title="Use 429 with Headers for Rate Limits" class="md-nav__link">
+    Use 429 with Headers for Rate Limits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explicitly-define-the-collection-format-of-query-parameters" title="Explicitly define the Collection Format of Query Parameters" class="md-nav__link">
+    Explicitly define the Collection Format of Query Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div id="article-content" class="md-content"> 
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/9ci/gorm-rest-api/edit/master/docs/design-principles/http-method-mapping.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
+                
+                
+                  <h1>Http Method Mapping</h1>
+                
+                <h2 id="resources">Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
+<h3 id="must-avoid-actions-think-about-resources">Must: Avoid Actions — Think About Resources<a class="headerlink" href="#must-avoid-actions-think-about-resources" title="Permanent link">&para;</a></h3>
+<p>REST is all about your resources, so consider the domain entities that take part in web service interaction, and aim to model your API around these using the standard HTTP methods as operation indicators. For instance, if an application has to lock articles explicitly so that only one user may edit them, create an article lock with PUT or POST instead of using a lock action.</p>
+<p>Request:</p>
+<div class="codehilite"><pre><span></span>PUT /article-locks/{article-id}
+</pre></div>
+
+
+<p>The added benefit is that you already have a service for browsing and filtering article locks.</p>
+<h3 id="should-model-complete-business-processes">Should: Model complete business processes<a class="headerlink" href="#should-model-complete-business-processes" title="Permanent link">&para;</a></h3>
+<p>An API should contain the complete business processes containing all resources representing the process. This enables clients to understand the business process, foster a consistent design of the business process, allow for synergies from description and implementation perspective, and eliminates implicit invisible dependencies between APIs.</p>
+<p>In addition, it prevents services from being designed as thin wrappers around databases, which normally tends to shift business logic to the clients.</p>
+<h3 id="should-define-useful-resources">Should: Define <em>useful</em> resources<a class="headerlink" href="#should-define-useful-resources" title="Permanent link">&para;</a></h3>
+<p>As a rule of thumb resources should be defined to cover 90% of all its client's use cases. A <em>useful</em> resource should
+contain as much information as necessary, but as little as possible. A great way to support the last 10% is to allow
+clients to specify their needs for more/less information by supporting filtering and
+<a href="../hyper-media/Hypermedia.md#should-allow-embedding-of-complex-subresources">embedding</a>.</p>
+<h3 id="must-keep-urls-verb-free">Must: Keep URLs Verb-Free<a class="headerlink" href="#must-keep-urls-verb-free" title="Permanent link">&para;</a></h3>
+<p>The API describes resources, so the only place where actions should appear is in the HTTP methods.
+In URLs, use only nouns. Instead of thinking of actions (verbs), it's often helpful to think about putting a message in a letter box: e.g., instead of having the verb <em>cancel</em> in the url, think of sending a message to cancel an order to the <em>cancellations</em> letter box on the server side.</p>
+<h3 id="must-use-domain-specific-resource-names">Must: Use Domain-Specific Resource Names<a class="headerlink" href="#must-use-domain-specific-resource-names" title="Permanent link">&para;</a></h3>
+<p>API resources represent elements of the application’s domain model. Using domain-specific nomenclature for resource names helps developers to understand the functionality and basic semantics of your resources. It also reduces the need for further documentation outside the API definition. For example, “sales-order-items” is superior to “order-items” in that it clearly indicates which business object it represents. Along these lines, “items” is too general.</p>
+<h3 id="must-identify-resources-and-sub-resources-via-path-segments">Must: Identify resources and Sub-Resources via Path Segments<a class="headerlink" href="#must-identify-resources-and-sub-resources-via-path-segments" title="Permanent link">&para;</a></h3>
+<p>Some API resources may contain or reference sub-resources. Embedded sub-resources, which are not top-level resources,
+are parts of a higher-level resource and cannot be used outside of its scope. Sub-resources should be referenced
+by their name and identifier in the path segments.</p>
+<p>Composite identifiers must not contain “/” as a separator. In order to improve the consumer experience, you should
+aim for intuitively understandable URLs, where each sub-path is a valid reference to a resource or a set of resources.
+For example, if “/customers/12ev123bv12v/addresses/DE_100100101” is a valid path of your API, then
+“/customers/12ev123bv12v/addresses”, “/customers/12ev123bv12v” and “/customers” must be valid as well in principle.</p>
+<p>Basic URL structure:</p>
+<div class="codehilite"><pre><span></span>/{resources}/[resource-id]/{sub-resources}/[sub-resource-id]
+/{resources}/[partial-id-1][separator][partial-id-2]
+</pre></div>
+
+
+<p>Examples:</p>
+<div class="codehilite"><pre><span></span>/carts/1681e6b88ec1/items
+/carts/1681e6b88ec1/items/1
+/customers/12ev123bv12v/addresses/DE_100100101
+</pre></div>
+
+
+<h3 id="should-limit-number-of-resources">Should: Limit number of Resources<a class="headerlink" href="#should-limit-number-of-resources" title="Permanent link">&para;</a></h3>
+<p>To keep maintenance and service evolution manageable, we should follow "functional segmentation" and "separation of concern" design principles and do not mix different business functionalities in same API definition. In this sense the number of resources exposed via API should be limited - our experience is that a typical range of resources for a well-designed API is between 4 and 8. There may be exceptions with more complex business domains that require more resources, but you should first check if you can split them into separate subdomains with distinct APIs.</p>
+<p>Nevertheless one API should hold all necessary resources to model complete business processes helping clients to understand these flows.</p>
+<h3 id="should-limit-number-of-sub-resource-levels">Should: Limit number of Sub-Resource Levels<a class="headerlink" href="#should-limit-number-of-sub-resource-levels" title="Permanent link">&para;</a></h3>
+<p>There are main resources (with root url paths) and sub-resources (or “nested” resources with non-root urls paths). Use sub-resources if their life cycle is (loosely) coupled to the main resource, i.e. the main resource works as collection resource of the subresource entities. You should use &lt;= 3 sub-resource (nesting) levels -- more levels increase API complexity and url path length. (Remember, some popular web browsers do not support URLs of more than 2000 characters)</p>
+<h2 id="use-http-methods-correctly">Use HTTP Methods Correctly<a class="headerlink" href="#use-http-methods-correctly" title="Permanent link">&para;</a></h2>
+<p>Be compliant with the standardized HTTP method semantics summarized as follows:</p>
+<h4 id="get">GET<a class="headerlink" href="#get" title="Permanent link">&para;</a></h4>
+<p>GET requests are used to read a single resource or query set of resources.</p>
+<ul>
+<li>GET requests for individual resources will usually generate a 404 if the resource does not exist</li>
+<li>GET requests for collection resources may return either 200 (if the listing is empty) or 404 (if
+  the list is missing)</li>
+<li>GET requests must NOT have request body payload</li>
+</ul>
+<blockquote>
+<p><img alt="📝" class="gemoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4dd.png" title=":memo:" /> GET requests on collection resources should provide a sufficient filter mechanism as well
+as <a href="../pagination/Pagination.md">pagination</a>.</p>
+</blockquote>
+<h4 id="get-with-body">GET with Body<a class="headerlink" href="#get-with-body" title="Permanent link">&para;</a></h4>
+<p>APIs sometimes face the problem, that they have to provide extensive structured request information
+with GET, that may even conflicts with the size limits of clients, load-balancers, and servers. As
+we require APIs to be standard conform (body in GET must be ignored on server side), API designers
+have to check the following two options:</p>
+<ol>
+<li>GET with URL encoded query parameters: when it is possible to encode the request information in
+   query parameters, respecting the usual size limits of clients, gateways, and servers, this should
+   be the first choice. The request information can either be provided distributed to multiple query
+   parameters or a single structured URL encoded string.</li>
+<li>POST with body content: when a GET with URL encoded query parameters is not possible, a POST with
+   body content must be used. In this case the endpoint must be documented with  the hint <code>GET with
+   body</code> to transport the GET semantic of this call.</li>
+</ol>
+<blockquote>
+<p><img alt="📝" class="gemoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4dd.png" title=":memo:" /> It is no option to encode the lengthy structured request information in header parameters.
+From a conceptual point of view, the semantic of an operation should always be expressed by resource
+name and query parameters, i.e. what goes into the URL. Request headers are reserved for general
+context information, e.g. FlowIDs. In addition, size limits on query parameters and headers are not
+reliable and depend on clients, gateways, server, and actual settings. Thus, switching to headers
+does not solve the original problem.</p>
+</blockquote>
+<h4 id="put">PUT<a class="headerlink" href="#put" title="Permanent link">&para;</a></h4>
+<p>PUT requests are used to create or update <strong>entire</strong> resources - single or collection resources. The
+semantic is best described as »<em>please put the enclosed representation at the resource mentioned by
+the URL, replacing any existing resource.</em>«.</p>
+<ul>
+<li>PUT requests are usually applied to single resources, and not to collection resources, as this
+  would imply replacing the entire collection</li>
+<li>PUT requests are usually robust against non-existence of resources by implicitly creating before
+  updating</li>
+<li>on successful PUT requests, the server will <strong>replace the entire resource</strong> addressed by the URL
+  with the representation passed in the payload (subsequent reads will deliver the same payload)</li>
+<li>successful PUT requests will usually generate 200 or 204 (if the resource was updated - with or
+  without actual content returned), and 201 (if the resource was created)</li>
+</ul>
+<blockquote>
+<p><img alt="📝" class="gemoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4dd.png" title=":memo:" /> Resource IDs with respect to PUT requests are maintained by the client and passed as a
+URL path segment. Putting the same resource twice is required to be idempotent and to result in
+the same single resource instance. If PUT is applied for creating a resource, only URIs should be
+allowed as resource IDs. If URIs are not available POST should be preferred.</p>
+</blockquote>
+<p>To prevent unnoticed concurrent updates when using PUT, the combination of <a href="../headers/CommonHeaders.md#could-consider-using-etag-together-with-ifnonematch-header"><code>ETag</code> and
+<code>If-(None-)Match</code></a>
+headers should be considered to signal the server stricter demands to expose conflicts and prevent
+lost updates.</p>
+<h4 id="post">POST<a class="headerlink" href="#post" title="Permanent link">&para;</a></h4>
+<p>POST requests are idiomatically used to create single resources on a collection resource endpoint,
+but other semantics on single resources endpoint are equally possible. The semantic for collection
+endpoints is best described as »<em>please add the enclosed representation to the collection resource
+identified by the URL</em>«. The semantic for single resource endpoints is best described as »<em>please
+execute the given well specified request on the collection resource identified by the URL</em>«.</p>
+<ul>
+<li>POST request should only be applied to collection resources, and normally not on single resource,
+  as this has an undefined semantic</li>
+<li>on successful POST requests, the server will create one or multiple new resources and provide
+  their URI/URLs in the response</li>
+<li>successful POST requests will usually generate 200 (if resources have been updated), 201 (if
+  resources have been created), and 202 (if the request was accepted but has not been finished yet)</li>
+</ul>
+<blockquote>
+<p><img alt="📝" class="gemoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4dd.png" title=":memo:" /> POST should be used for scenarios that cannot be covered by the other methods
+sufficiently. For instance, GET with complex (e.g. SQL like structured) query that needs to be
+passed as request body payload because of the URL-length constraint. In such cases, make sure to
+document the fact that POST is used as a workaround.</p>
+</blockquote>
+<hr />
+<blockquote>
+<p><img alt="💡" class="gemoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4a1.png" title=":bulb:" />  <strong>Resource IDs</strong> with respect to POST requests are created and maintained by server and
+returned with response payload. Posting the same resource twice is by itself <strong>not</strong> required to
+be idempotent and may result in multiple resource instances. Anyhow, if external URIs are present
+that can be used to identify duplicate requests, it is best practice to implement POST in an
+idempotent way.</p>
+</blockquote>
+<h4 id="patch">PATCH<a class="headerlink" href="#patch" title="Permanent link">&para;</a></h4>
+<p>PATCH request are only used for partial update of single resources, i.e. where only a specific
+subset of resource fields should be replaced. The semantic is best described as »<em>please change
+the resource identified by the URL according to my change request</em>«. The semantic of the change
+request is not defined in the HTTP standard and must be described in the API specification by
+using suitable media types.</p>
+<ul>
+<li>PATCH requests are usually applied to single resources, and not on collection resources, as this
+  would imply patching on the entire collection</li>
+<li>PATCH requests are usually not robust against non-existence of resource instances</li>
+<li>on successful PATCH requests, the server will update parts of the resource addressed by the URL
+  as defined by the change request in the payload</li>
+<li>successful PATCH requests will usually generate 200 or 204 (if resources have been updated</li>
+<li>with or without updated content returned)</li>
+</ul>
+<blockquote>
+<p><img alt="💡" class="gemoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4a1.png" title=":bulb:" /> since implementing PATCH correctly is a bit tricky, we strongly suggest to choose one and
+only one of the following patterns per endpoint, unless forced by a <a href="../../compatibility/Compatibility#compatibility">backwards compatible change</a>. In preference order:</p>
+</blockquote>
+<ol>
+<li>use PUT with complete objects to update a resource as long as feasible (i.e. do not use PATCH
+   at all).</li>
+<li>use PATCH with partial objects to only update parts of a resource, when ever possible. (This is
+   basically  <a href="https://tools.ietf.org/html/rfc7396">JSON Merge Patch</a>, a specialized media type
+   <code>application/merge-patch+json</code> that is a partial resource representation.)</li>
+<li>use PATCH with <a href="http://tools.ietf.org/html/rfc6902">JSON Patch</a>, a specialized media type
+   <code>application/json-patch+json</code> that includes instructions on how to change the resource.</li>
+<li>use POST (with a proper description of what is happening) instead of PATCH if the request does
+   not modify the resource in a way defined by the semantics of the media type.</li>
+</ol>
+<p>In practice <a href="https://tools.ietf.org/html/rfc7396">JSON Merge Patch</a> quickly turns out to be too
+limited, especially when trying to update single objects in large collections (as part of the
+resource). In this cases <a href="http://tools.ietf.org/html/rfc6902">JSON Patch</a> can shown its full power
+while still showing readable patch requests
+(<a href="http://erosb.github.io/post/json-patch-vs-merge-patch">see also</a>).</p>
+<p>To prevent unnoticed concurrent updates when using PATCH, the combination of <a href="../headers/CommonHeaders.md#could-consider-using-etag-together-with-ifnonematch-header"><code>ETag</code> and
+<code>If-Match</code></a>
+headers should be considered to signal the server stricter demands to expose conflicts and prevent
+lost updates.</p>
+<h4 id="delete">DELETE<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h4>
+<p>DELETE request are used to delete resources. The semantic is best described as »<em>please delete the
+resource identified by the URL</em>«.</p>
+<ul>
+<li>DELETE requests are usually applied to single resources, not on collection resources, as this
+  would imply deleting the entire collection</li>
+<li>successful DELETE request will usually generate 200 (if the deleted resource is returned) or 204
+  (if no content is returned)</li>
+<li>failed DELETE request will usually generate 404 (if the resource cannot be found) or 410 (if the
+  resource was already deleted before)</li>
+</ul>
+<h4 id="head">HEAD<a class="headerlink" href="#head" title="Permanent link">&para;</a></h4>
+<p>HEAD requests are used retrieve to header information of single resources and resource collections.</p>
+<ul>
+<li>HEAD has exactly the same semantics as GET, but returns headers only, no body.</li>
+</ul>
+<h4 id="options">OPTIONS<a class="headerlink" href="#options" title="Permanent link">&para;</a></h4>
+<p>OPTIONS are used to inspect the available operations (HTTP methods) of a given endpoint.</p>
+<ul>
+<li>OPTIONS requests usually either return a comma separated list of methods (provided by an
+  <code>Allow:</code>-Header) or as a structured list of link templates</li>
+</ul>
+<blockquote>
+<p><img alt="📝" class="gemoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4dd.png" title=":memo:" />  OPTIONS is rarely implemented, though it could be used to self-describe the full
+functionality of a resource.</p>
+</blockquote>
+<h3 id="fulfill-safeness-and-idempotency-properties">Fulfill Safeness and Idempotency Properties<a class="headerlink" href="#fulfill-safeness-and-idempotency-properties" title="Permanent link">&para;</a></h3>
+<p>An operation can be...</p>
+<ul>
+<li>idempotent, i.e. operation will produce the same results if executed once or multiple times (note: this does not
+  necessarily mean returning the same status code)</li>
+<li>safe, i.e. must not have side effects such as state changes</li>
+</ul>
+<p>Method implementations must fulfill the following basic properties:</p>
+<table>
+<thead>
+<tr>
+<th>HTTP method</th>
+<th>safe</th>
+<th>idempotent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OPTIONS</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>HEAD</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>Please see also <a href="https://goo.gl/vhwh8a">Best Practices [internal link]</a> for further hints on how to support the
+different HTTP methods on resources.</p>
+<h3 id="use-specific-http-status-codes">Use Specific HTTP Status Codes<a class="headerlink" href="#use-specific-http-status-codes" title="Permanent link">&para;</a></h3>
+<p>This guideline groups the following rules for HTTP status codes usage:</p>
+<ul>
+<li>You must not invent new HTTP status codes; only use standardized HTTP status codes and consistent with its intended semantics.</li>
+<li>You should use the most specific HTTP status code for your concrete resource request processing status or error situation.</li>
+<li>You should provide good documentation in the API definition when using HTTP status codes that are less commonly used and not listed below.  </li>
+</ul>
+<p>There are ~60 different HTTP status codes with specific semantics defined in the HTTP standards (mainly <a href="https://tools.ietf.org/html/rfc7231#section-6">RFC7231</a> and <a href="https://tools.ietf.org/html/rfc6585">RFC-6585</a>) - and there are upcoming new ones, e.g. <a href="https://tools.ietf.org/html/draft-tbray-http-legally-restricted-status-05">draft legally-restricted-status</a> (see overview on all error codes on <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">Wikipedia</a> or via <a href="https://httpstatuses.com/">https://httpstatuses.com/</a><error_code>). And there are unofficial ones, e.g. used by specific web servers like Nginx.  </p>
+<p>Our list of most commonly used and best understood HTTP status codes:</p>
+<h4 id="success-codes">Success Codes<a class="headerlink" href="#success-codes" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+<th>Methods</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>OK - this is the standard success response</td>
+<td>All</td>
+</tr>
+<tr>
+<td>201</td>
+<td>Created - Returned on successful entity creation. You are free to return either an empty response or the created resource in conjunction with the Location header. (More details found in the <a href="../headers/CommonHeaders.md">Common Headers section</a>.) <em>Always</em> set the Location header.</td>
+<td>POST, PUT</td>
+</tr>
+<tr>
+<td>202</td>
+<td>Accepted - The request was successful and will be processed asynchronously.</td>
+<td>POST, PUT, DELETE, PATCH</td>
+</tr>
+<tr>
+<td>204</td>
+<td>No content - There is no response body</td>
+<td>PUT, DELETE</td>
+</tr>
+<tr>
+<td>207</td>
+<td>Multi-Status - The response body contains multiple status informations for different parts of a batch/bulk request. See <a href="../http/Http.md#must-use-207-for-batch-or-bulk-requests">"Use 207 for Batch or Bulk Requests"</a>.</td>
+<td>POST</td>
+</tr>
+</tbody>
+</table>
+<h4 id="redirection-codes">Redirection Codes<a class="headerlink" href="#redirection-codes" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+<th>Methods</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>301</td>
+<td>Moved Permanently - This and all future requests should be directed to the given URI.</td>
+<td>All</td>
+</tr>
+<tr>
+<td>303</td>
+<td>See Other - The response to the request can be found under another URI using a GET method.</td>
+<td>PATCH, POST, PUT, DELETE</td>
+</tr>
+<tr>
+<td>304</td>
+<td>Not Modified - resource has not been modified since the date or version passed via request headers If-Modified-Since or If-None-Match.</td>
+<td>GET</td>
+</tr>
+</tbody>
+</table>
+<h4 id="client-side-error-codes">Client Side Error Codes<a class="headerlink" href="#client-side-error-codes" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+<th>Methods</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>Bad request - generic / unknown error</td>
+<td>All</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized - the users must log in (this often means “Unauthenticated”)</td>
+<td>All</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden - the user is not authorized to use this resource</td>
+<td>All</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not found - the resource is not found</td>
+<td>All</td>
+</tr>
+<tr>
+<td>405</td>
+<td>Method Not Allowed - the method is not supported, see OPTIONS</td>
+<td>All</td>
+</tr>
+<tr>
+<td>406</td>
+<td>Not Acceptable - resource can only generate content not acceptable according to the Accept headers sent in the request</td>
+<td>All</td>
+</tr>
+<tr>
+<td>408</td>
+<td>Request timeout - the server times out waiting for the resource</td>
+<td>All</td>
+</tr>
+<tr>
+<td>409</td>
+<td>Conflict - request cannot be completed due to conflict, e.g. when two clients try to create the same resource or if there are concurrent, conflicting updates</td>
+<td>PUT, DELETE, PATCH</td>
+</tr>
+<tr>
+<td>410</td>
+<td>Gone - resource does not exist any longer, e.g. when accessing a resource that has intentionally been deleted</td>
+<td>All</td>
+</tr>
+<tr>
+<td>412</td>
+<td>Precondition Failed - returned for conditional requests, e.g. If-Match if the condition failed. Used for optimistic locking.</td>
+<td>PUT, DELETE, PATCH</td>
+</tr>
+<tr>
+<td>415</td>
+<td>Unsupported Media Type - e.g. clients sends request body without content type</td>
+<td>PUT, DELETE, PATCH</td>
+</tr>
+<tr>
+<td>423</td>
+<td>Locked - Pessimistic locking, e.g. processing states</td>
+<td>PUT, DELETE, PATCH</td>
+</tr>
+<tr>
+<td>428</td>
+<td>Precondition Required - server requires the request to be conditional (e.g. to make sure that the “lost update problem” is avoided).</td>
+<td>All</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Too many requests - the client does not consider rate limiting and sent too many requests. See <a href="../http/Http.md#must-use-429-with-headers-for-rate-limits">"Use 429 with Headers for Rate Limits"</a>.</td>
+<td>All</td>
+</tr>
+</tbody>
+</table>
+<h4 id="server-side-error-codes">Server Side Error Codes:<a class="headerlink" href="#server-side-error-codes" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+<th>Methods</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>500</td>
+<td>Internal Server Error - a generic error indication for an unexpected server execution problem (here, client retry may be senseful)</td>
+<td>All</td>
+</tr>
+<tr>
+<td>501</td>
+<td>Not Implemented -  server cannot fulfill the request (usually implies future availability, e.g. new feature).</td>
+<td>All</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Service Unavailable - server is (temporarily) not available (e.g. due to overload) -- client retry may be senseful.</td>
+<td>All</td>
+</tr>
+</tbody>
+</table>
+<h3 id="provide-error-documentation">Provide Error Documentation<a class="headerlink" href="#provide-error-documentation" title="Permanent link">&para;</a></h3>
+<p>APIs should define the functional, business view and abstract from implementation aspects. Errors become a key element providing context and visibility into how to use an API. The error object should be extended by an application-specific error identifier if and only if the HTTP status code is not specific enough to convey the domain-specific error semantic. For this reason, we use a standardized error return object definition — see <a href="../../common-data-types/CommonDataTypes.html#must-use-common-error-return-objects"><em>Use Common Error Return Objects</em></a>.</p>
+<p>The OpenAPI specification shall include definitions for error descriptions that will be returned; they are part of the interface definition and provide important information for service clients to handle exceptional situations and support troubleshooting. You should also think about a troubleshooting board — it is part of the associated online API documentation, provides information and handling guidance on application-specific errors and is referenced via links of the API definition. This can reduce service support tasks and contribute to service client and provider performance.</p>
+<p>Service providers should differentiate between technical and functional errors. In most cases it's not useful to document technical errors that are not in control of the service provider unless the status code convey application-specific semantics. The list of status code that can be omitted from API specifications includes but is not limited to:</p>
+<ul>
+<li><code>401 Unauthorized</code></li>
+<li><code>403 Forbidden</code></li>
+<li><code>404 Not Found</code> unless it has some additional semantics</li>
+<li><code>405 Method Not Allowed</code></li>
+<li><code>406 Not Acceptable</code></li>
+<li><code>408 Request Timeout</code></li>
+<li><code>413 Payload Too Large</code></li>
+<li><code>414 URI Too Long</code></li>
+<li><code>415 Unsupported Media Type</code></li>
+<li><code>500 Internal Server Error</code></li>
+<li><code>502 Bad Gateway</code></li>
+<li><code>503 Service Unavailable</code></li>
+<li><code>504 Gateway Timeout</code></li>
+</ul>
+<p>Even though they might not be documented - they may very much occur in production, so clients should be prepared for unexpected response codes, and in case of doubt handle them like they would handle the corresponding x00 code. Adding new response codes (specially error responses) should be considered a compatible API evolution.</p>
+<p>Functional errors on the other hand, that convey domain-specific semantics, must be documented and are strongly encouraged to be expressed with <a href="../../common-data-types/CommonDataTypes.html#must-use-common-error-return-objects"><em>Problem types</em></a>.</p>
+<h3 id="use-207-for-batch-or-bulk-requests">Use 207 for Batch or Bulk Requests<a class="headerlink" href="#use-207-for-batch-or-bulk-requests" title="Permanent link">&para;</a></h3>
+<p>Some APIs are required to provide either <em>batch</em> or <em>bulk</em> requests using POST for performance reasons, i.e. for communication and processing efficiency. In this case services may be in need to signal multiple response codes for each part of an batch or bulk request. As HTTP does not provide proper guidance for handling batch/bulk requests and responses, we herewith define the following approach:</p>
+<ul>
+<li>A batch or bulk request <strong>always</strong> has to respond with HTTP status code <strong>207</strong>, unless it encounters a generic or unexpected failure before looking at individual parts.</li>
+<li>A batch or bulk response with status code 207 <strong>always</strong> returns a multi-status object containing sufficient status and/or monitoring information for each part of the batch or bulk request.</li>
+<li>A batch or bulk request may result in a status code 400/500, only if the service encounters a failure before looking at individual parts or, if an unanticipated failure occurs.</li>
+</ul>
+<p>The before rules apply <em>even in the case</em> that processing of all individual part <em>fail</em> or each part is executed <em>asynchronously</em>! They are intended to allow clients to act on batch and bulk responses by inspecting the individual results in a consistent way.</p>
+<blockquote>
+<p><img alt="💡" class="gemoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4a1.png" title=":bulb:" /> <strong>while a <em>batch</em></strong> defines a collection of requests triggering independent processes, a <em>bulk</em> defines a collection of independent resources created or updated together in one request. With respect to response processing this distinction normally does not matter.</p>
+</blockquote>
+<h3 id="use-429-with-headers-for-rate-limits">Use 429 with Headers for Rate Limits<a class="headerlink" href="#use-429-with-headers-for-rate-limits" title="Permanent link">&para;</a></h3>
+<p>APIs that wish to manage the request rate of clients must use the <a href="http://tools.ietf.org/html/rfc6585">'429 Too Many Requests'</a> response code if the client exceeded the request rate and therefore the request can't be fulfilled. Such responses must also contain header information providing further details to the client. There are two approaches a service can take for header information:</p>
+<ul>
+<li>
+<p>Return a <a href="https://tools.ietf.org/html/rfc7231#section-7.1.3">'Retry-After'</a> header indicating how long the client ought to wait before making a follow-up request. The Retry-After header can contain a HTTP date value to retry after or the number of seconds to delay. Either is acceptable but APIs should prefer to use a delay in seconds.</p>
+</li>
+<li>
+<p>Return a trio of 'X-RateLimit' headers. These headers (described below) allow a server to express a service level in the form of a number of allowing requests within a given window of time and when the window is reset.</p>
+</li>
+</ul>
+<p>The 'X-RateLimit' headers are:</p>
+<ul>
+<li><code>X-RateLimit-Limit</code>: The maximum number of requests that the client is allowed to make in this window.</li>
+<li><code>X-RateLimit-Remaining</code>: The number of requests allowed in the current window.</li>
+<li><code>X-RateLimit-Reset</code>: The relative time in seconds when the rate limit window will be reset.</li>
+</ul>
+<p>The reason to allow both approaches is that APIs can have different needs. Retry-After is often sufficient for general load handling and request throttling scenarios and notably, does not strictly require the concept of a calling entity such as a tenant or named account. In turn this allows resource owners to minimise the amount of state they have to carry with respect to client requests. The 'X-RateLimit' headers are suitable for scenarios where clients are associated with pre-existing account or tenancy structures. 'X-RateLimit' headers are generally returned on every request and not just on a 429, which implies the service implementing the API is carrying sufficient state to track the number of requests made within a given window for each named entity.</p>
+<h3 id="explicitly-define-the-collection-format-of-query-parameters">Explicitly define the Collection Format of Query Parameters<a class="headerlink" href="#explicitly-define-the-collection-format-of-query-parameters" title="Permanent link">&para;</a></h3>
+<p>There are different ways of supplying a set of values as a query parameter.
+One particular type should be selected and stated explicitly in the API definition.
+The OpenAPI property <a href="http://swagger.io/specification/">collectionFormat</a> is used to specify the format of the query parameter.</p>
+<p>Only the <code>csv</code> or <code>multi</code> formats should be used for multi-value query parameters as described below.</p>
+<table>
+<thead>
+<tr>
+<th>Collection Format</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>csv</code></td>
+<td>Comma separated values</td>
+<td><code>?parameter=value1,value2,value3</code></td>
+</tr>
+<tr>
+<td><code>multi</code></td>
+<td>Multiple parameter instances</td>
+<td><code>?parameter=value1&amp;parameter=value2&amp;parameter=value3</code></td>
+</tr>
+</tbody>
+</table>
+<p>When choosing the collection format, take into account the tool support, the escaping of special characters and the maximal URL length.</p>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../object-props/" title="Object, Naming, Props" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Object, Naming, Props
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../schema/" title="OpenAPI / Schema" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                OpenAPI / Schema
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2017 9ci Inc
+          </div>
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.js"></script>
+      
+      
+      <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+      <script>window.mdc.autoInit()</script>
+      <script src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay.min.js"></script>
+      <script src="https://r.office.microsoft.com/r/rlidExcelWLJS?v=1&kip=1"></script>
+      <script src="../../assets/javascripts/jq-mdc-web.js"></script>
+      <script>app.initialize({url:{base:"../.."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>

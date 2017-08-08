@@ -11,31 +11,31 @@
         <meta name="description" content="Utils and Rest Stuff">
       
       
-        <link rel="canonical" href="http://9ci.github.io/gorm-rest-api/design-principles/">
+        <link rel="canonical" href="http://9ci.github.io/gorm-rest-api/design-principles/object-props/">
       
       
         <meta name="author" content="Joshua Burnett">
       
       
-        <link rel="shortcut icon" href="../assets/images/favicon.png">
+        <link rel="shortcut icon" href="../../assets/images/favicon.png">
       
       <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-components-1.7.6">
     
     
       
-        <title>Design Principles - Gorm Rest Api</title>
+        <title>Object, Naming, Props - Gorm Rest Api</title>
       
     
     
-      <script src="../assets/javascripts/modernizr.js"></script>
+      <script src="../../assets/javascripts/modernizr.js"></script>
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/application.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/application.css">
       
-        <link rel="stylesheet" href="../assets/stylesheets/application.palette.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/application.palette.css">
       
-      <link rel="stylesheet" href="../assets/stylesheets/material-components-web.min.css">
-      <link rel="stylesheet" href="../assets/stylesheets/mdc-web.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/material-components-web.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/mdc-web.css">
     
     
       
@@ -104,8 +104,12 @@
           
             
               
+                <span class="md-header-nav__parent">
+                  Design Principles
+                </span>
+              
             
-            Design Principles
+            Object, Naming, Props
           
         </span>
       </div>
@@ -213,8 +217,20 @@
 
 
   <li class="md-nav__item">
-    <a href=".." title="Overview" class="md-nav__link">
+    <a href="../.." title="Overview" class="md-nav__link">
       Overview
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../swagger-openapi/" title="OpenAPI/Schema Notes" class="md-nav__link">
+      OpenAPI/Schema Notes
     </a>
   </li>
 
@@ -226,17 +242,50 @@
   
 
 
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Design Principles
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Design Principles
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../guidelines/" title="Guidelines" class="md-nav__link">
+      Guidelines
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
   <li class="md-nav__item md-nav__item--active">
     
     <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
     
     
       <label class="md-nav__link md-nav__link--active" for="toc">
-        Design Principles
+        Object, Naming, Props
       </label>
     
-    <a href="./" title="Design Principles" class="md-nav__link md-nav__link--active">
-      Design Principles
+    <a href="./" title="Object, Naming, Props" class="md-nav__link md-nav__link--active">
+      Object, Naming, Props
     </a>
     
       
@@ -248,37 +297,22 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#api-as-a-product" title="API as a Product" class="md-nav__link">
-    API as a Product
+  <a href="#object-guidelines" title="Object Guidelines" class="md-nav__link">
+    Object Guidelines
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#api-design-principles" title="API Design Principles" class="md-nav__link">
-    API Design Principles
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#security" title="Security" class="md-nav__link">
-    Security
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#json-guidelines" title="JSON Guidelines" class="md-nav__link">
-    JSON Guidelines
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#property-names" title="Property Names" class="md-nav__link">
     Property Names
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -297,16 +331,33 @@
     
   </li>
 
-    
-      
-      
-      
+        
+          
+          
+          
 
 
   <li class="md-nav__item">
-    <a href="../api-docs-template/" title="Docs Template" class="md-nav__link">
-      Docs Template
+    <a href="../http-method-mapping/" title="Http Method Mapping" class="md-nav__link">
+      Http Method Mapping
     </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../schema/" title="OpenAPI / Schema" class="md-nav__link">
+      OpenAPI / Schema
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
   </li>
 
     
@@ -316,8 +367,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../swagger-openapi/" title="OpenAPI - Swagger" class="md-nav__link">
-      OpenAPI - Swagger
+    <a href="../../api-docs-template/" title="Sample API Docs" class="md-nav__link">
+      Sample API Docs
     </a>
   </li>
 
@@ -347,7 +398,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../tutorial/stock/" title="Grails OOB(out of the box)" class="md-nav__link">
+    <a href="../../tutorial/stock/" title="Grails OOB(out of the box)" class="md-nav__link">
       Grails OOB(out of the box)
     </a>
   </li>
@@ -364,7 +415,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../glossary/" title="Glossary" class="md-nav__link">
+    <a href="../../glossary/" title="Glossary" class="md-nav__link">
       Glossary
     </a>
   </li>
@@ -389,37 +440,22 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#api-as-a-product" title="API as a Product" class="md-nav__link">
-    API as a Product
+  <a href="#object-guidelines" title="Object Guidelines" class="md-nav__link">
+    Object Guidelines
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#api-design-principles" title="API Design Principles" class="md-nav__link">
-    API Design Principles
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#security" title="Security" class="md-nav__link">
-    Security
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#json-guidelines" title="JSON Guidelines" class="md-nav__link">
-    JSON Guidelines
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#property-names" title="Property Names" class="md-nav__link">
     Property Names
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -444,47 +480,13 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/9ci/gorm-rest-api/edit/master/docs/design-principles.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
+                  <a href="https://github.com/9ci/gorm-rest-api/edit/master/docs/design-principles/object-props.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
                 
                 
-                  <h1>Design Principles</h1>
+                  <h1>Object, Naming, Props</h1>
                 
-                <p>see:
-<a href="https://zalando.github.io/restful-api-guidelines/tooling/Tooling.html">https://zalando.github.io/restful-api-guidelines/tooling/Tooling.html</a></p>
-<h2 id="api-as-a-product">API as a Product<a class="headerlink" href="#api-as-a-product" title="Permanent link">&para;</a></h2>
-<p>We are transforming to a platform comprising a rich set of products following a Software as a Platform (SaaS) model for our business partners. We want to deliver products to our customers which can be consumed like a service.</p>
-<p>Platform products provide their functionality via (public) APIs; hence, the design of our APIs should be based on the API as a Product principle:</p>
-<ul>
-<li>Treat your API as product and understand the needs of its customers</li>
-<li>Take ownership and advocate for the customer and continuous improvement</li>
-<li>Emphasize easy understanding, discovery and usage of APIs; design APIs irresistible for client engineers</li>
-<li>Actively improve and maintain API consistency over the long term</li>
-<li>Make use of customer feedback and provide service level support</li>
-<li>RESTful API as a Product makes the difference between enterprise integration business and agile, innovative product service business built on a platform of APIs.</li>
-<li>are easy to understand and learn</li>
-<li>are general and abstracted from specific implementation and use cases</li>
-<li>have a common look and feel</li>
-<li>follow a consistent RESTful style and syntax</li>
-</ul>
-<p>Based on your concrete customer use cases, you should carefully check the trade-offs of API design variants and avoid short-term server side implementation optimizations at the expense of unnecessary client side obligations and have a high attention on API quality and client developer experience.</p>
-<p>API as a Product is closely related to our API First principle (see next chapter) which is more focussed on how we engineer high quality APIs.</p>
-<h2 id="api-design-principles">API Design Principles<a class="headerlink" href="#api-design-principles" title="Permanent link">&para;</a></h2>
-<p>REST is centered around business (data) entities exposed as resources that are identified via URIs and can be manipulated via standardized CRUD-like methods using different representations, self-descriptive messages and hypermedia. RESTful APIs tend to be less use-case specific and comes with less rigid client / server coupling and are more suitable as a platform interface being open for diverse client applications.</p>
-<ul>
-<li>We prefer REST-based APIs with JSON payloads</li>
-<li>We prefer systems to be truly RESTful</li>
-<li>We apply the RESTful web service principles to all kind of application components, whether they provide functionality via the Internet or via the intranet as larger application elements.</li>
-<li>We strive to build interoperating distributed systems that different teams can evolve in parallel.</li>
-</ul>
-<p>An important principle for (RESTful) API design and usage is Postel's Law, aka the Robustness Principle</p>
-<ul>
-<li>Be liberal in what you accept, be conservative in what you send</li>
-</ul>
-<p>Readings: Read the following to gain additional insight on the RESTful service architecture paradigm and general RESTful API design style:</p>
-<h2 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h2>
-<p>TODO</p>
-<h2 id="json-guidelines">JSON Guidelines<a class="headerlink" href="#json-guidelines" title="Permanent link">&para;</a></h2>
-<h2 id="property-names">Property Names<a class="headerlink" href="#property-names" title="Permanent link">&para;</a></h2>
+                <h2 id="object-guidelines">Object Guidelines<a class="headerlink" href="#object-guidelines" title="Permanent link">&para;</a></h2>
+<h3 id="property-names">Property Names<a class="headerlink" href="#property-names" title="Permanent link">&para;</a></h3>
 <ul>
 <li>be consistent</li>
 <li>property names must be camelCase</li>
@@ -522,59 +524,45 @@ BCP-47 (based on ISO 639-1) for language variants
 ISO 4217 currency codes</p>
 <h2 id="naming">Naming<a class="headerlink" href="#naming" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Use lowercase separate words with hyphens for URI Path Segments</li>
-</ul>
-<p>Example:</p>
-<p>/shipment-orders/{shipment-order-id}
-This applies to concrete path segments and not the names of path parameters. For example {shipment_order_id} would be ok as a path parameter.</p>
-<p>Must: Use snake_case (never camelCase) for Query Parameters</p>
-<p>Examples:</p>
-<p>customer_number, order_id, billing_address
-Must: Use Hyphenated HTTP Headers</p>
-<p>Should: Prefer Hyphenated-Pascal-Case for HTTP header Fields</p>
-<p>This is for consistency in your documentation (most other headers follow this convention). Avoid camelCase (without hyphens). Exceptions are common abbreviations like “ID.”</p>
-<p>Examples:</p>
-<p>Accept-Encoding
-Apply-To-Redirect-Ref
-Disposition-Notification-Options
-Original-Message-ID
-See also: HTTP Headers are case-insensitive (RFC 7230).</p>
-<p>May: Use Standardized Headers</p>
-<p>Use this list and mention its support in your OpenAPI definition.</p>
-<p>Must: Pluralize Resource Names</p>
-<p>Usually, a collection of resource instances is provided (at least API should be ready here). The special case of a resource singleton is a collection with cardinality 1.</p>
+<li>
+<p>Prefer to use lowercase separate words with hyphens for URI Path Segments. camelCase is ok but not ideal.
+see <a href="http://www.tothenew.com/blog/customizing-url-formats-in-grails/">http://www.tothenew.com/blog/customizing-url-formats-in-grails/</a> and grails.web.url.converter yml property<br />
+Example:<br />
+/shipment-order/1/shipment-order-lines
+This applies to concrete path segments and not the names of path parameters. For example shipment_order_id would be ok as a path parameter.
+<a href="http://blog.restcase.com/5-basic-rest-api-design-guidelines/">see here</a> for a good explanation on case</p>
+</li>
+<li>
+<p>camelCase or snake_case for Query Parameters</p>
+</li>
+<li>
+<p>Prefer Hyphenated-Pascal-Case for HTTP header Fields</p>
+</li>
+<li>
+<p>Do not Pluralize Resource Names, keep them the same as controller or use hyphens instead of camelCase if desired.</p>
+</li>
+<li>
 <p>May: Use /api as first Path Segment</p>
-<p>In most cases, all resources provided by a service are part of the public API, and therefore should be made available under the root “/” base path. If the service should also support non-public, internal APIs — for specific operational support functions, for example — add “/api” as base path to clearly separate public and non-public API resources.</p>
+</li>
+<li>
 <p>Must: Avoid Trailing Slashes</p>
-<p>The trailing slash must not have specific semantics. Resource paths must deliver the same results whether they have the trailing slash or not.</p>
+</li>
+<li>
 <p>May: Use Conventional Query Strings</p>
+</li>
+<li>
 <p>If you provide query support for sorting, pagination, filtering functions or other actions, use the following standardized naming conventions:</p>
-<p>q — default query parameter (e.g. used by browser tab completion); should have an entity specific alias, like sku
-limit — to restrict the number of entries. See Pagination section below. Hint: You can use size as an alternate query string.
-cursor — key-based page start. See Pagination section below.
-offset — numeric offset page start. See Pagination section below. Hint: In combination with limit, you can use page as an alternative to offset.
-sort — comma-separated list of fields to sort. To indicate sorting direction, fields my prefixed with + (ascending) or - (descending, default), e.g. /sales-orders?sort=+id
-fields — to retrieve a subset of fields. See Support Filtering of Resource Fields below.
-embed — to expand embedded entities (ie.: inside of an article entity, expand silhouette code into the silhouette object). Implementing “expand” correctly is difficult, so do it with care. See Embedding resources for more details.</p>
-<p><a href="http://blog.restcase.com/5-basic-rest-api-design-guidelines/">sourced from  here</a></p>
-<blockquote>
-<p>Names and Verbs
-To describe your resources, use concrete names and not action verbs.
-For decades, computer scientists used action verbs in order to expose services in an RPC way, for instance:
-getUser(1234) createUser(user) deleteAddress(1234)</p>
-<p>By contrast, the RESTful approach is to use:
-GET /users/1234 POST /users (with JSON describing a user in the body) DELETE /addresses/1234</p>
-<p>URI case
-When it comes to naming resources in a program, there are 3 main types of case conventions: CamelCase, snake_case, and spinal-case. They are just a way of naming the resources to resemble natural language, while avoiding spaces, apostrophes and other exotic characters. This habit is universal in programming languages where only a finite set of characters is authorized for names.</p>
-<p>CamelCase</p>
-<p>CamelCase has been popularized by the Java language. It intends to emphasize the beginning of each word by making the first letter uppercase. E.g. camelCase, currentUser, etc. Aside from debates about its readability, its main drawback is to be ineffective in contexts which are not case sensitive.</p>
-<p>snake_case</p>
-<p>snakecase has been widely used for years by C programmers, and more recently in Ruby. Words are separated by underscores “”, thus letting a compiler or an interpreter understand it as a single symbol, but also allowing readers to separate words fluently. However, its popularity has decreased due to a lot of abuses in C programs with over-extended or too short names. Unlike camel case, there are very few contexts where snake case is not usable. Examples: snakecase, currentuser, etc.</p>
-<p>spinal-case</p>
-<p>spinal-case is a variant of snake case which uses hyphens “-” to separate words. The pros and cons are quite similar to those of snake case, with the exception that some languages do not allow hyphens in symbol names (for variable, class, or function naming). You may find it referred to as lisp-case because it is the usual way to name variables and functions in lisp dialects. It is also the traditional way of naming folders and files in UNIX and Linux systems. Examples: spinal-case, current-user, etc.</p>
-<p>According to RFC3986, URLs are “case sensitive” (except for the scheme and the host).
-In practice, though, a sensitive case may create dysfunctions with APIs hosted on a Windows system.</p>
-</blockquote>
+<ul>
+<li><code>q</code> — default query parameter (e.g. used by browser tab completion); should have an entity specific alias, like sku</li>
+<li><code>limit</code> — to restrict the number of entries. See Pagination section. Hint: You can use size as an alternate query string.</li>
+<li><code>cursor</code> — key-based page start. See Pagination section below.</li>
+<li><code>offset</code> — numeric offset page start. See Pagination section below. Hint: In combination with limit, you can use <code>page</code> as an alternative to offset.</li>
+<li><code>sort</code> — comma-separated list of fields to sort. To indicate sorting direction, fields my prefixed with + (ascending) or - (descending, default), e.g. /sales-orders?sort=+id</li>
+<li><code>fields</code> — to retrieve a subset of fields. See Support Filtering of Resource Fields below.</li>
+<li><code>expand</code> — to expand embedded entities (ie.: inside of an article entity, expand silhouette code into the silhouette object). Implementing “expand” correctly is difficult, so do it with care. See Embedding resources for more details.</li>
+</ul>
+</li>
+</ul>
                 
                   
                 
@@ -593,7 +581,7 @@ In practice, though, a sensitive case may create dysfunctions with APIs hosted o
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href=".." title="Overview" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../guidelines/" title="Guidelines" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -602,19 +590,19 @@ In practice, though, a sensitive case may create dysfunctions with APIs hosted o
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Overview
+                Guidelines
               </span>
             </div>
           </a>
         
         
-          <a href="../api-docs-template/" title="Docs Template" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../http-method-mapping/" title="Http Method Mapping" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Docs Template
+                Http Method Mapping
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
@@ -648,15 +636,15 @@ In practice, though, a sensitive case may create dysfunctions with APIs hosted o
       
     </div>
     
-      <script src="../assets/javascripts/application.js"></script>
+      <script src="../../assets/javascripts/application.js"></script>
       
       
       <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
       <script>window.mdc.autoInit()</script>
       <script src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay.min.js"></script>
       <script src="https://r.office.microsoft.com/r/rlidExcelWLJS?v=1&kip=1"></script>
-      <script src="../assets/javascripts/jq-mdc-web.js"></script>
-      <script>app.initialize({url:{base:".."}})</script>
+      <script src="../../assets/javascripts/jq-mdc-web.js"></script>
+      <script>app.initialize({url:{base:"../.."}})</script>
       
     
     

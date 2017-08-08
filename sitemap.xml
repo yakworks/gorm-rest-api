@@ -11,23 +11,43 @@
 
     
     <url>
-     <loc>http://9ci.github.io/gorm-rest-api//design-principles/</loc>
+     <loc>http://9ci.github.io/gorm-rest-api//swagger-openapi/</loc>
      <lastmod>2017-08-08</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
+        
+    <url>
+     <loc>http://9ci.github.io/gorm-rest-api//design-principles/guidelines/</loc>
+     <lastmod>2017-08-08</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>http://9ci.github.io/gorm-rest-api//design-principles/object-props/</loc>
+     <lastmod>2017-08-08</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>http://9ci.github.io/gorm-rest-api//design-principles/http-method-mapping/</loc>
+     <lastmod>2017-08-08</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>http://9ci.github.io/gorm-rest-api//design-principles/schema/</loc>
+     <lastmod>2017-08-08</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
     
 
     
     <url>
      <loc>http://9ci.github.io/gorm-rest-api//api-docs-template/</loc>
-     <lastmod>2017-08-08</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>http://9ci.github.io/gorm-rest-api//swagger-openapi/</loc>
      <lastmod>2017-08-08</lastmod>
      <changefreq>daily</changefreq>
     </url>
