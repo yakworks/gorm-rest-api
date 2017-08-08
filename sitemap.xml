@@ -4,7 +4,23 @@
     
     <url>
      <loc>http://9ci.github.io/gorm-rest-api//</loc>
-     <lastmod>2017-08-07</lastmod>
+     <lastmod>2017-08-08</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>http://9ci.github.io/gorm-rest-api//design-principles/</loc>
+     <lastmod>2017-08-08</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>http://9ci.github.io/gorm-rest-api//api-docs-template/</loc>
+     <lastmod>2017-08-08</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,15 +28,7 @@
     
     <url>
      <loc>http://9ci.github.io/gorm-rest-api//swagger-openapi/</loc>
-     <lastmod>2017-08-07</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>http://9ci.github.io/gorm-rest-api//glossary/</loc>
-     <lastmod>2017-08-07</lastmod>
+     <lastmod>2017-08-08</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -29,10 +37,18 @@
         
     <url>
      <loc>http://9ci.github.io/gorm-rest-api//tutorial/stock/</loc>
-     <lastmod>2017-08-07</lastmod>
+     <lastmod>2017-08-08</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
+    
+
+    
+    <url>
+     <loc>http://9ci.github.io/gorm-rest-api//glossary/</loc>
+     <lastmod>2017-08-08</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
     
 
 </urlset>

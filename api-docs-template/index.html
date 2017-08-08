@@ -11,7 +11,7 @@
         <meta name="description" content="Utils and Rest Stuff">
       
       
-        <link rel="canonical" href="http://9ci.github.io/gorm-rest-api/swagger-openapi/">
+        <link rel="canonical" href="http://9ci.github.io/gorm-rest-api/api-docs-template/">
       
       
         <meta name="author" content="Joshua Burnett">
@@ -23,7 +23,7 @@
     
     
       
-        <title>OpenAPI - Swagger - Gorm Rest Api</title>
+        <title>Docs Template - Gorm Rest Api</title>
       
     
     
@@ -105,7 +105,7 @@
             
               
             
-            OpenAPI - Swagger
+            Docs Template
           
         </span>
       </div>
@@ -235,18 +235,6 @@
       
       
 
-
-  <li class="md-nav__item">
-    <a href="../api-docs-template/" title="Docs Template" class="md-nav__link">
-      Docs Template
-    </a>
-  </li>
-
-    
-      
-      
-      
-
   
 
 
@@ -254,45 +242,62 @@
     
     <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
     
-      
-    
     
       <label class="md-nav__link md-nav__link--active" for="toc">
-        OpenAPI - Swagger
+        Docs Template
       </label>
     
-    <a href="./" title="OpenAPI - Swagger" class="md-nav__link md-nav__link--active">
-      OpenAPI - Swagger
+    <a href="./" title="Docs Template" class="md-nav__link md-nav__link--active">
+      Docs Template
     </a>
     
       
 <nav class="md-nav md-nav--secondary">
   
   
-    
-  
   
     <label class="md-nav__title" for="toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#goals" title="Goals" class="md-nav__link">
-    Goals
+  <a href="#reference" title="Reference" class="md-nav__link">
+    Reference
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentication" title="Authentication" class="md-nav__link">
+    Authentication
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schema" title="Schema" class="md-nav__link">
+    Schema
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#json-schema-docs-specs-and-examples" title="json-schema docs, specs and examples" class="md-nav__link">
-    json-schema docs, specs and examples
+  <a href="#http-verbs" title="HTTP Verbs" class="md-nav__link">
+    HTTP Verbs
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#other-articles-tutorials" title="Other Articles &amp; Tutorials" class="md-nav__link">
-    Other Articles &amp; Tutorials
+  <a href="#endpoints-and-actions" title="ENDPOINTS AND ACTIONS" class="md-nav__link">
+    ENDPOINTS AND ACTIONS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idempotent-requests" title="Idempotent Requests" class="md-nav__link">
+    Idempotent Requests
   </a>
   
 </li>
@@ -303,57 +308,50 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#swagger" title="Swagger" class="md-nav__link">
-    Swagger
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#doc-engines" title="Doc Engines" class="md-nav__link">
-    Doc Engines
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#other-resources" title="Other Resources" class="md-nav__link">
-    Other Resources
+  <a href="#responses" title="responses" class="md-nav__link">
+    responses
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#vuejs" title="VueJs" class="md-nav__link">
-    VueJs
+  <a href="#success-status-codes" title="Success Status Codes" class="md-nav__link">
+    Success Status Codes
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#examples" title="Examples" class="md-nav__link">
-    Examples
+  <a href="#response-body" title="Response Body." class="md-nav__link">
+    Response Body.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pagination" title="Pagination" class="md-nav__link">
+    Pagination
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#errors" title="Errors" class="md-nav__link">
+    Errors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-errors-422" title="Validation Errors 422" class="md-nav__link">
+    Validation Errors 422
   </a>
   
 </li>
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#javadoc-to-markdown" title="javadoc to markdown" class="md-nav__link">
-    javadoc to markdown
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#using-javadocs-or-annotations" title="Using javadocs or annotations" class="md-nav__link">
-    Using javadocs or annotations
-  </a>
   
 </li>
       
@@ -363,6 +361,18 @@
   
 </nav>
     
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../swagger-openapi/" title="OpenAPI - Swagger" class="md-nav__link">
+      OpenAPI - Swagger
+    </a>
   </li>
 
     
@@ -428,30 +438,49 @@
 <nav class="md-nav md-nav--secondary">
   
   
-    
-  
   
     <label class="md-nav__title" for="toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#goals" title="Goals" class="md-nav__link">
-    Goals
+  <a href="#reference" title="Reference" class="md-nav__link">
+    Reference
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentication" title="Authentication" class="md-nav__link">
+    Authentication
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schema" title="Schema" class="md-nav__link">
+    Schema
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#json-schema-docs-specs-and-examples" title="json-schema docs, specs and examples" class="md-nav__link">
-    json-schema docs, specs and examples
+  <a href="#http-verbs" title="HTTP Verbs" class="md-nav__link">
+    HTTP Verbs
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#other-articles-tutorials" title="Other Articles &amp; Tutorials" class="md-nav__link">
-    Other Articles &amp; Tutorials
+  <a href="#endpoints-and-actions" title="ENDPOINTS AND ACTIONS" class="md-nav__link">
+    ENDPOINTS AND ACTIONS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idempotent-requests" title="Idempotent Requests" class="md-nav__link">
+    Idempotent Requests
   </a>
   
 </li>
@@ -462,57 +491,50 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#swagger" title="Swagger" class="md-nav__link">
-    Swagger
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#doc-engines" title="Doc Engines" class="md-nav__link">
-    Doc Engines
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#other-resources" title="Other Resources" class="md-nav__link">
-    Other Resources
+  <a href="#responses" title="responses" class="md-nav__link">
+    responses
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#vuejs" title="VueJs" class="md-nav__link">
-    VueJs
+  <a href="#success-status-codes" title="Success Status Codes" class="md-nav__link">
+    Success Status Codes
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#examples" title="Examples" class="md-nav__link">
-    Examples
+  <a href="#response-body" title="Response Body." class="md-nav__link">
+    Response Body.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pagination" title="Pagination" class="md-nav__link">
+    Pagination
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#errors" title="Errors" class="md-nav__link">
+    Errors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-errors-422" title="Validation Errors 422" class="md-nav__link">
+    Validation Errors 422
   </a>
   
 </li>
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#javadoc-to-markdown" title="javadoc to markdown" class="md-nav__link">
-    javadoc to markdown
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#using-javadocs-or-annotations" title="Using javadocs or annotations" class="md-nav__link">
-    Using javadocs or annotations
-  </a>
   
 </li>
       
@@ -530,65 +552,248 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/9ci/gorm-rest-api/edit/master/docs/swagger-openapi.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
+                  <a href="https://github.com/9ci/gorm-rest-api/edit/master/docs/api-docs-template.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
                 
                 
-                <h1 id="openapi-specification-oas">OpenAPI Specification (OAS)<a class="headerlink" href="#openapi-specification-oas" title="Permanent link">&para;</a></h1>
-<blockquote>
-<p>The <a href="https://github.com/OAI/OpenAPI-Specification">OpenAPI</a> Specification (OAS) defines a standard, language-agnostic interface to RESTful APIs which allows both humans and computers to discover and understand the capabilities of the service without access to source code, documentation, or through network traffic inspection.</p>
-</blockquote>
-<p><a href="https://github.com/OAI/OpenAPI-Specification">OAS</a> formerly known as <a href="https://swagger.io/announcing-openapi-3-0/">Swagger</a> and they donated it to the Linux Foundation to become OpenAPI (Swagger is a better name) . Swagger was version 2.0 and current version of <a href="https://github.com/OAI/OpenAPI-Specification">OAS</a> is 3.0. </p>
-<p>OAS is a super set of <a href="">json-schema</a>. In Grails or Spring, OAS describes both the controllers and actions as well the domains. Its uses <a href="">json-schema</a>, particularly the validation spec to describe the domains. </p>
-<blockquote>
-<p><img alt="📝" class="gemoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4dd.png" title=":memo:" /> See <a href="http://editor.swagger.io/#/">here for an example</a> of the Swagger 2.0 spec in action.</p>
-</blockquote>
-<h2 id="goals">Goals<a class="headerlink" href="#goals" title="Permanent link">&para;</a></h2>
-<p>There are 2 primary goals of getting OAS and json-schema setup for our Grails Gorm domains</p>
-<ol>
-<li>Enable automatic generation of forms with something like <a href="http://schemaform.io/">Schema Form</a></li>
-<li>Autogenerate docs like some of the examples links below</li>
-</ol>
-<h3 id="json-schema-docs-specs-and-examples">json-schema docs, specs and examples<a class="headerlink" href="#json-schema-docs-specs-and-examples" title="Permanent link">&para;</a></h3>
-<blockquote>
-<p><img alt="🔖" class="gemoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f516.png" title=":bookmark:" /> </p>
+                  <h1>Docs Template</h1>
+                
+                <p>This can be used as a template to start a good intro to a products API docs</p>
+<h2 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h2>
+<p>The API is organized around REST. The API has predictable, resource-oriented URLs, and uses HTTP response codes to indicate API errors. We use built-in HTTP features, like HTTP authentication and HTTP verbs, which are understood by off-the-shelf HTTP clients. We support cross-origin resource sharing, allowing you to interact securely with our API from a client-side web application (though you should never expose your secret API key in any public website's client-side code). JSON is returned by all API responses, including errors.
+To make an API as explorable as possible, users can have test mode and live mode API keys. There is no "switch" for changing between modes, just use the appropriate key to perform a live or test transaction. Requests made with test mode credentials never hit production</p>
+<p>An operation is a unit of a REST API that you can call. An operation comprises an HTTP verb and a URL path that is subordinate to the context root of the API. By configuring the operation, you define how the API is exposed to your developers.</p>
+<h2 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h2>
+<p>TODO</p>
+<h2 id="schema">Schema<a class="headerlink" href="#schema" title="Permanent link">&para;</a></h2>
+<h3 id="http-verbs">HTTP Verbs<a class="headerlink" href="#http-verbs" title="Permanent link">&para;</a></h3>
+<p>The URLs are expected to following normal REST conventions.</p>
+<table>
+<thead>
+<tr>
+<th align="center">HTTP Method</th>
+<th>Ctrl Action</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">GET</td>
+<td>index</td>
+<td align="left">Read a resource or list of resources</td>
+</tr>
+<tr>
+<td align="center">POST</td>
+<td>update</td>
+<td align="left">Create a new resource (when the key is not known a-priori) See note.</td>
+</tr>
+<tr>
+<td align="center">PUT</td>
+<td>save</td>
+<td align="left">Update an existing resource or create one if the key is pre-defined</td>
+</tr>
+<tr>
+<td align="center">DELETE</td>
+<td>Remove</td>
+<td align="left">Remove a resource</td>
+</tr>
+</tbody>
+</table>
+<h3 id="endpoints-and-actions">ENDPOINTS AND ACTIONS<a class="headerlink" href="#endpoints-and-actions" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Action</th>
+<th>HTTP Verbs</th>
+<th>Returns</th>
+<th>code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/thing</td>
+<td>list(params)</td>
+<td>GET</td>
+<td>Array - or a paginated array of things</td>
+<td>200</td>
+</tr>
+<tr>
+<td>/thing/123</td>
+<td>show(id)</td>
+<td>GET</td>
+<td>Object - <br>  the thing corresponding to the id param</td>
+<td>200</td>
+</tr>
+<tr>
+<td>/thing</td>
+<td>insert(body)</td>
+<td>POST</td>
+<td>Object - <br> Inserts a new thing and returns it</td>
+<td>201</td>
+</tr>
+<tr>
+<td>/thing/123</td>
+<td>update(id, body)</td>
+<td>PUT</td>
+<td>Object - <br>  the thing corresponding to the id param</td>
+<td>200</td>
+</tr>
+<tr>
+<td>/thing/123</td>
+<td>delete(id)</td>
+<td>DELETE</td>
+<td>nothing <br>  Deletes the thing corresponding to the id param</td>
+<td>204</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>PATCH</td>
+<td>TODO</td>
+<td>200</td>
+</tr>
+</tbody>
+</table>
+<h3 id="idempotent-requests">Idempotent Requests<a class="headerlink" href="#idempotent-requests" title="Permanent link">&para;</a></h3>
+<p>The API supports <a href="https://en.wikipedia.org/wiki/Idempotence">idempotency</a> for safely retrying requests without accidentally performing the same operation twice. For example, if a request to create a doodad fails due to a network connection error, you can retry the request with the same idempotency key to guarantee that only a single charge is created.
+GET and DELETE requests are idempotent by definition, meaning that the same backend work will occur no matter how many times the same request is issued. You shouldn't send an idempotency key with these verbs because it will have no effect.
+To perform an idempotent request, provide an additional <code>Idempotency-Key: &lt;key&gt;</code> header to the request.</p>
+<h2 id="responses">responses<a class="headerlink" href="#responses" title="Permanent link">&para;</a></h2>
+<h3 id="success-status-codes">Success Status Codes<a class="headerlink" href="#success-status-codes" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200 - OK</td>
+<td>Everything worked as expected. default</td>
+</tr>
+<tr>
+<td>201 - CREATED</td>
+<td>Resource/instance was created. returned from <code>save</code> action</td>
+</tr>
+<tr>
+<td>204 - NO_CONTENT</td>
+<td>response code on successful DELETE request</td>
+</tr>
+<tr>
+<td>404 - NOT_FOUND</td>
+<td>The requested resource doesn't exist.</td>
+</tr>
+<tr>
+<td>422</td>
+<td>Validation errors.</td>
+</tr>
+<tr>
+<td>405 - METHOD_NOT_ALLOWED</td>
+<td>If method (GET,POST,etc..) is not setup in <code>static allowedMethods</code> for action or resource is read only</td>
+</tr>
+<tr>
+<td>406 - NOT_ACCEPTABLE</td>
+<td>Accept header requests a response in an unsupported format. not configed in mime-types. RestResponder uses this</td>
+</tr>
+</tbody>
+</table>
+<h3 id="response-body">Response Body.<a class="headerlink" href="#response-body" title="Permanent link">&para;</a></h3>
+<p>Any response body will be one of the following:</p>
 <ul>
-<li><a href="http://json-schema.org/">json-schema</a></li>
-<li><a href="http://json-schema.org/example1.html">json-schema example</a></li>
-<li><a href="http://json-schema.org/latest/json-schema-core.html">json-schema Spec</a></li>
-<li><a href="http://json-schema.org/latest/json-schema-validation.html">json-schema Validation Spec</a></li>
-<li><a href="http://json-schema.org/examples.html">Examples</a> </li>
-<li>spacetelescope has a <a href="https://spacetelescope.github.io/understanding-json-schema/">Decent guide</a></li>
-<li>Another <a href="http://developers.ros.gov.uk/schema/common/index.html">example</a> of what we are after</li>
+<li>A representation of a resource</li>
+<li>An array of representations of a resource (either a JSON array, or list representation in xml)</li>
+<li>an empty body</li>
 </ul>
-</blockquote>
-<h3 id="other-articles-tutorials">Other Articles &amp; Tutorials<a class="headerlink" href="#other-articles-tutorials" title="Permanent link">&para;</a></h3>
-<p><a href="https://brandur.org/elegant-apis">https://brandur.org/elegant-apis</a>
-<a href="https://blog.cloudflare.com/cloudflares-json-powered-documentation-generator/">https://blog.cloudflare.com/cloudflares-json-powered-documentation-generator/</a></p>
-<h2 id="swagger">Swagger<a class="headerlink" href="#swagger" title="Permanent link">&para;</a></h2>
-<p>Swagger is a superset of json-schema. See <a href="http://editor.swagger.io/#/">http://editor.swagger.io/#/</a> for an example
-And the Swagger site for plenty of examples</p>
-<h2 id="doc-engines">Doc Engines<a class="headerlink" href="#doc-engines" title="Permanent link">&para;</a></h2>
-<p>If we have our API defined in Swagger and/or json-schema or yml then we can use something like 
-<a href="https://github.com/mermade/widdershins">https://github.com/mermade/widdershins</a> to generate a slate based doc site
-See <a href="http://mikeralphson.github.io/openapi/2016/12/19/oa2s-comparison">http://mikeralphson.github.io/openapi/2016/12/19/oa2s-comparison</a> 
-Example site <a href="https://mermade.github.io/shins/#swagger-petstore-v1-0-0">https://mermade.github.io/shins/#swagger-petstore-v1-0-0</a> </p>
-<p>As mentioned in widdershins if we are using a message queue then this is worth looking at for </p>
-<h2 id="other-resources">Other Resources<a class="headerlink" href="#other-resources" title="Permanent link">&para;</a></h2>
-<h3 id="vuejs">VueJs<a class="headerlink" href="#vuejs" title="Permanent link">&para;</a></h3>
-<p><a href="https://github.com/koumoul-dev/vue-openapi">https://github.com/koumoul-dev/vue-openapi</a>
-<a href="https://github.com/koumoul-dev/openapi-viewer">https://github.com/koumoul-dev/openapi-viewer</a></p>
-<h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h3>
-<p><a href="http://swapi.co/">http://swapi.co/</a>
-<a href="https://projects.spring.io/spring-restdocs/">https://projects.spring.io/spring-restdocs/</a></p>
-<p>Java version of schema validator
-<a href="https://github.com/java-json-tools/json-schema-validator">https://github.com/java-json-tools/json-schema-validator</a></p>
-<h2 id="javadoc-to-markdown">javadoc to markdown<a class="headerlink" href="#javadoc-to-markdown" title="Permanent link">&para;</a></h2>
-<p><a href="https://delight-im.github.io/Javadoc-to-Markdown/">https://delight-im.github.io/Javadoc-to-Markdown/</a></p>
-<h2 id="using-javadocs-or-annotations">Using javadocs or annotations<a class="headerlink" href="#using-javadocs-or-annotations" title="Permanent link">&para;</a></h2>
-<p>These are some possibilities to generate swagger or docs from javadocs ideally
-<a href="https://wiki.onosproject.org/display/ONOS/Generating+Swagger+documentation+for+the+REST+API">https://wiki.onosproject.org/display/ONOS/Generating+Swagger+documentation+for+the+REST+API</a></p>
-<p>This provides a pretty good overview of 4 options. Swagger(spring fox), Spring REST Docs, RAML, ApiDocJS
-<a href="https://opencredo.com/rest-api-tooling-review/">https://opencredo.com/rest-api-tooling-review/</a> and Spring Fox looks promising <a href="http://springfox.github.io/springfox/docs/current/">http://springfox.github.io/springfox/docs/current/</a> there seems to be a version for Grails too, <a href="https://github.com/springfox/springfox-grails-integration">https://github.com/springfox/springfox-grails-integration</a></p>
+<p>Any 'envelope' information is conveyed in headers.</p>
+<h3 id="pagination">Pagination<a class="headerlink" href="#pagination" title="Permanent link">&para;</a></h3>
+<p>Because large data sets are possible, paging is used for all GET index actions.
+The default page size is set to 100. 9ci will return four response headers along with the result set.</p>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X-Pagination-Limit</td>
+<td>The per page size limit. Defaults to 100</td>
+</tr>
+<tr>
+<td>X-Pagination-Current-Page</td>
+<td>The current page. Defaults to 1.</td>
+</tr>
+<tr>
+<td>X-Pagination-Total-Pages</td>
+<td>The total number of pages in the result list.</td>
+</tr>
+<tr>
+<td>X-Pagination-Total-Count</td>
+<td>The total number of items across all pages.</td>
+</tr>
+</tbody>
+</table>
+<p>To retrieve data for a specific page, simply specify the page query parameter <code>/doodad?page=5</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Query parameters</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>page</td>
+<td>The page number to show</td>
+</tr>
+<tr>
+<td>limit or max</td>
+<td>The number of items in the result list to show per page</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>The item number to start from (zero based) in the result list. Don't use both this and page</td>
+</tr>
+</tbody>
+</table>
+<p>Pages start at 1 of course. Any value less than 1 will default to the first page while any value greater than Pagination-Total-Pages will simply return an empty result set.</p>
+<h3 id="errors">Errors<a class="headerlink" href="#errors" title="Permanent link">&para;</a></h3>
+<p>Errors come in the form of HTTP response codes to indicate the success or failure of an API request. as listed as well as validation errors</p>
+<p>Not all errors map cleanly onto HTTP response codes, however. When a request is valid but does not complete successfully (e.g., a card is declined), we return a 422 error code.</p>
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>422 - UNPROCESSABLE_ENTITY</td>
+<td>Validation errors.</td>
+</tr>
+<tr>
+<td>404 - NOT_FOUND</td>
+<td>The requested resource doesn't exist.</td>
+</tr>
+<tr>
+<td>405 - METHOD_NOT_ALLOWED</td>
+<td>If method (GET,POST,etc..) is not setup in <code>static allowedMethods</code> for action or resource is read only</td>
+</tr>
+<tr>
+<td>406 - NOT_ACCEPTABLE</td>
+<td>Accept header requests a response in an unsupported format. not configed in mime-types. RestResponder uses this</td>
+</tr>
+</tbody>
+</table>
+<h3 id="validation-errors-422">Validation Errors 422<a class="headerlink" href="#validation-errors-422" title="Permanent link">&para;</a></h3>
+<p>If you try to create or update a record with invalid data, you'll receive a 422 response code and the operation will fail.</p>
+<p>You'll also receive an errors object in the response body with the resulting error messages. This object will have one key for each field with errors.</p>
+<p>Each field will have an array of human readable error messages, as show below:
+<div class="codehilite"><pre><span></span>TODO
+</pre></div></p>
                 
                   
                 
@@ -607,7 +812,7 @@ Example site <a href="https://mermade.github.io/shins/#swagger-petstore-v1-0-0">
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../api-docs-template/" title="Docs Template" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../design-principles/" title="Design Principles" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -616,19 +821,19 @@ Example site <a href="https://mermade.github.io/shins/#swagger-petstore-v1-0-0">
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Docs Template
+                Design Principles
               </span>
             </div>
           </a>
         
         
-          <a href="../tutorial/stock/" title="Grails OOB(out of the box)" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../swagger-openapi/" title="OpenAPI - Swagger" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Grails OOB(out of the box)
+                OpenAPI - Swagger
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

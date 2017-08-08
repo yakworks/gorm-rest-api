@@ -1,0 +1,666 @@
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <meta name="description" content="Utils and Rest Stuff">
+      
+      
+        <link rel="canonical" href="http://9ci.github.io/gorm-rest-api/design-principles/">
+      
+      
+        <meta name="author" content="Joshua Burnett">
+      
+      
+        <link rel="shortcut icon" href="../assets/images/favicon.png">
+      
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-components-1.7.6">
+    
+    
+      
+        <title>Design Principles - Gorm Rest Api</title>
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.js"></script>
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application.palette.css">
+      
+      <link rel="stylesheet" href="../assets/stylesheets/material-components-web.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/mdc-web.css">
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    
+  </head>
+  
+  
+  
+  
+    <body data-md-color-primary="blue-grey" data-md-color-accent="indigo">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <a href="http://9ci.github.io/gorm-rest-api/" title="Gorm Rest Api" class="md-icon md-icon--home md-header-nav__button">
+          </a>
+        
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+            
+              
+            
+            Design Principles
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" accesskey="s" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">close</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result" data-md-lang-search="">
+          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/9ci/gorm-rest-api" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      9ci/gorm-rest-api
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    
+      <i class="md-icon md-icon--home md-nav__button"></i>
+    
+    Gorm Rest Api
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/9ci/gorm-rest-api" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      9ci/gorm-rest-api
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Design Principles
+      </label>
+    
+    <a href="./" title="Design Principles" class="md-nav__link md-nav__link--active">
+      Design Principles
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#api-as-a-product" title="API as a Product" class="md-nav__link">
+    API as a Product
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-design-principles" title="API Design Principles" class="md-nav__link">
+    API Design Principles
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security" title="Security" class="md-nav__link">
+    Security
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#json-guidelines" title="JSON Guidelines" class="md-nav__link">
+    JSON Guidelines
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-names" title="Property Names" class="md-nav__link">
+    Property Names
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#naming" title="Naming" class="md-nav__link">
+    Naming
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../api-docs-template/" title="Docs Template" class="md-nav__link">
+      Docs Template
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../swagger-openapi/" title="OpenAPI - Swagger" class="md-nav__link">
+      OpenAPI - Swagger
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Tutorials
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Tutorials
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tutorial/stock/" title="Grails OOB(out of the box)" class="md-nav__link">
+      Grails OOB(out of the box)
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../glossary/" title="Glossary" class="md-nav__link">
+      Glossary
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#api-as-a-product" title="API as a Product" class="md-nav__link">
+    API as a Product
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-design-principles" title="API Design Principles" class="md-nav__link">
+    API Design Principles
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security" title="Security" class="md-nav__link">
+    Security
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#json-guidelines" title="JSON Guidelines" class="md-nav__link">
+    JSON Guidelines
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-names" title="Property Names" class="md-nav__link">
+    Property Names
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#naming" title="Naming" class="md-nav__link">
+    Naming
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div id="article-content" class="md-content"> 
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/9ci/gorm-rest-api/edit/master/docs/design-principles.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
+                
+                
+                  <h1>Design Principles</h1>
+                
+                <p>see:
+<a href="https://zalando.github.io/restful-api-guidelines/tooling/Tooling.html">https://zalando.github.io/restful-api-guidelines/tooling/Tooling.html</a></p>
+<h2 id="api-as-a-product">API as a Product<a class="headerlink" href="#api-as-a-product" title="Permanent link">&para;</a></h2>
+<p>We are transforming to a platform comprising a rich set of products following a Software as a Platform (SaaS) model for our business partners. We want to deliver products to our customers which can be consumed like a service.</p>
+<p>Platform products provide their functionality via (public) APIs; hence, the design of our APIs should be based on the API as a Product principle:</p>
+<ul>
+<li>Treat your API as product and understand the needs of its customers</li>
+<li>Take ownership and advocate for the customer and continuous improvement</li>
+<li>Emphasize easy understanding, discovery and usage of APIs; design APIs irresistible for client engineers</li>
+<li>Actively improve and maintain API consistency over the long term</li>
+<li>Make use of customer feedback and provide service level support</li>
+<li>RESTful API as a Product makes the difference between enterprise integration business and agile, innovative product service business built on a platform of APIs.</li>
+<li>are easy to understand and learn</li>
+<li>are general and abstracted from specific implementation and use cases</li>
+<li>have a common look and feel</li>
+<li>follow a consistent RESTful style and syntax</li>
+</ul>
+<p>Based on your concrete customer use cases, you should carefully check the trade-offs of API design variants and avoid short-term server side implementation optimizations at the expense of unnecessary client side obligations and have a high attention on API quality and client developer experience.</p>
+<p>API as a Product is closely related to our API First principle (see next chapter) which is more focussed on how we engineer high quality APIs.</p>
+<h2 id="api-design-principles">API Design Principles<a class="headerlink" href="#api-design-principles" title="Permanent link">&para;</a></h2>
+<p>REST is centered around business (data) entities exposed as resources that are identified via URIs and can be manipulated via standardized CRUD-like methods using different representations, self-descriptive messages and hypermedia. RESTful APIs tend to be less use-case specific and comes with less rigid client / server coupling and are more suitable as a platform interface being open for diverse client applications.</p>
+<ul>
+<li>We prefer REST-based APIs with JSON payloads</li>
+<li>We prefer systems to be truly RESTful</li>
+<li>We apply the RESTful web service principles to all kind of application components, whether they provide functionality via the Internet or via the intranet as larger application elements.</li>
+<li>We strive to build interoperating distributed systems that different teams can evolve in parallel.</li>
+</ul>
+<p>An important principle for (RESTful) API design and usage is Postel's Law, aka the Robustness Principle</p>
+<ul>
+<li>Be liberal in what you accept, be conservative in what you send</li>
+</ul>
+<p>Readings: Read the following to gain additional insight on the RESTful service architecture paradigm and general RESTful API design style:</p>
+<h2 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h2>
+<p>TODO</p>
+<h2 id="json-guidelines">JSON Guidelines<a class="headerlink" href="#json-guidelines" title="Permanent link">&para;</a></h2>
+<h2 id="property-names">Property Names<a class="headerlink" href="#property-names" title="Permanent link">&para;</a></h2>
+<ul>
+<li>be consistent</li>
+<li>property names must be camelCase</li>
+<li>Property names must be an ASCII subset. The first character must be a letter, an underscore or a dollar sign, and subsequent characters can be a letter, an underscore, hyphen or a number.</li>
+<li>Array and collection names should be pluralized</li>
+<li>Use Consistent Property Values</li>
+<li>Boolean property values must not be null and have a default, which means they are always shown but never required</li>
+<li>
+<p>Null values should have their fields removed
+  Swagger/OpenAPI, which is in common use, doesn't support null field values (it does allow omitting that field completely if it is not marked as required). However that doesn't prevent clients and servers sending and receiving those fields with null values. Also, in some cases null may be a meaningful value - for example, JSON Merge Patch RFC 7382) using null to indicate property deletion.</p>
+</li>
+<li>
+<p>Empty array values should not be null, they can be represented as the the empty list, [].</p>
+</li>
+<li>Enumerations should be represented as Strings</li>
+<li>Date and date-time property values should conform to RFC 3399</li>
+<li>for "date" use strings matching date-fullyear "-" date-month "-" date-mday, for example: 2015-05-28</li>
+<li>for "date-time" use strings matching full-date "T" full-time, for example 2015-05-28T14:07:17Z</li>
+<li>
+<p>A zone offset may be used (both, in request and responses) -- this is simply defined by the standards. However, we encourage restricting dates to UTC and without offsets. For example 2015-05-28T14:07:17Z rather than 2015-05-28T14:07:17+00:00. From experience we have learned that zone offsets are not easy to understand and often not correctly handled. Note also that zone offsets are different from local times that might be including daylight saving time. Localization of dates should be done by the services that provide user interfaces, if required.</p>
+</li>
+<li>
+<p>When it comes to storage, all dates should be consistently stored in UTC without a zone offset. Localization should be done locally by the services that provide user interfaces, if required.</p>
+</li>
+<li>
+<p>Schema based JSON properties that are by design durations and intervals could be strings formatted as recommended by ISO 8601 (Appendix A of RFC 3399 contains a grammar for durations).</p>
+</li>
+<li>
+<p>Standards should be used for Language, Country and Currency</p>
+</li>
+</ul>
+<p>ISO 3166-1-alpha2 country (It's "GB", not "UK",
+ISO 639-1 language code
+BCP-47 (based on ISO 639-1) for language variants
+ISO 4217 currency codes</p>
+<h2 id="naming">Naming<a class="headerlink" href="#naming" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Use lowercase separate words with hyphens for URI Path Segments</li>
+</ul>
+<p>Example:</p>
+<p>/shipment-orders/{shipment-order-id}
+This applies to concrete path segments and not the names of path parameters. For example {shipment_order_id} would be ok as a path parameter.</p>
+<p>Must: Use snake_case (never camelCase) for Query Parameters</p>
+<p>Examples:</p>
+<p>customer_number, order_id, billing_address
+Must: Use Hyphenated HTTP Headers</p>
+<p>Should: Prefer Hyphenated-Pascal-Case for HTTP header Fields</p>
+<p>This is for consistency in your documentation (most other headers follow this convention). Avoid camelCase (without hyphens). Exceptions are common abbreviations like “ID.”</p>
+<p>Examples:</p>
+<p>Accept-Encoding
+Apply-To-Redirect-Ref
+Disposition-Notification-Options
+Original-Message-ID
+See also: HTTP Headers are case-insensitive (RFC 7230).</p>
+<p>May: Use Standardized Headers</p>
+<p>Use this list and mention its support in your OpenAPI definition.</p>
+<p>Must: Pluralize Resource Names</p>
+<p>Usually, a collection of resource instances is provided (at least API should be ready here). The special case of a resource singleton is a collection with cardinality 1.</p>
+<p>May: Use /api as first Path Segment</p>
+<p>In most cases, all resources provided by a service are part of the public API, and therefore should be made available under the root “/” base path. If the service should also support non-public, internal APIs — for specific operational support functions, for example — add “/api” as base path to clearly separate public and non-public API resources.</p>
+<p>Must: Avoid Trailing Slashes</p>
+<p>The trailing slash must not have specific semantics. Resource paths must deliver the same results whether they have the trailing slash or not.</p>
+<p>May: Use Conventional Query Strings</p>
+<p>If you provide query support for sorting, pagination, filtering functions or other actions, use the following standardized naming conventions:</p>
+<p>q — default query parameter (e.g. used by browser tab completion); should have an entity specific alias, like sku
+limit — to restrict the number of entries. See Pagination section below. Hint: You can use size as an alternate query string.
+cursor — key-based page start. See Pagination section below.
+offset — numeric offset page start. See Pagination section below. Hint: In combination with limit, you can use page as an alternative to offset.
+sort — comma-separated list of fields to sort. To indicate sorting direction, fields my prefixed with + (ascending) or - (descending, default), e.g. /sales-orders?sort=+id
+fields — to retrieve a subset of fields. See Support Filtering of Resource Fields below.
+embed — to expand embedded entities (ie.: inside of an article entity, expand silhouette code into the silhouette object). Implementing “expand” correctly is difficult, so do it with care. See Embedding resources for more details.</p>
+<p><a href="http://blog.restcase.com/5-basic-rest-api-design-guidelines/">sourced from  here</a></p>
+<blockquote>
+<p>Names and Verbs
+To describe your resources, use concrete names and not action verbs.
+For decades, computer scientists used action verbs in order to expose services in an RPC way, for instance:
+getUser(1234) createUser(user) deleteAddress(1234)</p>
+<p>By contrast, the RESTful approach is to use:
+GET /users/1234 POST /users (with JSON describing a user in the body) DELETE /addresses/1234</p>
+<p>URI case
+When it comes to naming resources in a program, there are 3 main types of case conventions: CamelCase, snake_case, and spinal-case. They are just a way of naming the resources to resemble natural language, while avoiding spaces, apostrophes and other exotic characters. This habit is universal in programming languages where only a finite set of characters is authorized for names.</p>
+<p>CamelCase</p>
+<p>CamelCase has been popularized by the Java language. It intends to emphasize the beginning of each word by making the first letter uppercase. E.g. camelCase, currentUser, etc. Aside from debates about its readability, its main drawback is to be ineffective in contexts which are not case sensitive.</p>
+<p>snake_case</p>
+<p>snakecase has been widely used for years by C programmers, and more recently in Ruby. Words are separated by underscores “”, thus letting a compiler or an interpreter understand it as a single symbol, but also allowing readers to separate words fluently. However, its popularity has decreased due to a lot of abuses in C programs with over-extended or too short names. Unlike camel case, there are very few contexts where snake case is not usable. Examples: snakecase, currentuser, etc.</p>
+<p>spinal-case</p>
+<p>spinal-case is a variant of snake case which uses hyphens “-” to separate words. The pros and cons are quite similar to those of snake case, with the exception that some languages do not allow hyphens in symbol names (for variable, class, or function naming). You may find it referred to as lisp-case because it is the usual way to name variables and functions in lisp dialects. It is also the traditional way of naming folders and files in UNIX and Linux systems. Examples: spinal-case, current-user, etc.</p>
+<p>According to RFC3986, URLs are “case sensitive” (except for the scheme and the host).
+In practice, though, a sensitive case may create dysfunctions with APIs hosted on a Windows system.</p>
+</blockquote>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href=".." title="Overview" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Overview
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../api-docs-template/" title="Docs Template" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Docs Template
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2017 9ci Inc
+          </div>
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.js"></script>
+      
+      
+      <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+      <script>window.mdc.autoInit()</script>
+      <script src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay.min.js"></script>
+      <script src="https://r.office.microsoft.com/r/rlidExcelWLJS?v=1&kip=1"></script>
+      <script src="../assets/javascripts/jq-mdc-web.js"></script>
+      <script>app.initialize({url:{base:".."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>
