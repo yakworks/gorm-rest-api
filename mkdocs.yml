@@ -8,9 +8,13 @@ copyright: 'Copyright &copy; 2017 9ci Inc'
 # Page tree
 pages:
   - Overview: index.md
-  - Design Principles: design-principles.md
-  - Docs Template: api-docs-template.md
-  - OpenAPI - Swagger: swagger-openapi.md
+  - OpenAPI/Schema Notes: swagger-openapi.md
+  - Design Principles:
+    - Guidelines: design-principles/guidelines.md
+    - Object, Naming, Props: design-principles/object-props.md
+    - Http Method Mapping: design-principles/http-method-mapping.md
+    - OpenAPI / Schema: design-principles/schema.md
+  - Sample API Docs: api-docs-template.md
   - Tutorials:
     - Grails OOB(out of the box): tutorial/stock.md
   - Glossary: glossary.md #John
