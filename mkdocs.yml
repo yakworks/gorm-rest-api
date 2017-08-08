@@ -8,10 +8,12 @@ copyright: 'Copyright &copy; 2017 9ci Inc'
 # Page tree
 pages:
   - Overview: index.md
+  - Design Principles: design-principles.md
+  - Docs Template: api-docs-template.md
   - OpenAPI - Swagger: swagger-openapi.md
-  - Glossary: glossary.md #John
   - Tutorials:
     - Grails OOB(out of the box): tutorial/stock.md
+  - Glossary: glossary.md #John
   # - Blueprints & Stories:
   #   - Workflow: user-requirements/workflow.md
   #   - RCM UI: user-requirements/rcm-ui.md

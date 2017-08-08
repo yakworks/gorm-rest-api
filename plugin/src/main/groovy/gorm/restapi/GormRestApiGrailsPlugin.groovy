@@ -46,12 +46,12 @@ Brief summary/description of the plugin.
 
         jsonSchemaGenerator(JsonSchemaGenerator){ bean ->
             // Autowiring behaviour. The other option is 'byType'. <<autowire>>
-            bean.autowire = 'byName'
+            // bean.autowire = 'byName'
         }
 
         appInfoBuilder(AppInfoBuilder){ bean ->
             // Autowiring behaviour. The other option is 'byType'. <<autowire>>
-            bean.autowire = 'byName'
+            // bean.autowire = 'byName'
         }
     }}
 

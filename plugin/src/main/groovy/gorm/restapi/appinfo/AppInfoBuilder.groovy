@@ -23,14 +23,16 @@ import java.text.DecimalFormatSymbols
 
 import grails.util.GrailsClassUtils
 
+import javax.annotation.Resource
+
 /**
  * Misc Application Info. TODO probably move to its own plugin
  */
 //@CompileStatic
 class AppInfoBuilder {
     //HibernateMappingContext grailsDomainClassMappingContext
-    DefaultGrailsApplication grailsApplication
-    def grailsUrlMappingsHolder
+    @Resource DefaultGrailsApplication grailsApplication
+    @Resource def grailsUrlMappingsHolder
 
     List urlMappings() {
 

@@ -1,6 +1,6 @@
 # Overview
 
-This is a library and plugin to enhance [Grails] and [Gorm] to provide and expose an _opinionated_, ==well documented restful API== with intelligent out of the box defaults and minimal tweaking. It is easy to configure and customize on the fly at a client site without the need to recompile. 
+This is a library and plugin to enhance [Grails] and [Gorm] to provide and expose an _opinionated_, ==well documented restful API== with intelligent out of the box defaults and minimal tweaking. It is easy to configure and customize on the fly at a client site without the need to recompile.
 
 - The simple stuff should be simple and automatic
 - DRY : Don't repeat yourself.
@@ -18,7 +18,7 @@ Its somewhat opinionated but frames out Rest best practices.  in that it uses th
 - [ ]  Consistent documented use of HTTP status codes and headers
 - [ ]  Used [cache-headers](https://github.com/grails-plugins/cache-headers)
 - [ ]  Ability to 'query by POST' (to allow query criteria to be provided within the request body)
-- [ ]  Intelligent defaults for security plugin with OATH and JWT. 
+- [ ]  Intelligent defaults for security plugin with OATH and JWT.
 - [ ]  Tools to ease GEB functional tests with Spock
 - [ ]  Extensive regression tests
 
@@ -32,3 +32,6 @@ Its somewhat opinionated but frames out Rest best practices.  in that it uses th
   [OpenAPI]: https://github.com/OAI/OpenAPI-Specification
   [OAS]: https://github.com/OAI/OpenAPI-Specification
   [Swagger]: https://swagger.io/announcing-openapi-3-0/
+
+## refs
+https://developer.fleetio.com/docs/errors

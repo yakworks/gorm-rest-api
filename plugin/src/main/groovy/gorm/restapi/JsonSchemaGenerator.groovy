@@ -15,6 +15,10 @@ import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.orm.hibernate.cfg.HibernateMappingContext
 import org.grails.orm.hibernate.cfg.Mapping
 
+import javax.annotation.Resource
+//import javax.inject.Inject
+//import org.springframework.bean.factory.Autowired
+
 import static grails.util.GrailsClassUtils.getStaticPropertyValue
 
 /**
@@ -27,7 +31,10 @@ import static grails.util.GrailsClassUtils.getStaticPropertyValue
  */
 //@CompileStatic
 class JsonSchemaGenerator {
+
+    @Resource
     HibernateMappingContext grailsDomainClassMappingContext
+    @Resource
     DefaultGrailsApplication grailsApplication
 
     //good overview here

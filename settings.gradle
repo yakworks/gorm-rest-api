@@ -1,0 +1,4 @@
+rootProject.name = 'gorm-graphql-root'
+include 'plugin'
+include 'examples/grails-funcytown'
+findProject(':plugin').name = 'gorm-rest-api'
