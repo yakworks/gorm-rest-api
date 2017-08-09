@@ -21,8 +21,6 @@ class ProjectRestApiSpec extends RestApiFuncSpec {
 
     Map getUpdateJson() { [name: "project Update", code: "x123u"]}
 
-    String getInvalidJson() {'''{
-        "name": null
-    }'''}
+    Map getInvalidJson() { ["name": null] }
 
 }

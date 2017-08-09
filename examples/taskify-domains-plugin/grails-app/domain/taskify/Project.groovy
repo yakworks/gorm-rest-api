@@ -1,4 +1,4 @@
-package funcytown
+package taskify
 
 import grails.rest.Resource
 import groovy.transform.CompileStatic

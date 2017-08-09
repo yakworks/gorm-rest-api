@@ -1,5 +1,7 @@
 ## Resources
 
+>"A resource is anything that's important enough to be referenced as a thing in itself." Richardson and Ruby
+
 ### Must: Avoid Actions — Think About Resources
 
 REST is all about your resources, so consider the domain entities that take part in web service interaction, and aim to model your API around these using the standard HTTP methods as operation indicators. For instance, if an application has to lock articles explicitly so that only one user may edit them, create an article lock with PUT or POST instead of using a lock action.

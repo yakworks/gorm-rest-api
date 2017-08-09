@@ -1,5 +1,7 @@
 package funcytown
 
+import taskify.*
+
 class BootStrap {
     static Random rand = new Random()
 

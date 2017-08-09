@@ -1,0 +1,4 @@
+rootProject.name='taskify-domains-plugin'
+
+include ':gorm-rest-api'
+project(':gorm-rest-api').projectDir = new File('../../plugin')

@@ -1,4 +1,4 @@
-package funcytown
+package taskify
 
 class TaskFlex {
     static belongsTo = [task:Task]

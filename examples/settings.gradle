@@ -1,0 +1,8 @@
+rootProject.name = 'examples-root'
+
+include ':gorm-rest-api'
+project(':gorm-rest-api').projectDir = new File('../plugin')
+
+include 'taskify-domains-plugin'
+include 'grails-funcytown'
+//findProject(':plugin').name = 'gorm-rest-api'

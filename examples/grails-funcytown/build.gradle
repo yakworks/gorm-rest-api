@@ -62,6 +62,7 @@ dependencies {
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
 
     compile project(":gorm-rest-api")
+    compile project(":taskify-domains-plugin")
 }
 
 bootRun {

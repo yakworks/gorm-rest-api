@@ -28,11 +28,11 @@ The URLs are expected to following normal REST conventions.
 
 |  Endpoint  |      Action       | HTTP Verbs |                           Returns                            | code |
 | ---------- | ----------------- | ---------- | ------------------------------------------------------------ | ---- |
-| /thing     | list(params)      | GET        | Array - or a paginated array of things                       | 200  |
-| /thing/123 | show(id)         | GET        | Object - <br>  the thing corresponding to the id param          | 200  |
+| /thing     | list(params)      | GET        | Array - a paginated array of things                       | 200  |
+| /thing/123 | show(id)         | GET        | Object - <br>  one thing where id=123          | 200  |
 | /thing     | insert(body)      | POST       | Object - <br> Inserts a new thing and returns it                | 201  |
-| /thing/123 | update(id, body) | PUT        | Object - <br>  the thing corresponding to the id param          | 200  |
-| /thing/123 | delete(id)       | DELETE     | nothing <br>  Deletes the thing corresponding to the id param | 204  |
+| /thing/123 | update(id, body) | PUT        | Object - <br>  update and return the thing where id=123         | 200  |
+| /thing/123 | delete(id)       | DELETE     | nothing <br>  Deletes the thing where id=123 | 204  |
 |            |                   | PATCH      | TODO                                                         | 200  |
 
 

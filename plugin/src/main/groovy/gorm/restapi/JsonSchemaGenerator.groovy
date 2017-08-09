@@ -90,11 +90,19 @@ class JsonSchemaGenerator {
             if(constraints.format) jprop.format = constraints.format
             if(constraints.email) jprop.format = 'email'
             //pattern TODO
+
+            //defaults
+            String defVal = getDefaultValue(mapping,prop.name)
+            if(defVal != null) jprop.default = defVal //TODO convert to string?
+
             //required
             if(!constraints.isNullable() && constraints.editable) {
+                //TODO update this so it can use config too
                 if(prop.name in ['dateCreated','lastUpdated']){
                     jprop.readOnly = true
-                } else {
+                }
+                //if its nullable:false but has a default then its not required as it will get filled in.
+                else if(jprop.default == null) {
                     jprop.required = true
                     (map.required as List).add(prop.name)
                 }
@@ -111,8 +119,6 @@ class JsonSchemaGenerator {
             if(constraints.getMax() != null) jprop.maximum = constraints.getMax()
             if(constraints.getScale() != null) jprop.multipleOf = 1/Math.pow(10, constraints.getScale())
 
-            String defVal = getDefaultValue(mapping,prop.name)
-            if(defVal != null) jprop.default = defVal
             //def typeFormat = getJsonType(constraints)
             //map.properties[prop.pathFromRoot] = typeFormat
             map.properties[prop.name] = jprop
