@@ -4,14 +4,14 @@ import grails.rest.Resource
 
 import javax.persistence.Transient
 import java.time.LocalDate
-import gorm.restapi.RestApiController
-
+//import gorm.restapi.RestApiController
+import gorm.restapi.RestApi
 /**
  * __This is test docs__
  * A task is an activity that **needs** to be accomplished within a defined period of time or
  * by a deadline to work towards work-related goals.
  */
-@Resource(superClass = RestApiController)
+@RestApi(description = "This is a task")
 class Task {
     //ordering of contraints flow through to json-schema and the fields plugin for automatic scaffolding
     //its not required to add fields to constraints, they just need to be here if a specifc order is needed

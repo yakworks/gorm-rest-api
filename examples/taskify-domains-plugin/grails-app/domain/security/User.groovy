@@ -24,7 +24,7 @@ class User implements Serializable {
 	static constraints = {
 		username 		title: 'User Name', example:"Bob",
 						blank: false, unique: true, nullable: false
-		password 		example:"p123", blank: false, password: true, nullable: false
+		password 		example:"b4d_p455w0rd", blank: false, password: true, nullable: false
 		enabled 		description: 'Is user active', nullable: false
 		accountExpired 	description: 'Has user account expired', nullable: false
 		accountLocked 	description: 'User account has been locked', nullable: false
@@ -33,5 +33,8 @@ class User implements Serializable {
 
 	static mapping = {
 		password column: '`password`'
+		accountExpired 	defaultValue: "0"
+		accountLocked 	defaultValue: "0"
+		passwordExpired defaultValue: "0"
 	}
 }

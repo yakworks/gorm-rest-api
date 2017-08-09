@@ -1,28 +1,33 @@
 package taskify
 
-import grails.rest.Resource
+//import grails.rest.Resource
 import groovy.transform.CompileStatic
 import grails.compiler.GrailsCompileStatic
 import groovy.transform.EqualsAndHashCode
-import gorm.restapi.RestApiController
-
+//import gorm.restapi.RestApiController
+import gorm.restapi.RestApi
 import java.time.LocalDate
 
 //@EqualsAndHashCode(includes = 'code,name')
 @GrailsCompileStatic
-@Resource(superClass = RestApiController)
+//@Resource(superClass = RestApiController)
+@RestApi(description = "This is a project ")
 class Project {
 
     static constraints = {
-        code        description: "The project code",
+        code        description: "The project code", example:"client-123",
                     nullable: false, maxSize:10
-        name        description: "The project name",
+        name        description: "The project name", example:"Cool Project",
                     nullable: false, maxSize:50
         inactive    description: "is project inactivated", nullable: false
-        billable    description: "is project billable", nullable: false
-        startDate	description: "Start date of project."
-        endDate	    description: "End date of project."
-        activateDate description: "Date time project is activated"
+
+        billable    description: "does this get invoiced? If its set to true,\
+                                  tasks can be overriden to be false " ,
+                    nullable: false
+
+        startDate	description: "Start date of project.", example:"2017-01-01"
+        endDate	    description: "End date of project.", example:"2017-12-30"
+        activateDate description: "Date time project is activated", example:"2017-12-30"
     }
 
     static mapping = {

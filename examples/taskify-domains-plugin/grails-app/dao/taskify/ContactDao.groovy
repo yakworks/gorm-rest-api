@@ -1,10 +1,11 @@
-package resttutorial
+package taskify
 
-import grails.plugin.dao.GormDaoSupport
+//import grails.plugin.dao.GormDaoSupport
 import grails.transaction.Transactional
 
 @Transactional
-class ContactDao extends GormDaoSupport {
+class ContactDao {
+//extends GormDaoSupport {
 	Class domainClass = Contact
 
 	Map insert(Map params) {

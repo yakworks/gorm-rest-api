@@ -3,6 +3,21 @@ package gorm.restapi
 import grails.plugins.*
 import gorm.restapi.appinfo.AppInfoBuilder
 
+import grails.config.Settings
+import grails.core.GrailsApplication
+import grails.core.GrailsClass
+import grails.core.support.GrailsApplicationAware
+import grails.plugins.Plugin
+import grails.rest.Resource
+import grails.util.GrailsUtil
+import groovy.transform.CompileStatic
+
+import org.apache.commons.logging.Log
+import org.apache.commons.logging.LogFactory
+import org.grails.core.artefact.ControllerArtefactHandler
+import org.grails.core.artefact.DomainClassArtefactHandler
+import org.grails.plugins.web.rest.render.DefaultRendererRegistry
+
 @SuppressWarnings(['EmptyMethod'])
 class GormRestApiGrailsPlugin extends Plugin {
 
@@ -20,7 +35,9 @@ class GormRestApiGrailsPlugin extends Plugin {
     def description = '''\
 Brief summary/description of the plugin.
 '''
-    def profiles = ['web']
+    //def profiles = ['web']
+    def loadBefore = ['controllers']
+    def observe = ['domainClass']
 
     // URL to the plugin's documentation
     def documentation = "http://grails.org/plugin/gorm-rest-tools"
@@ -42,6 +59,8 @@ Brief summary/description of the plugin.
     // Online location of the plugin's browseable source code.
 //    def scm = [ url: "http://svn.codehaus.org/grails-plugins/" ]
 
+    GrailsApplication grailsApplication
+
     Closure doWithSpring() { {->
 
         jsonSchemaGenerator(JsonSchemaGenerator){ bean ->
@@ -53,7 +72,37 @@ Brief summary/description of the plugin.
             // Autowiring behaviour. The other option is 'byType'. <<autowire>>
             // bean.autowire = 'byName'
         }
+
+        def application = grailsApplication
+        GormRestApiGrailsPlugin.registryRestApiControllers(application)
+
     }}
+
+    @Override
+    void onChange(Map<String, Object> event) {
+        GormRestApiGrailsPlugin.registryRestApiControllers(grailsApplication)
+    }
+
+    @CompileStatic
+    static void registryRestApiControllers(GrailsApplication app) {
+        for(GrailsClass grailsClass in app.getArtefacts(DomainClassArtefactHandler.TYPE)) {
+            final clazz = grailsClass.clazz
+            if (clazz.getAnnotation(RestApi)) {
+                //println "${clazz.name}"
+                String controllerClassName = "${clazz.name}Controller"
+                if (!app.getArtefact(ControllerArtefactHandler.TYPE,controllerClassName)) {
+
+                    try {
+                        app.addArtefact(ControllerArtefactHandler.TYPE, app.classLoader.loadClass(controllerClassName))
+                        //println "added $controllerClassName"
+                    } catch (ClassNotFoundException cnfe) {
+
+                    }
+                }
+            }
+        }
+    }
+
 
 
 }

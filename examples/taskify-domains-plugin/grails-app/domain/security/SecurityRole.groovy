@@ -13,7 +13,8 @@ class SecurityRole implements Serializable {
 	String authority
 
 	static constraints = {
-		authority blank: false, unique: true
+		authority description: 'The role name', example:'ROLE_ADMIN',
+			blank: false, unique: true
 	}
 
 	static mapping = {
