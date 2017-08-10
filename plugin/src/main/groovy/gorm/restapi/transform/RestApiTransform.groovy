@@ -78,14 +78,14 @@ import org.springframework.beans.factory.annotation.Qualifier
 
 import gorm.restapi.*
 /**
- * The Resource transform automatically exposes a domain class as a RESTful resource. In effect the transform adds a controller to a Grails application
+ * The  transform automatically exposes a domain class as a RESTful resource. In effect the transform adds a controller to a Grails application
  * that performs CRUD operations on the domain. See the {@link Resource} annotation for more details
  *
- * @author Graeme Rocher
- * @since 2.3
  *
  * modified to use the RestApiController and get rid of the bad bits that mess with the URL mapping
+ *
  * @author Joshua Burnett
+ * @author Graeme Rocher
  *
  */
 @CompileStatic
@@ -177,64 +177,70 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
                 responseFormatsExpression.addExpression(new ConstantExpression("xml"))
             }
 
-            if (uriAttr != null || namespaceAttr != null) {
-
-                String uri = uriAttr?.getText()
+            if(namespaceAttr != null){
                 final namespace=namespaceAttr?.getText()
-                if(uri || namespace) {
-                    final urlMappingsClassNode = new ClassNode(UrlMappings).getPlainNodeReference()
-
-                    final lazyInitField = new FieldNode('lazyInit', PUBLIC | STATIC | FINAL, ClassHelper.Boolean_TYPE,newControllerClassNode, new ConstantExpression(Boolean.FALSE))
-                    newControllerClassNode.addField(lazyInitField)
-
-                    final urlMappingsField = new FieldNode('$urlMappings', PRIVATE, urlMappingsClassNode,newControllerClassNode, null)
-                    newControllerClassNode.addField(urlMappingsField)
-                    final urlMappingsSetterParam = new Parameter(urlMappingsClassNode, "um")
-                    final controllerMethodAnnotation = new AnnotationNode(new ClassNode(ControllerMethod).getPlainNodeReference())
-                    MethodNode urlMappingsSetter = new MethodNode("setUrlMappings", PUBLIC, VOID_CLASS_NODE, [urlMappingsSetterParam] as Parameter[], null, new ExpressionStatement(new BinaryExpression(new VariableExpression(urlMappingsField.name),Token.newSymbol(Types.EQUAL, 0, 0), new VariableExpression(urlMappingsSetterParam))))
-                    final autowiredAnnotation = new AnnotationNode(AUTOWIRED_CLASS_NODE)
-                    autowiredAnnotation.addMember("required", ConstantExpression.FALSE)
-
-                    final qualifierAnnotation = new AnnotationNode(new ClassNode(Qualifier).getPlainNodeReference())
-                    qualifierAnnotation.addMember("value", new ConstantExpression("grailsUrlMappingsHolder"))
-                    urlMappingsSetter.addAnnotation(autowiredAnnotation)
-                    urlMappingsSetter.addAnnotation(qualifierAnnotation)
-                    urlMappingsSetter.addAnnotation(controllerMethodAnnotation)
-                    newControllerClassNode.addMethod(urlMappingsSetter)
-                    processVariableScopes(source, newControllerClassNode, urlMappingsSetter)
-
-
-                    final methodBody = new BlockStatement()
-
-                    final urlMappingsVar = new VariableExpression(urlMappingsField.name)
-
-                    MapExpression map=new MapExpression()
-                    if(uri){
-                        map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression("resources"), new ConstantExpression(domainPropertyName)))
-                    }
-                    if(namespace){
-                        final namespaceField = new FieldNode('namespace', STATIC, ClassHelper.STRING_TYPE,newControllerClassNode, new ConstantExpression(namespace))
-                        newControllerClassNode.addField(namespaceField)
-                        if(map.getMapEntryExpressions().size()==0){
-                            uri="/${namespace}/${domainPropertyName}"
-                            map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression("resources"), new ConstantExpression(domainPropertyName)))
-                        }
-                        map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression("namespace"), new ConstantExpression(namespace)))
-                    }
-
-                    final resourcesUrlMapping = new MethodCallExpression(buildThisExpression(), uri, new MapExpression([ new MapEntryExpression(new ConstantExpression("resources"), new ConstantExpression(domainPropertyName))]))
-                    final urlMappingsClosure = new ClosureExpression(null, new ExpressionStatement(resourcesUrlMapping))
-
-                    def addMappingsMethodCall = applyDefaultMethodTarget(new MethodCallExpression(urlMappingsVar, "addMappings", urlMappingsClosure), urlMappingsClassNode)
-                    methodBody.addStatement(new IfStatement(new BooleanExpression(urlMappingsVar), new ExpressionStatement(addMappingsMethodCall),new EmptyStatement()))
-
-                    def initialiseUrlMappingsMethod = new MethodNode("initializeUrlMappings", PUBLIC, VOID_CLASS_NODE, ZERO_PARAMETERS, null, methodBody)
-                    initialiseUrlMappingsMethod.addAnnotation(new AnnotationNode(new ClassNode(PostConstruct).getPlainNodeReference()))
-                    initialiseUrlMappingsMethod.addAnnotation(controllerMethodAnnotation)
-                    newControllerClassNode.addMethod(initialiseUrlMappingsMethod)
-                    processVariableScopes(source, newControllerClassNode, initialiseUrlMappingsMethod)
-                }
+                final namespaceField = new FieldNode('namespace', STATIC, ClassHelper.STRING_TYPE,newControllerClassNode, new ConstantExpression(namespace))
+                newControllerClassNode.addField(namespaceField)
             }
+
+            // if (uriAttr != null || namespaceAttr != null) {
+
+            //     String uri = uriAttr?.getText()
+            //     final namespace=namespaceAttr?.getText()
+            //     if(uri || namespace) {
+            //         final urlMappingsClassNode = new ClassNode(UrlMappings).getPlainNodeReference()
+
+            //         final lazyInitField = new FieldNode('lazyInit', PUBLIC | STATIC | FINAL, ClassHelper.Boolean_TYPE,newControllerClassNode, new ConstantExpression(Boolean.FALSE))
+            //         newControllerClassNode.addField(lazyInitField)
+
+            //         final urlMappingsField = new FieldNode('$urlMappings', PRIVATE, urlMappingsClassNode,newControllerClassNode, null)
+            //         newControllerClassNode.addField(urlMappingsField)
+            //         final urlMappingsSetterParam = new Parameter(urlMappingsClassNode, "um")
+            //         final controllerMethodAnnotation = new AnnotationNode(new ClassNode(ControllerMethod).getPlainNodeReference())
+            //         MethodNode urlMappingsSetter = new MethodNode("setUrlMappings", PUBLIC, VOID_CLASS_NODE, [urlMappingsSetterParam] as Parameter[], null, new ExpressionStatement(new BinaryExpression(new VariableExpression(urlMappingsField.name),Token.newSymbol(Types.EQUAL, 0, 0), new VariableExpression(urlMappingsSetterParam))))
+            //         final autowiredAnnotation = new AnnotationNode(AUTOWIRED_CLASS_NODE)
+            //         autowiredAnnotation.addMember("required", ConstantExpression.FALSE)
+
+            //         final qualifierAnnotation = new AnnotationNode(new ClassNode(Qualifier).getPlainNodeReference())
+            //         qualifierAnnotation.addMember("value", new ConstantExpression("grailsUrlMappingsHolder"))
+            //         urlMappingsSetter.addAnnotation(autowiredAnnotation)
+            //         urlMappingsSetter.addAnnotation(qualifierAnnotation)
+            //         urlMappingsSetter.addAnnotation(controllerMethodAnnotation)
+            //         newControllerClassNode.addMethod(urlMappingsSetter)
+            //         processVariableScopes(source, newControllerClassNode, urlMappingsSetter)
+
+
+            //         final methodBody = new BlockStatement()
+
+            //         final urlMappingsVar = new VariableExpression(urlMappingsField.name)
+
+            //         MapExpression map=new MapExpression()
+            //         if(uri){
+            //             map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression("resources"), new ConstantExpression(domainPropertyName)))
+            //         }
+            //         if(namespace){
+            //             final namespaceField = new FieldNode('namespace', STATIC, ClassHelper.STRING_TYPE,newControllerClassNode, new ConstantExpression(namespace))
+            //             newControllerClassNode.addField(namespaceField)
+            //             if(map.getMapEntryExpressions().size()==0){
+            //                 uri="/${namespace}/${domainPropertyName}"
+            //                 map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression("resources"), new ConstantExpression(domainPropertyName)))
+            //             }
+            //             map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression("namespace"), new ConstantExpression(namespace)))
+            //         }
+
+            //         final resourcesUrlMapping = new MethodCallExpression(buildThisExpression(), uri, new MapExpression([ new MapEntryExpression(new ConstantExpression("resources"), new ConstantExpression(domainPropertyName))]))
+            //         final urlMappingsClosure = new ClosureExpression(null, new ExpressionStatement(resourcesUrlMapping))
+
+            //         def addMappingsMethodCall = applyDefaultMethodTarget(new MethodCallExpression(urlMappingsVar, "addMappings", urlMappingsClosure), urlMappingsClassNode)
+            //         methodBody.addStatement(new IfStatement(new BooleanExpression(urlMappingsVar), new ExpressionStatement(addMappingsMethodCall),new EmptyStatement()))
+
+            //         def initialiseUrlMappingsMethod = new MethodNode("initializeUrlMappings", PUBLIC, VOID_CLASS_NODE, ZERO_PARAMETERS, null, methodBody)
+            //         initialiseUrlMappingsMethod.addAnnotation(new AnnotationNode(new ClassNode(PostConstruct).getPlainNodeReference()))
+            //         initialiseUrlMappingsMethod.addAnnotation(controllerMethodAnnotation)
+            //         newControllerClassNode.addMethod(initialiseUrlMappingsMethod)
+            //         processVariableScopes(source, newControllerClassNode, initialiseUrlMappingsMethod)
+            //     }
+            // }
 
             final publicStaticFinal = PUBLIC | STATIC | FINAL
 

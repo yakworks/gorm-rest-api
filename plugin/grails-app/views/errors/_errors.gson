@@ -7,6 +7,7 @@ model {
     Errors errors
 }
 
+response.contentType "application/vnd.error"
 response.status UNPROCESSABLE_ENTITY
 
 json {

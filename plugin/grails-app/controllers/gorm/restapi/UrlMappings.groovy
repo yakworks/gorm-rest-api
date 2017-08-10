@@ -17,6 +17,10 @@ class UrlMappings {
                     "/${cName}/schema" (controller: "schema", action:"index"){
                         id = cName
                     }
+                    //when a post is called allows an action
+                    post "/${cName}/$action(.$format)?"(controller: cName, namespace:'api')
+                    //or
+                    post "/${cName}/actions/$action(.$format)?"(controller: cName, namespace:'api')
 
                     delete "/${cName}/$id(.$format)?"(controller: cName, action: "delete", namespace:'api')
                     get "/${cName}(.$format)?"(controller: cName, action: "index", namespace:'api')
@@ -36,6 +40,7 @@ class UrlMappings {
         //     put "/$controller/$id(.$format)?"(action: "update")
         //     patch "/$controller/$id(.$format)?"(action: "patch")
         // }
+
         "/schema/$id?(.$format)?"(controller: "schema", action: "index")
 
         "/$controller/$action?/$id?(.$format)?"{

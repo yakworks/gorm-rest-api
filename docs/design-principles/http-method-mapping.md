@@ -8,7 +8,7 @@ REST is all about your resources, so consider the domain entities that take part
 
 Request:
 
-    PUT /article-locks/{article-id}
+    PUT /article-locks/{articleId}
 
 The added benefit is that you already have a service for browsing and filtering article locks.
 
@@ -29,6 +29,15 @@ clients to specify their needs for more/less information by supporting filtering
 
 The API describes resources, so the only place where actions should appear is in the HTTP methods.
 In URLs, use only nouns. Instead of thinking of actions (verbs), it's often helpful to think about putting a message in a letter box: e.g., instead of having the verb *cancel* in the url, think of sending a message to cancel an order to the *cancellations* letter box on the server side.
+
+#### Deviations from REST
+
+**Verbs we use**
+
+> In some places in the API, we need to deviate from common REST guidelines. Completely removing verbs isn’t possible for every request, especially those related to sending a campaign, firing off a correction. Although there are some RESTful workarounds we could use, often they can be more confusing than they are useful.
+>
+To address this, we break from REST architecture for certain actions. For example, to pause an Automation workflow, you would make a POST request to the /automations/{workflow_id}/emails/{id}/actions/pause endpoint. All verb based action endpoints should be namespaced this way. --source:MailChimp
+
 
 ### Must: Use Domain-Specific Resource Names
 
@@ -200,6 +209,10 @@ To prevent unnoticed concurrent updates when using PATCH, the combination of [`E
 headers should be considered to signal the server stricter demands to expose conflicts and prevent
 lost updates.
 
+Put vs Patch. 
+* https://stackoverflow.com/questions/28459418/rest-api-put-vs-patch-with-real-life-examples 
+* 
+
 #### DELETE
 
 DELETE request are used to delete resources. The semantic is best described as »*please delete the
@@ -228,6 +241,13 @@ OPTIONS are used to inspect the available operations (HTTP methods) of a given e
 > :memo:  OPTIONS is rarely implemented, though it could be used to self-describe the full
 functionality of a resource.
 
+#### Deviations from REST
+
+**Verbs we use**
+
+> In some places in the API, we need to deviate from common REST guidelines. Completely removing verbs isn’t possible for every request, especially those related to sending a campaign, firing off a correction. Although there are some RESTful workarounds we could use, often they can be more confusing than they are useful.
+>
+To address this, we break from REST architecture for certain actions. For example, to pause an Automation workflow, you would make a POST request to the /automations/{workflow_id}/emails/{id}/actions/pause endpoint. All action endpoints are namespaced this way. --source:MailChimp
 
 ### Fulfill Safeness and Idempotency Properties
 

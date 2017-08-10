@@ -1,7 +1,14 @@
 
-This can be used as a template to start a good intro to a products API docs
+**This can be used as a template to start a good intro to a products API docs**
+https://bradfults.com/the-best-api-documentation-b9e46400379a
 
-## Reference
+## An Introduction to REST
+
+Background
+
+When we talk about our API, we use terms like “REST” and “RESTful.” “REST” stands for Representational State Transfer. It’s an architectural style that’s an alternative to RPC or SOAP-based web services.
+
+While there’s no official REST standard, there are common approaches and best practices used across the engineering community that help define how RESTful APIs should work. For example, most RESTful APIs follow six specific constraints or design rules.
 
 The API is organized around REST. The API has predictable, resource-oriented URLs, and uses HTTP response codes to indicate API errors. We use built-in HTTP features, like HTTP authentication and HTTP verbs, which are understood by off-the-shelf HTTP clients. We support cross-origin resource sharing, allowing you to interact securely with our API from a client-side web application (though you should never expose your secret API key in any public website's client-side code). JSON is returned by all API responses, including errors.
 To make an API as explorable as possible, users can have test mode and live mode API keys. There is no "switch" for changing between modes, just use the appropriate key to perform a live or test transaction. Requests made with test mode credentials never hit production
@@ -13,15 +20,18 @@ TODO
 
 ## Schema
 
-### HTTP Verbs
+### HTTP Methods and Verbs
+
+You may see these standard HTTP methods referred to as CRUD, or Create, Read, Update, Delete. Although CRUD has roots in database operations, you can also map those operations to the standard HTTP methods. For example, use a POST request to create a new resource, a GET request to read or retrieve a resource, a PATCH request to edit a resource, and a DELETE request to delete a resource.
 
 The URLs are expected to following normal REST conventions.
 
 | HTTP Method | Ctrl Action |                                 Purpose                                 |
 |:-----------:| ----------- |:----------------------------------------------------------------------- |
 |     GET     | index       | Read a resource or list of resources                                    |
-|    POST     | update      | Create a new resource (when the key is not known a-priori) See note. |
-|     PUT     | save        | Update an existing resource or create one if the key is pre-defined     |
+|    POST     | save      | Create a new resource (when the key is not known a-priori) See note. |
+|     PUT     | update        | Fully replaces an existing resource or create one if the id key is pre-defined     |
+|     Patch     | update        | Update an existing resource or create one if the key is pre-defined     |
 |   DELETE    | Remove      | Remove a resource                                                       |
 
 ### ENDPOINTS AND ACTIONS

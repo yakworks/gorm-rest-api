@@ -14,7 +14,7 @@ import gorm.restapi.testing.RestApiFuncSpec
 class ProjectRestApiSpec extends RestApiFuncSpec {
 
     String getResourcePath() {
-        "${baseUrl}/api/project"
+        "${baseUrl}api/project"
     }
 
     Map getValidJson() {[ name: "project", code: "x123"]}
