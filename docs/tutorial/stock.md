@@ -819,7 +819,7 @@ Few words about what this parameters means:
 ```
 but if you create a file
 
->**views/contact/_contact.gson**
+**views/contact/_contact.gson**
 
 ```
 import groovy.transform.*
@@ -1223,7 +1223,7 @@ So you can try to create a new contact.
 You will be suprised, but edit is already works, try Edit button in grid dropdown. The only thing
 that we need to change is to change labels for form modal window:
 
-._form.gsp
+**_form.gsp**
 ```html
 <div class="modal-header">
 	<button type="button" class="close" ng-click="closeDialog()">&times;</button>
@@ -1238,7 +1238,7 @@ that we need to change is to change labels for form modal window:
 
 So now lets add some more fields for our domain to take a look on some other widgets of Angle-Grinder
 
-.Contact.groovy
+**Contact.groovy**
 ```groovy
 import java.time.*
 
@@ -1274,7 +1274,7 @@ class Contact {
 ```
 
 As you can see we have java 8 date types here. Due to the fact that Hibernate5 supports the new date types lets update
-our dependencies, also see section about java8 in http://docs.grails.org/latest/guide/single.html#otherNovelties[docs]:
+our dependencies, also see section about java8 in [docs]http://docs.grails.org/latest/guide/single.html#otherNovelties:
 
 **build.gradle**
 ```groovy
@@ -1445,7 +1445,7 @@ Lets add some test. You can see them in {url-snapshot5}[snapshot5] folder.
 
 ### 4.6. Add tests(GEB)
 After we've added integration test, lets add some function tests to be sure that our app works.
-For testing we'll use Geb. Please, take a look at https://github.com/basejump/grails3-geb-example[example] to understand
+For testing we'll use Geb. Please, take a look at [example](https://github.com/basejump/grails3-geb-example) to understand
 how you can configure and use ged tests.
 
 Our tests we will place in `geb` folder.
@@ -1666,8 +1666,8 @@ And now lets add a Geb test for it:
 ## 5. Spring Security
 ### 5.1 Introduction
 There is an excellent tutorial that we will take as a starting point for adding Spring Security to our app, see theoretical
-http://alvarosanchez.github.io/grails-angularjs-springsecurity-workshop/#_adding_security_with_spring_security_rest_50_minutes[part]
-and how we can add spring security to our Grails backend on http://alvarosanchez.github.io/grails-angularjs-springsecurity-workshop/#_securing_the_rest_api_20_minutes[@alvarosanchez].
+[part](http://alvarosanchez.github.io/grails-angularjs-springsecurity-workshop/#_adding_security_with_spring_security_rest_50_minutes)
+and how we can add spring security to our Grails backend on [@alvarosanchez](http://alvarosanchez.github.io/grails-angularjs-springsecurity-workshop/#_securing_the_rest_api_20_minutes) .
 
 A user name and a password we will take from the tutorial not to make it confusing.
 
@@ -1739,7 +1739,7 @@ and
 </html>
 ```
 
-Now we need to implement controller for logining, as you remember from the http://alvarosanchez.github.io/grails-angularjs-springsecurity-workshop/#_securing_the_rest_api_20_minutes[tutorial],
+Now we need to implement controller for logining, as you remember from the [tutorial](http://alvarosanchez.github.io/grails-angularjs-springsecurity-workshop/#_securing_the_rest_api_20_minutes) ,
 we need to pass our username and password to `/api/login` action and get `access_token` that should be added for each request.
 
 **assets/javascript/auth/LoginCtrl.es6**
@@ -1982,7 +1982,7 @@ on two handy tools for testing rest endpoints.
 
 ### 6.1 Using postman for testing
 
-First we need to install https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop/related?hl=en[Postman type in Chrome].
+First we need to install [Postman type in Chrome](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop/related?hl=en) .
 And press `Launch App`
 
 ![](../assets/postman.png)
