@@ -1452,12 +1452,11 @@ Our tests we will place in `geb` folder.
 
 The test should have a `@Rollback` anotation, from Grails docs:
 
-> :memo:
 In Grails 3.0 tests rely on grails.transaction.Rollback annotation to bind the session in integration tests.
 
->**ContactGebSpec.groovy**
+**ContactGebSpec.groovy**
 
->``` groovy
+```groovy
 package geb
 import geb.spock.GebSpec
 import grails.test.mixin.integration.Integration
