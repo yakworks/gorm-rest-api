@@ -1,5 +1,5 @@
 <!-- MarkdownTOC autolink="true" bracket="round" depth="1" -->
-
+## Table of Contents
 - [Getting started](#getting-started)
 - [Creating an API with Grails Web Services](#1-creating-an-api-with-grails-web-services)
 - [The DAO plugin with REST support](#2-the-dao-plugin-with-rest-support)
