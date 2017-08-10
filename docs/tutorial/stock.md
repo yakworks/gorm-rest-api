@@ -109,10 +109,11 @@ class Contact {
 ```
 
 > :memo: **On plural resource names**
-As you will notice we did not pluralize it to contacts above as many will do.
+
+>As you will notice we did not pluralize it to contacts above as many will do.
 We are aware of the debate on this in the rest world. We feel this will cause confusion down the line to do it.
->
-1. English plural rules like "cherry/cherries" or "goose/geese/moose/meese" are not the nicest thing to think of while developing API, particularly when english is not your mother tongue.
+
+>1. English plural rules like "cherry/cherries" or "goose/geese/moose/meese" are not the nicest thing to think of while developing API, particularly when english is not your mother tongue.
 2. Many times, as in Grails, we want to generate endpoint from the model, which is usually singular. It does not play nicely with the above pluralization exceptions and creates more work maintaining UrlMappings.
 3. When the model is singular, which is normally is for us, keeping the rest endpoint singular will have the rest developers and the grails developers speaking the same language
 4. The argument "usually you start querying by a Get to display a list" does not refer to any real use case. And we will end up querying single items as much as and even more than a list of items.
