@@ -1,3 +1,14 @@
+<!-- MarkdownTOC autolink="true" bracket="round" depth="1" -->
+
+- [Getting started](#getting-started)
+- [Creating an API with Grails Web Services](#1-creating-an-api-with-grails-web-services)
+- [The DAO plugin with REST support](#2-the-dao-plugin-with-rest-support)
+- [Creating the Angular UI](#3-creating-the-angular-ui)
+- [UI](#4-ui)
+- [Spring Security](#5-spring-security)
+- [Other Tools](#6-other-tools)
+<!-- /MarkdownTOC -->
+
 ## Getting started
 
 For this tutorial you will need
