@@ -1465,22 +1465,22 @@ import grails.transaction.Rollback
 import resttutorial.Contact
 import spock.lang.*
 
->@Integration
+@Integration
 @Rollback
 class ContactGebSpec extends GebSpec {
 
-  >def getBaseUrl(){"http://localhost:${serverPort}"}
+  def getBaseUrl(){"http://localhost:${serverPort}"}
 
->  void "Check contact page"() {
->    when: "The contact page is visited"
->    go "${baseUrl}/contact"
->    sleep(1000)
->
->   then: "The title and label are correct"
->    title == "Welcome to Tutorial"
->    $("h3").text() == 'Contact list'
->  }
->}
+  void "Check contact page"() {
+   when: "The contact page is visited"
+    go "${baseUrl}/contact"
+    sleep(1000)
+
+   then: "The title and label are correct"
+    title == "Welcome to Tutorial"
+    $("h3").text() == 'Contact list'
+  }
+}
 ```
 
 In this test we open contact page with our grid - `go "http://localhost:${serverPort}/contact"` and check page title and grid label.
