@@ -109,14 +109,12 @@ class Contact {
 ```
 
 > :memo: **On plural resource names**
-
->As you will notice we did not pluralize it to contacts above as many will do.
+As you will notice we did not pluralize it to contacts above as many will do.
 We are aware of the debate on this in the rest world. We feel this will cause confusion down the line to do it.
-
 >1. English plural rules like "cherry/cherries" or "goose/geese/moose/meese" are not the nicest thing to think of while developing API, particularly when english is not your mother tongue.
-2. Many times, as in Grails, we want to generate endpoint from the model, which is usually singular. It does not play nicely with the above pluralization exceptions and creates more work maintaining UrlMappings.
-3. When the model is singular, which is normally is for us, keeping the rest endpoint singular will have the rest developers and the grails developers speaking the same language
-4. The argument "usually you start querying by a Get to display a list" does not refer to any real use case. And we will end up querying single items as much as and even more than a list of items.
+>2. Many times, as in Grails, we want to generate endpoint from the model, which is usually singular. It does not play nicely with the above pluralization exceptions and creates more work maintaining UrlMappings.
+>3. When the model is singular, which is normally is for us, keeping the rest endpoint singular will have the rest developers and the grails developers speaking the same language
+>4. The argument "usually you start querying by a Get to display a list" does not refer to any real use case. And we will end up querying single items as much as and even more than a list of items.
 
 ##### The `RestfullController`
 
@@ -215,12 +213,12 @@ You can see all available endpoints that Grails create for us with url-mappings-
 $ grails url-mappings-report
 
 Dynamic Mappings
- |    *           | ERROR: 500                                | View:   /error           |
- |    *           | ERROR: 404                                | View:   /notFound        |
- |   GET       | /api/${controller}(.${format)?            | Action: index            |
- |   POST     | /api/${controller}(.${format)?            | Action: save             |
- |  DELETE | /api/${controller}/${id}(.${format)?      | Action: delete           |
- |   GET       | /api/${controller}/${id}(.${format)?      | Action: show             |
+ |    *     | ERROR: 500                                | View:   /error           |
+ |    *     | ERROR: 404                                | View:   /notFound        |
+ |   GET    | /api/${controller}(.${format)?            | Action: index            |
+ |   POST   | /api/${controller}(.${format)?            | Action: save             |
+ |  DELETE  | /api/${controller}/${id}(.${format)?      | Action: delete           |
+ |   GET    | /api/${controller}/${id}(.${format)?      | Action: show             |
  |   PUT    | /api/${controller}/${id}(.${format)?      | Action: update           |
  |  PATCH   | /api/${controller}/${id}(.${format)?      | Action: patch            |
 
@@ -627,13 +625,13 @@ The other way is to add separate endpoint.
 
 > :memo: **REST Standarts**
 We should keep in mind some principals when we build REST API
-1. REST is resource-oriented, not service-oriented. Resources are nouns, not verbs we should delegate verbs using HTTP verbs.
-2. The next standard is based on the Keep it Simple, Stupid (KISS) principle. We really need two base URLs per resource:
+>1. REST is resource-oriented, not service-oriented. Resources are nouns, not verbs we should delegate verbs using HTTP verbs.
+>2. The next standard is based on the Keep it Simple, Stupid (KISS) principle. We really need two base URLs per resource:
 one for multiple values and one for the specific value.
-3. Associations. An APIs should be very intuitive when you're developing them for associations. The following URL
+>3. Associations. An APIs should be very intuitive when you're developing them for associations. The following URL
 is self-explained: we request user with id 3 and contact with id 8: `GET /user/3/contact/8`
 We have traversed two levels in this URL. One level is the user, and the second level is the contact that the user is has.
->
+
 
 According to the first standard we shouldn't use something like 'contact/inactivate', instead we can use a nested "resource"
 `active`, and due to 3rd point of the note it should look like something like `contact/2/active`, when we need to inactivate
@@ -825,30 +823,30 @@ but if you create a file
 
 >```
 >import groovy.transform.*
-
+>
 >@Field Contact contact
-
+>
 >json {firstName contact.firstName}
 ```
 
 >The response will be changed to
 
 >```json
-    "page": 1,
-    "total": 10,
-    "records": 100,
-    "rows":
-    [
-        {
-            "firstName": "Marie"
-        },
-        {
-            "firstName": "Joseph"
-        },
-        {
-            "firstName": "Julie"
-        },{
-....
+>   "page": 1,
+>   "total": 10,
+>    "records": 100,
+>    "rows":
+>    [
+>        {
+>            "firstName": "Marie"
+>        },
+>        {
+>            "firstName": "Joseph"
+>        },
+>        {
+>            "firstName": "Julie"
+>        },{
+>....
 ```
 
 
