@@ -799,8 +799,8 @@ Few words about what this parameters means:
 - __rows__ is the list of data
 
 
-> :memo:
-Currently you will get next response on index endpoint:
+ Currently you will get next response on index endpoint:
+
 ```json
 {
     "page": 1,
@@ -821,32 +821,32 @@ but if you create a file
 
 >**views/contact/_contact.gson**
 
->```
->import groovy.transform.*
->
->@Field Contact contact
->
->json {firstName contact.firstName}
+```
+import groovy.transform.*
+
+@Field Contact contact
+
+json {firstName contact.firstName}
 ```
 
->The response will be changed to
+The response will be changed to
 
->```json
->   "page": 1,
->   "total": 10,
->    "records": 100,
->    "rows":
->    [
->        {
->            "firstName": "Marie"
->        },
->        {
->            "firstName": "Joseph"
->        },
->        {
->            "firstName": "Julie"
->        },{
->....
+  ```json
+     "page": 1,
+     "total": 10,
+      "records": 100,
+      "rows":
+      [
+          {
+              "firstName": "Marie"
+          },
+          {
+              "firstName": "Joseph"
+          },
+          {
+              "firstName": "Julie"
+          },{
+  ....
 ```
 
 
