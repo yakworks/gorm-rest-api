@@ -12,7 +12,7 @@ import grails.plugins.rest.client.RestBuilder
 // @Integration
 // @Rollback
 abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait{
-
+    boolean vndHeaderOnError = false
     // RestBuilder getRestBuilder() {
     //     new RestBuilder()
     // }
@@ -30,12 +30,15 @@ abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait{
     // }'''}
 
     void test_get_index() {
+        given:
+        def response = post_a_valid_resource()
+
         when:"The index action is requested"
-        def response = restBuilder.get(resourcePath)
+        response = restBuilder.get(resourcePath)
 
         then:"The response is correct"
         response.status == OK.value()
-        response.json.size() > 0 // == []
+        response.json.size() >= 0 // == []
     }
 
     void test_save_post() {
@@ -48,24 +51,24 @@ abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait{
 
         when:"The save action is executed with invalid data"
         response = restBuilder.post(resourcePath) {
-            json invalidJson
+            json invalidData
         }
         then:"The response is UNPROCESSABLE_ENTITY"
         verify_UNPROCESSABLE_ENTITY(response)
 
         when:"The save action is executed with valid data"
         response = restBuilder.post(resourcePath) {
-            json validJson
+            json insertData
         }
 
         then:"The response is correct"
         response.status == CREATED.value()
         verifyHeaders(response)
         //response.json.id
-        subsetEquals(validJson, response.json)
+        subsetEquals(insertData, response.json)
         //Project.count() > 1// == 1
         def rget = restBuilder.get("$resourcePath/${response.json.id}")
-        subsetEquals(validJson, rget.json)
+        subsetEquals(insertData, rget.json)
     }
 
 
@@ -75,25 +78,25 @@ abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait{
 
         when: "The update action is called with invalid data"
         def goodId = response.json.id
-        response = restBuilder.put("$resourcePath/$goodId") {
-            json invalidJson
+        def response2 = restBuilder.put("$resourcePath/$goodId") {
+            json invalidData
         }
 
         then:"The response is invalid"
-        verify_UNPROCESSABLE_ENTITY(response)
+        verify_UNPROCESSABLE_ENTITY(response2)
 
         when:"The update action is called with valid data"
         response = restBuilder.put("$resourcePath/$goodId") {
-            json updateJson
+            json updateData
         }
 
         then:"The response is correct"
         response.status == OK.value()
         //response.json
-        subsetEquals(updateJson, response.json)
+        subsetEquals(updateData, response.json)
         //get it and make sure
         def rget = restBuilder.get("$resourcePath/$goodId")
-        subsetEquals(updateJson, rget.json)
+        subsetEquals(updateData, rget.json)
 
     }
 
@@ -131,7 +134,7 @@ abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait{
 
     def post_a_valid_resource(){
         def response = restBuilder.post(resourcePath) {
-            json validJson
+            json insertData
         }
         verifyHeaders(response)
         assert response.status == CREATED.value()
@@ -147,7 +150,9 @@ abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait{
 
     def verify_UNPROCESSABLE_ENTITY(response){
         assert response.status == UNPROCESSABLE_ENTITY.value()
-        assert response.headers.getFirst(CONTENT_TYPE) == 'application/vnd.error;charset=UTF-8'
+        if(vndHeaderOnError){
+            assert response.headers.getFirst(CONTENT_TYPE) == 'application/vnd.error;charset=UTF-8'
+        }
         true
     }
 

@@ -17,10 +17,10 @@ class ProjectRestApiSpec extends RestApiFuncSpec {
         "${baseUrl}api/project"
     }
 
-    Map getValidJson() {[ name: "project", code: "x123"]}
+    Map getInsertData() {[ name: "project", code: "x123"]}
 
-    Map getUpdateJson() { [name: "project Update", code: "x123u"]}
+    Map getUpdateData() { [name: "project Update", code: "x123u"]}
 
-    Map getInvalidJson() { ["name": null] }
+    Map getInvalidData() { ["name": null] }
 
 }

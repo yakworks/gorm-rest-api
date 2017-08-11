@@ -2,6 +2,10 @@
 **This can be used as a template to start a good intro to a products API docs**
 https://bradfults.com/the-best-api-documentation-b9e46400379a
 
+## refs and examples
+
+https://developer.fleetio.com/docs/errors
+
 ## An Introduction to REST
 
 Background

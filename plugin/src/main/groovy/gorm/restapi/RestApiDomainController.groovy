@@ -123,10 +123,12 @@ class RestApiDomainController<T> {
         instance.properties = getObjectToBind()
 
         if (instance.hasErrors()) {
+            println "ERRORS !!!!"
             transactionStatus.setRollbackOnly()
             respond instance.errors, view:'edit' // STATUS CODE 422
             return
         }
+        println "NO ERRORS !!!!"
 
         updateResource instance
         addLocationHeader(response, instance.id, 'show')

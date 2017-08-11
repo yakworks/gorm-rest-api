@@ -8,8 +8,10 @@ copyright: 'Copyright &copy; 2017 9ci Inc'
 # Page tree
 pages:
   - Overview: index.md
-  - OpenAPI/Schema Notes: swagger-openapi.md
+  - "Quick Start Guide": quick-start.md
+  #- Usage Manual: using.md
   - Design Principles:
+    - OpenAPI/Schema Notes: swagger-openapi.md
     - Guidelines: design-principles/guidelines.md
     - Object, Naming, Props: design-principles/object-props.md
     - Http Method Mapping: design-principles/http-method-mapping.md
@@ -34,7 +36,7 @@ theme: material-components
 
 # Options
 extra:
-  # password: 'MG4zYzQxMQ==' #0n3c411
+
   # adds <meta name="robots" content="noindex,nofollow"> to keep search engines from indexing this
   # noindex: true
   feature:

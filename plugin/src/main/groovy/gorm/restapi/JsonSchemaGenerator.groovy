@@ -50,9 +50,12 @@ class JsonSchemaGenerator {
         List<GrailsDomainClassProperty> props = resolvePersistentProperties(domClass)
 
         def map = ['$schema': "http://json-schema.org/schema#",
-                   '$id': "http://localhost:8080/schema/meta/${domainName}", //<-TODO come from application.yml?
+                   '$id': "http://localhost:8080/schema/${domainName}", //<-TODO come from application.yml?
                    title: domClass.name]
         if(mapping?.comment) map.description = mapping.comment
+        if(domClass.clazz.isAnnotationPresent(RestApi.class)){
+            map.description = domClass.clazz.getAnnotation(RestApi.class).description()
+        }
         map.type = 'Object'
         map.required = []
         map.properties = [:]
@@ -80,6 +83,10 @@ class JsonSchemaGenerator {
             //if(constraints.getMetaConstraintValue("title"))
             String description = constraints.getMetaConstraintValue("description")
             if(description) jprop.description = description
+
+            //Example
+            String example = constraints.getMetaConstraintValue("example")
+            if(example) jprop.example = example
 
             //type
             Map typeFormat = getJsonType(constraints.propertyType)

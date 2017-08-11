@@ -107,6 +107,9 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
 
     private CompilationUnit unit
 
+    //private static final ConfigObject CO = new ConfigSlurper().parse(getContents(new File("grails-app/conf/application.groovy"))); //grails.io.IOUtils has a better way to do this.
+    //see https://github.com/9ci/grails-audit-trail/blob/master/audit-trail-plugin/src/main/groovy/gorm/AuditStampASTTransformation.java for some ideas on how we can tweak this.
+
 
     @Override
     void visit(ASTNode[] astNodes, SourceUnit source) {
