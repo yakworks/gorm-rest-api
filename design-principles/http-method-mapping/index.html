@@ -229,8 +229,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../swagger-openapi/" title="OpenAPI/Schema Notes" class="md-nav__link">
-      OpenAPI/Schema Notes
+    <a href="../../quick-start/" title="Quick Start Guide" class="md-nav__link">
+      Quick Start Guide
     </a>
   </li>
 
@@ -255,6 +255,18 @@
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../swagger-openapi/" title="OpenAPI/Schema Notes" class="md-nav__link">
+      OpenAPI/Schema Notes
+    </a>
+  </li>
+
         
           
           
@@ -341,6 +353,19 @@
   <a href="#must-keep-urls-verb-free" title="Must: Keep URLs Verb-Free" class="md-nav__link">
     Must: Keep URLs Verb-Free
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deviations-from-rest" title="Deviations from REST" class="md-nav__link">
+    Deviations from REST
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -437,6 +462,13 @@
           <li class="md-nav__item">
   <a href="#options" title="OPTIONS" class="md-nav__link">
     OPTIONS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deviations-from-rest_1" title="Deviations from REST" class="md-nav__link">
+    Deviations from REST
   </a>
   
 </li>
@@ -660,6 +692,19 @@
     Must: Keep URLs Verb-Free
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deviations-from-rest" title="Deviations from REST" class="md-nav__link">
+    Deviations from REST
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -755,6 +800,13 @@
           <li class="md-nav__item">
   <a href="#options" title="OPTIONS" class="md-nav__link">
     OPTIONS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deviations-from-rest_1" title="Deviations from REST" class="md-nav__link">
+    Deviations from REST
   </a>
   
 </li>
@@ -860,10 +912,13 @@
                   <h1>Http Method Mapping</h1>
                 
                 <h2 id="resources">Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>"A resource is anything that's important enough to be referenced as a thing in itself." Richardson and Ruby</p>
+</blockquote>
 <h3 id="must-avoid-actions-think-about-resources">Must: Avoid Actions — Think About Resources<a class="headerlink" href="#must-avoid-actions-think-about-resources" title="Permanent link">&para;</a></h3>
 <p>REST is all about your resources, so consider the domain entities that take part in web service interaction, and aim to model your API around these using the standard HTTP methods as operation indicators. For instance, if an application has to lock articles explicitly so that only one user may edit them, create an article lock with PUT or POST instead of using a lock action.</p>
 <p>Request:</p>
-<div class="codehilite"><pre><span></span>PUT /article-locks/{article-id}
+<div class="codehilite"><pre><span></span>PUT /article-locks/{articleId}
 </pre></div>
 
 
@@ -879,6 +934,12 @@ clients to specify their needs for more/less information by supporting filtering
 <h3 id="must-keep-urls-verb-free">Must: Keep URLs Verb-Free<a class="headerlink" href="#must-keep-urls-verb-free" title="Permanent link">&para;</a></h3>
 <p>The API describes resources, so the only place where actions should appear is in the HTTP methods.
 In URLs, use only nouns. Instead of thinking of actions (verbs), it's often helpful to think about putting a message in a letter box: e.g., instead of having the verb <em>cancel</em> in the url, think of sending a message to cancel an order to the <em>cancellations</em> letter box on the server side.</p>
+<h4 id="deviations-from-rest">Deviations from REST<a class="headerlink" href="#deviations-from-rest" title="Permanent link">&para;</a></h4>
+<p><strong>Verbs we use</strong></p>
+<blockquote>
+<p>In some places in the API, we need to deviate from common REST guidelines. Completely removing verbs isn’t possible for every request, especially those related to sending a campaign, firing off a correction. Although there are some RESTful workarounds we could use, often they can be more confusing than they are useful.</p>
+<p>To address this, we break from REST architecture for certain actions. For example, to pause an Automation workflow, you would make a POST request to the /automations/{workflow_id}/emails/{id}/actions/pause endpoint. All verb based action endpoints should be namespaced this way. --source:MailChimp</p>
+</blockquote>
 <h3 id="must-use-domain-specific-resource-names">Must: Use Domain-Specific Resource Names<a class="headerlink" href="#must-use-domain-specific-resource-names" title="Permanent link">&para;</a></h3>
 <p>API resources represent elements of the application’s domain model. Using domain-specific nomenclature for resource names helps developers to understand the functionality and basic semantics of your resources. It also reduces the need for further documentation outside the API definition. For example, “sales-order-items” is superior to “order-items” in that it clearly indicates which business object it represents. Along these lines, “items” is too general.</p>
 <h3 id="must-identify-resources-and-sub-resources-via-path-segments">Must: Identify resources and Sub-Resources via Path Segments<a class="headerlink" href="#must-identify-resources-and-sub-resources-via-path-segments" title="Permanent link">&para;</a></h3>
@@ -1034,6 +1095,9 @@ while still showing readable patch requests
 <code>If-Match</code></a>
 headers should be considered to signal the server stricter demands to expose conflicts and prevent
 lost updates.</p>
+<p>Put vs Patch. 
+* <a href="https://stackoverflow.com/questions/28459418/rest-api-put-vs-patch-with-real-life-examples">https://stackoverflow.com/questions/28459418/rest-api-put-vs-patch-with-real-life-examples</a> 
+* </p>
 <h4 id="delete">DELETE<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h4>
 <p>DELETE request are used to delete resources. The semantic is best described as »<em>please delete the
 resource identified by the URL</em>«.</p>
@@ -1059,6 +1123,12 @@ resource identified by the URL</em>«.</p>
 <blockquote>
 <p><img alt="📝" class="gemoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4dd.png" title=":memo:" />  OPTIONS is rarely implemented, though it could be used to self-describe the full
 functionality of a resource.</p>
+</blockquote>
+<h4 id="deviations-from-rest_1">Deviations from REST<a class="headerlink" href="#deviations-from-rest_1" title="Permanent link">&para;</a></h4>
+<p><strong>Verbs we use</strong></p>
+<blockquote>
+<p>In some places in the API, we need to deviate from common REST guidelines. Completely removing verbs isn’t possible for every request, especially those related to sending a campaign, firing off a correction. Although there are some RESTful workarounds we could use, often they can be more confusing than they are useful.</p>
+<p>To address this, we break from REST architecture for certain actions. For example, to pause an Automation workflow, you would make a POST request to the /automations/{workflow_id}/emails/{id}/actions/pause endpoint. All action endpoints are namespaced this way. --source:MailChimp</p>
 </blockquote>
 <h3 id="fulfill-safeness-and-idempotency-properties">Fulfill Safeness and Idempotency Properties<a class="headerlink" href="#fulfill-safeness-and-idempotency-properties" title="Permanent link">&para;</a></h3>
 <p>An operation can be...</p>

@@ -225,8 +225,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../swagger-openapi/" title="OpenAPI/Schema Notes" class="md-nav__link">
-      OpenAPI/Schema Notes
+    <a href="../quick-start/" title="Quick Start Guide" class="md-nav__link">
+      Quick Start Guide
     </a>
   </li>
 
@@ -249,6 +249,18 @@
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../swagger-openapi/" title="OpenAPI/Schema Notes" class="md-nav__link">
+      OpenAPI/Schema Notes
+    </a>
+  </li>
+
         
           
           
@@ -332,8 +344,15 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#reference" title="Reference" class="md-nav__link">
-    Reference
+  <a href="#refs-and-examples" title="refs and examples" class="md-nav__link">
+    refs and examples
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#an-introduction-to-rest" title="An Introduction to REST" class="md-nav__link">
+    An Introduction to REST
   </a>
   
 </li>
@@ -354,8 +373,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#http-verbs" title="HTTP Verbs" class="md-nav__link">
-    HTTP Verbs
+  <a href="#http-methods-and-verbs" title="HTTP Methods and Verbs" class="md-nav__link">
+    HTTP Methods and Verbs
   </a>
   
 </li>
@@ -503,8 +522,15 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#reference" title="Reference" class="md-nav__link">
-    Reference
+  <a href="#refs-and-examples" title="refs and examples" class="md-nav__link">
+    refs and examples
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#an-introduction-to-rest" title="An Introduction to REST" class="md-nav__link">
+    An Introduction to REST
   </a>
   
 </li>
@@ -525,8 +551,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#http-verbs" title="HTTP Verbs" class="md-nav__link">
-    HTTP Verbs
+  <a href="#http-methods-and-verbs" title="HTTP Methods and Verbs" class="md-nav__link">
+    HTTP Methods and Verbs
   </a>
   
 </li>
@@ -617,15 +643,22 @@
                 
                   <h1>Sample API Docs</h1>
                 
-                <p>This can be used as a template to start a good intro to a products API docs</p>
-<h2 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h2>
+                <p><strong>This can be used as a template to start a good intro to a products API docs</strong>
+<a href="https://bradfults.com/the-best-api-documentation-b9e46400379a">https://bradfults.com/the-best-api-documentation-b9e46400379a</a></p>
+<h2 id="refs-and-examples">refs and examples<a class="headerlink" href="#refs-and-examples" title="Permanent link">&para;</a></h2>
+<p><a href="https://developer.fleetio.com/docs/errors">https://developer.fleetio.com/docs/errors</a></p>
+<h2 id="an-introduction-to-rest">An Introduction to REST<a class="headerlink" href="#an-introduction-to-rest" title="Permanent link">&para;</a></h2>
+<p>Background</p>
+<p>When we talk about our API, we use terms like “REST” and “RESTful.” “REST” stands for Representational State Transfer. It’s an architectural style that’s an alternative to RPC or SOAP-based web services.</p>
+<p>While there’s no official REST standard, there are common approaches and best practices used across the engineering community that help define how RESTful APIs should work. For example, most RESTful APIs follow six specific constraints or design rules.</p>
 <p>The API is organized around REST. The API has predictable, resource-oriented URLs, and uses HTTP response codes to indicate API errors. We use built-in HTTP features, like HTTP authentication and HTTP verbs, which are understood by off-the-shelf HTTP clients. We support cross-origin resource sharing, allowing you to interact securely with our API from a client-side web application (though you should never expose your secret API key in any public website's client-side code). JSON is returned by all API responses, including errors.
 To make an API as explorable as possible, users can have test mode and live mode API keys. There is no "switch" for changing between modes, just use the appropriate key to perform a live or test transaction. Requests made with test mode credentials never hit production</p>
 <p>An operation is a unit of a REST API that you can call. An operation comprises an HTTP verb and a URL path that is subordinate to the context root of the API. By configuring the operation, you define how the API is exposed to your developers.</p>
 <h2 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h2>
 <p>TODO</p>
 <h2 id="schema">Schema<a class="headerlink" href="#schema" title="Permanent link">&para;</a></h2>
-<h3 id="http-verbs">HTTP Verbs<a class="headerlink" href="#http-verbs" title="Permanent link">&para;</a></h3>
+<h3 id="http-methods-and-verbs">HTTP Methods and Verbs<a class="headerlink" href="#http-methods-and-verbs" title="Permanent link">&para;</a></h3>
+<p>You may see these standard HTTP methods referred to as CRUD, or Create, Read, Update, Delete. Although CRUD has roots in database operations, you can also map those operations to the standard HTTP methods. For example, use a POST request to create a new resource, a GET request to read or retrieve a resource, a PATCH request to edit a resource, and a DELETE request to delete a resource.</p>
 <p>The URLs are expected to following normal REST conventions.</p>
 <table>
 <thead>
@@ -643,12 +676,17 @@ To make an API as explorable as possible, users can have test mode and live mode
 </tr>
 <tr>
 <td align="center">POST</td>
-<td>update</td>
+<td>save</td>
 <td align="left">Create a new resource (when the key is not known a-priori) See note.</td>
 </tr>
 <tr>
 <td align="center">PUT</td>
-<td>save</td>
+<td>update</td>
+<td align="left">Fully replaces an existing resource or create one if the id key is pre-defined</td>
+</tr>
+<tr>
+<td align="center">Patch</td>
+<td>update</td>
 <td align="left">Update an existing resource or create one if the key is pre-defined</td>
 </tr>
 <tr>
@@ -674,14 +712,14 @@ To make an API as explorable as possible, users can have test mode and live mode
 <td>/thing</td>
 <td>list(params)</td>
 <td>GET</td>
-<td>Array - or a paginated array of things</td>
+<td>Array - a paginated array of things</td>
 <td>200</td>
 </tr>
 <tr>
 <td>/thing/123</td>
 <td>show(id)</td>
 <td>GET</td>
-<td>Object - <br>  the thing corresponding to the id param</td>
+<td>Object - <br>  one thing where id=123</td>
 <td>200</td>
 </tr>
 <tr>
@@ -695,14 +733,14 @@ To make an API as explorable as possible, users can have test mode and live mode
 <td>/thing/123</td>
 <td>update(id, body)</td>
 <td>PUT</td>
-<td>Object - <br>  the thing corresponding to the id param</td>
+<td>Object - <br>  update and return the thing where id=123</td>
 <td>200</td>
 </tr>
 <tr>
 <td>/thing/123</td>
 <td>delete(id)</td>
 <td>DELETE</td>
-<td>nothing <br>  Deletes the thing corresponding to the id param</td>
+<td>nothing <br>  Deletes the thing where id=123</td>
 <td>204</td>
 </tr>
 <tr>
