@@ -8,14 +8,13 @@ import groovy.transform.EqualsAndHashCode
 import gorm.restapi.RestApi
 import java.time.LocalDate
 
-//@EqualsAndHashCode(includes = 'code,name')
 @GrailsCompileStatic
-//@Resource(superClass = RestApiController)
+@EqualsAndHashCode(includes = 'num,name')
 @RestApi(description = "This is a project ")
 class Project {
 
     static constraints = {
-        code        description: "The project code", example:"client-123",
+        num        description: "The project short code or unique identifier", example:"client-123",
                     nullable: false, maxSize:10
         name        description: "The project name", example:"Cool Project",
                     nullable: false, maxSize:50
@@ -35,7 +34,7 @@ class Project {
         billable defaultValue: "0"
     }
 
-    String code
+    String num
     String name
     Boolean inactive = false
     Boolean billable = true

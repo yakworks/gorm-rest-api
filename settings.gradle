@@ -1,6 +1,14 @@
-rootProject.name = 'gorm-graphql-root'
+rootProject.name = 'gorm-rest-api-root'
 include 'plugin'
 //include 'examples'
 include 'examples/taskify-domains-plugin'
 include 'examples/grails-funcytown'
+
 findProject(':plugin').name = 'gorm-rest-api'
+findProject(':examples/taskify-domains-plugin').name = 'taskify-domains-plugin'
+findProject(':examples/grails-funcytown').name = 'grails-funcytown'
+//include 'examples/taskify-domains-plugin'
+//include 'examples/grails-funcytown'
+//findProject(':plugin').name = 'gorm-rest-api'
+include ':dao'
+project(':dao').projectDir = new File('../gorm-tools/dao-plugin')

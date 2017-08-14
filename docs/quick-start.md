@@ -23,14 +23,14 @@ Edit AppUser and we'll add a few fields with descriptions and examples so our Sw
 
 
 ```groovy
-package bits
+package restify
 import gorm.restapi.RestApi
 
 @RestApi(description = "The user for the restify application")
 class AppUser {
     String userName
-    Sting magicCode
-    Sting email
+    String magicCode
+    String email
     
     Date dateCreated
     Date lastUpdated
@@ -39,7 +39,7 @@ class AppUser {
         userName  description: 'The login name', 
                   example:"billy1",
                   nullable: false, maxSize:50
-        magicCode description: 'The keymaster code. Some call this a password'
+        magicCode description: 'The keymaster code. Some call this a password',
                   example:"b4d_p455w0rd", 
                   nullable: false
         email     description: "Email will be used for evil.",
@@ -77,7 +77,8 @@ HTTP/1.1 200
 ```
 
 **JSON Schema**
-```javascript
+
+```json
 curl -i localhost:8080/api/appUser/schema
 
 {
@@ -301,48 +302,41 @@ definitions:
         readOnly: true
 
 ```
-Add org to AppUser so it looks like this now
 
+## Associations 
+
+lets modify the App User to add an Org domain to it. 
+We can also add a default static for the includes or excludes to pass to the renderer. includes accepts either a 
+map or csv string in a SQL statement select like format.
 
 ```groovy
-package bits
-import gorm.restapi.RestApi
-
-@RestApi(description = "The user for the bits and bytes application")
-class AppUser {
-    String userName
-    Sting magicCode
-    Sting email
+    ...
     Org org
 
     static constraints = {
-        userName  description: 'The login name', example:"billy",
-                  blank: false, unique: true, nullable: false
-        magicCode description: 'The keymaster code. Some call this a password'
-                  example:"b4d_p455w0rd", 
-                  blank: false, password: true, nullable: false
-        email     description: "Email will be used for evil.",
-                  example:"billy@billyboy.com",
-                  email:true, maxSize:50, nullable: true
+        ...
         org       description: "The organization this user belongs to",
-                  title: "Organization"
+                  title: "Organization",
                   example:'{"id":1}',
                   nullable: false
     }
+    
+    static includes = "*, org.num, org.name"
 
 }
 ```
 
-Add fields to Org
+create the Org and then add some fields to it
 
 ```groovy
-package bits
+package restify
 import gorm.restapi.RestApi
 
 @RestApi(description = "The _organizations_ and _tribes_ we all belong to")
 class Org {
     String num
     String name
+    String address
 
     static constraints = {
         num   description: 'identifier or nickname', 
@@ -351,7 +345,12 @@ class Org {
         name  description: 'Name of this organizatoin', 
               example:"Virgin Galactic",
               maxSize:50, nullable: false
+        address description: 'Name of this organizatoin', 
+                example:"123 Main St.\nAnyTown, WI 60456",
+                maxSize:255, nullable: true
     }
 }
 ```
+
+
 

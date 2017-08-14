@@ -27,14 +27,10 @@ import grails.compiler.ast.ClassInjector
 //import grails.rest.Resource
 //import grails.rest.RestfulController
 import grails.util.GrailsNameUtils
-import grails.web.controllers.ControllerMethod
-import grails.web.mapping.UrlMappings
 import groovy.transform.CompilationUnitAware
 import groovy.transform.CompileStatic
 
 import java.lang.reflect.Modifier
-
-import javax.annotation.PostConstruct
 
 import org.codehaus.groovy.ast.ASTNode
 import org.codehaus.groovy.ast.AnnotationNode
@@ -42,30 +38,17 @@ import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.ConstructorNode
 import org.codehaus.groovy.ast.FieldNode
-import org.codehaus.groovy.ast.MethodNode
-import org.codehaus.groovy.ast.Parameter
-import org.codehaus.groovy.ast.expr.BinaryExpression
-import org.codehaus.groovy.ast.expr.BooleanExpression
 import org.codehaus.groovy.ast.expr.ClassExpression
-import org.codehaus.groovy.ast.expr.ClosureExpression
 import org.codehaus.groovy.ast.expr.ConstantExpression
 import org.codehaus.groovy.ast.expr.ConstructorCallExpression
 import org.codehaus.groovy.ast.expr.Expression
 import org.codehaus.groovy.ast.expr.ListExpression
-import org.codehaus.groovy.ast.expr.MapEntryExpression
-import org.codehaus.groovy.ast.expr.MapExpression
-import org.codehaus.groovy.ast.expr.MethodCallExpression
 import org.codehaus.groovy.ast.expr.TupleExpression
-import org.codehaus.groovy.ast.expr.VariableExpression
 import org.codehaus.groovy.ast.stmt.BlockStatement
-import org.codehaus.groovy.ast.stmt.EmptyStatement
 import org.codehaus.groovy.ast.stmt.ExpressionStatement
-import org.codehaus.groovy.ast.stmt.IfStatement
 import org.codehaus.groovy.control.CompilationUnit
 import org.codehaus.groovy.control.CompilePhase
 import org.codehaus.groovy.control.SourceUnit
-import org.codehaus.groovy.syntax.Token
-import org.codehaus.groovy.syntax.Types
 import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
 import org.grails.compiler.injection.ArtefactTypeAstTransformation
@@ -74,9 +57,9 @@ import org.grails.compiler.injection.TraitInjectionUtils
 import org.grails.compiler.web.ControllerActionTransformer
 import org.grails.core.artefact.ControllerArtefactHandler
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 
-import gorm.restapi.*
+import gorm.restapi.controller.SimpleRestApiDomainController
+import gorm.restapi.RestApi
 /**
  * The  transform automatically exposes a domain class as a RESTful resource. In effect the transform adds a controller to a Grails application
  * that performs CRUD operations on the domain. See the {@link Resource} annotation for more details
@@ -133,7 +116,7 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
             if(superClassAttribute instanceof ClassExpression) {
                 superClassNode = ((ClassExpression)superClassAttribute).getType()
             } else {
-                superClassNode = ClassHelper.make(gorm.restapi.RestApiDomainController)
+                superClassNode = ClassHelper.make(SimpleRestApiDomainController)
             }
 
             final ast = source.getAST()

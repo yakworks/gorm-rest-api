@@ -25,9 +25,9 @@ class UrlMappings {
                     delete "/${cName}/$id(.$format)?"(controller: cName, action: "delete", namespace:'api')
                     get "/${cName}(.$format)?"(controller: cName, action: "index", namespace:'api')
                     get "/${cName}/$id(.$format)?"(controller: cName, action: "show", namespace:'api')
-                    post "/${cName}(.$format)?"(controller: cName, action: "save", namespace:'api')
+                    post "/${cName}(.$format)?"(controller: cName, action: "create", namespace:'api')
                     put "/${cName}/$id(.$format)?"(controller: cName,action: "update", namespace:'api')
-                    patch "/${cName}/$id(.$format)?"(controller: cName, action: "patch", namespace:'api')
+                    patch "/${cName}/$id(.$format)?"(controller: cName, action: "update", namespace:'api')
                 }
             }
         }

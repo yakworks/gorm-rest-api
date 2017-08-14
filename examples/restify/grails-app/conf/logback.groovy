@@ -22,12 +22,6 @@ appender('STDOUT', ConsoleAppender) {
     }
 }
 
-//logger 'org.hibernate.type.descriptor.sql.BasicBinder', TRACE, ['STDOUT']
-logger 'org.hibernate.SQL', TRACE, ['STDOUT']
-logger 'org.springframework.transaction', TRACE, ['STDOUT']
-logger 'org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy', TRACE, ['STDOUT']
-logger 'org.springframework.orm.jpa', TRACE, ['STDOUT']
-
 def targetDir = BuildSettings.TARGET_DIR
 if (Environment.isDevelopmentMode() && targetDir != null) {
     appender("FULL_STACKTRACE", FileAppender) {

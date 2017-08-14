@@ -6,15 +6,15 @@ class BootStrap {
     static Random rand = new Random()
 
     def init = { servletContext ->
-        (1..50).each {
-            def prod = new Project(name:"Fooinator-$it",code:"$it").save(flush:true,failOnError:true)
-            def task = new Task(name:"task1-$it",
-                project:prod)
-                .save(flush:true,failOnError:true)
-            def task2 = new Task(name:"task2-$it",
-                project:prod)
-                .save(flush:true,failOnError:true)
-        }
+//        (1..50).each {
+//            def prod = new Project(name:"Fooinator-$it",code:"$it").save(flush:true,failOnError:true)
+//            def task = new Task(name:"task1-$it",
+//                project:prod)
+//                .save(flush:true,failOnError:true)
+//            def task2 = new Task(name:"task2-$it",
+//                project:prod)
+//                .save(flush:true,failOnError:true)
+//        }
 //        (1..100).each {
 //            def task = new Task(name:"task-$it",
 //                project:Project.load(rand.nextInt(49)))

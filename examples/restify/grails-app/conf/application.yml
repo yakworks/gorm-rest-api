@@ -2,14 +2,14 @@
 grails:
     profile: rest-api
     codegen:
-        defaultPackage: funcytown
+        defaultPackage: restify
     spring:
         transactionManagement:
             proxies: false
     gorm:
-        # Whether to autowire entities.
+        # Whether to autowire entities. 
         # Disabled by default for performance reasons.
-        autowire: false
+        autowire: false         
         reactor:
             # Whether to translate GORM events into Reactor events
             # Disabled by default for performance reasons
@@ -46,20 +46,20 @@ grails:
         types:
             json:
               - application/json
-              - text/json
+              - text/json   
             hal:
               - application/hal+json
-              - application/hal+xml
+              - application/hal+xml  
             xml:
               - text/xml
-              - application/xml
+              - application/xml                                 
             atom: application/atom+xml
             css: text/css
             csv: text/csv
             js: text/javascript
             rss: application/rss+xml
             text: text/plain
-            all: '*/*'
+            all: '*/*'            
     urlmapping:
         cache:
             maxsize: 1000
@@ -70,7 +70,6 @@ grails:
 
 ---
 hibernate:
-    format_sql: true
     cache:
         queries: false
         use_second_level_cache: true
@@ -83,7 +82,6 @@ dataSource:
     driverClassName: org.h2.Driver
     username: sa
     password:
-    logSql: true
 
 environments:
     development:

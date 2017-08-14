@@ -10,16 +10,16 @@ import grails.plugins.rest.client.RestBuilder
 import gorm.restapi.testing.RestApiFuncSpec
 
 @Integration
-@Rollback
+//@Rollback
 class ProjectRestApiSpec extends RestApiFuncSpec {
 
     String getResourcePath() {
         "${baseUrl}api/project"
     }
 
-    Map getInsertData() {[ name: "project", code: "x123"]}
+    Map getInsertData() {[ name: "project", num: "x123"]}
 
-    Map getUpdateData() { [name: "project Update", code: "x123u"]}
+    Map getUpdateData() { [name: "project Update", num: "x123u"]}
 
     Map getInvalidData() { ["name": null] }
 

@@ -42,7 +42,7 @@ extra:
   feature:
     tabs: false
   palette:
-    primary: 'blue grey'
+    primary: 'light green'
     accent: indigo
   # social:
   #   - type: globe

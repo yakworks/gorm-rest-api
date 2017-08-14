@@ -117,7 +117,7 @@ Status Code                |                        Description
 405 - METHOD_NOT_ALLOWED   | If method (GET,POST,etc..) is not setup in `static allowedMethods` for action or resource is read only
 406 - NOT_ACCEPTABLE       | Accept header requests a response in an unsupported format. not configed in mime-types. RestResponder uses this
 
-### Validation Errors 422
+#### Validation Errors 422
 
 If you try to create or update a record with invalid data, you'll receive a 422 response code and the operation will fail.
 

@@ -1,0 +1,5 @@
+rootProject.name='restify'
+
+include ':gorm-rest-api'
+project(':gorm-rest-api').projectDir = new File('../../plugin')
+
