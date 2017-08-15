@@ -104,19 +104,19 @@ class RestApiDaoController<T>  {
             def result
 
             if (request.method == "POST") {
-                result = getService().list(request.body, requestParams)
+                result = listPost(request.body, requestParams)
             }
-            else {
-                result = getService().list(requestParams)
+            else if (request.method == "GET"){
+                result = listGet(request.body, requestParams)
             }
 
             respond result
-
-            String etagValue = etagGenerator.shaFor( result, count, responseRepresentation.mediaType )
-
-            String  tch = totalCountHeader,
-                    poh = pageOffsetHeader,
-                    pmh = pageMaxHeader
+//
+//            String etagValue = etagGenerator.shaFor( result, count, responseRepresentation.mediaType )
+//
+//            String  tch = totalCountHeader,
+//                    poh = pageOffsetHeader,
+//                    pmh = pageMaxHeader
 
 //            withCacheHeaders {
 //                etag {
@@ -145,16 +145,18 @@ class RestApiDaoController<T>  {
     /**
      * returns the list of domain obects
      */
-    protected def listCriteria(){
-        def crit = domainClass.createCriteria()
-        def pager = new Pager(params)
-        def datalist = crit.list(max: pager.max, offset: pager.offset) {
-            if (params.sort)
-                CriteriaUtils.applyOrder(params, delegate)
-        }
-        return datalist
+    protected def listPost(body, requestParams ){
+        return getDataService().list(body, requestParams)
     }
 
+    /**
+     * returns the list of domain obects
+     */
+    protected def listGet(requestParams ){
+        return getDataService().list(requestParams)
+    }
+
+    //TODO This should be handled in the DAO
     protected def pagedList(dlist) {
         def pageData = new Pager(params)
         def fieldList
@@ -273,6 +275,10 @@ class RestApiDaoController<T>  {
     //
     protected def deleteDomain(p){
         return dao.remove(p)
+    }
+
+    protected def getDataService(){
+        return dao
     }
 
     //Build human readable error message

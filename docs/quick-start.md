@@ -73,6 +73,7 @@ curl -i -X GET -H "Content-Type: application/json" localhost:8080/api/appUser
 HTTP/1.1 200
 --8<-- snipped ...
 
+//FIME this should be showing pagination
 [{"id":1,"dateCreated":"2017-08-11T07:34:05Z","lastUpdated":"2017-08-11T07:34:05Z","magicCode":"Cool","userName":"Joe"}]
 ```
 
@@ -351,6 +352,12 @@ class Org {
     }
 }
 ```
+
+//TODO show curl show and list on AppUser shows org.num and org.name
+
+//TODO show curl -i localhost:8080/api/appUser/schema has Org object reference
+
+
 
 
 
