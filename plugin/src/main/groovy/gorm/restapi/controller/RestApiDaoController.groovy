@@ -104,36 +104,15 @@ class RestApiDaoController<T>  {
             def result
 
             if (request.method == "POST") {
+                //request.body will possibly have the criteria
                 result = listPost(request.body, requestParams)
             }
             else if (request.method == "GET"){
-                result = listGet(request.body, requestParams)
+                result = listGet(requestParams)
             }
 
             respond result
-//
-//            String etagValue = etagGenerator.shaFor( result, count, responseRepresentation.mediaType )
-//
-//            String  tch = totalCountHeader,
-//                    poh = pageOffsetHeader,
-//                    pmh = pageMaxHeader
 
-//            withCacheHeaders {
-//                etag {
-//                    etagValue
-//                }
-//                delegate.lastModified {
-//                    lastModifiedFor( result )
-//                }
-//                generate {
-//                    ResponseHolder holder = new ResponseHolder()
-//                    holder.data = result
-//                    holder.addHeader(totalCountHeader, count)
-//                    holder.addHeader(pageOffsetHeader, requestParams.offset ? requestParams?.offset : 0)
-//                    holder.addHeader(pageMaxHeader, requestParams.max ? requestParams?.max : result.size())
-//                    renderSuccessResponse( holder, 'default.rest.list.message' )
-//                }
-//            }
         }
         catch (e) {
             logMessageError(e)
@@ -146,14 +125,14 @@ class RestApiDaoController<T>  {
      * returns the list of domain obects
      */
     protected def listPost(body, requestParams ){
-        return getDataService().list(body, requestParams)
+        return getDaoService().list(body, requestParams)
     }
 
     /**
      * returns the list of domain obects
      */
-    protected def listGet(requestParams ){
-        return getDataService().list(requestParams)
+    protected def listGet(requestParams){
+        return getDaoService().list(requestParams)
     }
 
     //TODO This should be handled in the DAO

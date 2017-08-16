@@ -41,3 +41,58 @@ While REST is not CRUD a lot of it really is. This project aims to makes it easy
 
 
 
+
+## Notes right now
+
+There are 3 ways to generate json.
+
+1. using renderers, [Customizing Response Rendering](http://docs.grails.org/latest/guide/REST.html#renderers) 
+2. using the [grails-views plugin](https://github.com/grails/grails-views/). 
+3. using JSON.ObjectMarshaller which seems to be out of favor in the docs and is not longer mentioned
+but remains in the grails-plugin-converter's main [JSON]. 
+[this is a good overview](https://kylewbanks.com/blog/Customizing-JSON-Grails-Object-Marshalling) 
+
+[JSON]: https://github.com/grails-plugins/grails-plugin-converters/blob/master/src/main/groovy/grails/converters/JSON.java
+
+This [slide show](https://www.slideshare.net/clatimer/building-awesome-apis-in-grails) 
+is a must preview does a good job of explaining the different options towards the end.
+
+The goal is to provide the fastest way to render and object or collection
+that allows custom includes or excludes. 
+
+A `static includes = ...` can be set on the domain, the dao or the controller.
+An gets overriden in that order. For example: if I set excludes on the domain 
+if I set in on a Dao CRUD controller for that domain the it uses that. A setting
+in the AppSetupConfig overides them all and a includes param sent into the endpoint 
+will be used above all others. 
+I would be nice to put the grails-views into this picture as well so that if there is a *.gson file
+it gets used. Will need to figure out the resolution order. 
+
+There is a way to register a name wigh JSON.createNamedConfig and then they can be used with `JSON.use(name){...}` 
+This might be something we want to look into as an option as it may be really easy to incorporate our AppSetupConfig.
+
+
+## Json rendering links
+
+https://stackoverflow.com/questions/23940641/render-metadata-for-pagination-from-grails-restfulcontroller-index-search-action
+
+Explains that is views/object/_object.gson is present then its not picking up ObjectMarshallers
+https://stackoverflow.com/questions/43357469/grails-3-respond-method-doesnt-use-defined-json-marshaller-format
+https://kylewbanks.com/blog/Customizing-JSON-Grails-Object-Marshalling
+
+older 2.x plugin but has some good ideas.  
+https://github.com/danveloper/grails-rest-renderers
+
+
+include class and include version config options in the marshallers are exaplained a bit here
+https://github.com/grails-plugins/grails-plugin-converters/commit/d7ef874a59e19abc03821181ff33e11f612c63a6
+
+shows an example of pumping a pdf through the response.outputStream
+http://grails.1312388.n4.nabble.com/Grails-REST-Web-Services-Using-custom-Renderer-to-render-PDF-td4654403.html
+
+DefaultRendererRegistry in org.grails.plugins.web.rest.render is where the defaults
+aer registered.
+
+
+
+
