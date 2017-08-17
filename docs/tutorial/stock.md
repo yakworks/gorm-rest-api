@@ -1008,13 +1008,18 @@ We need to update our `contact/index.gsp` to make it "see" our angular app:
 **index.gsp**
 ```html
 ...
-<body ng-app="contactApp"> %{--The ngApp directive designates the root element of the application--}%
+<body ng-app="contactApp"> 
 ...
   <div class="container">
-    <ng-view></ng-view> %{-- ngView is a directive that complements the $route service by including the rendered template of the current route into the layout--}%
+    <ng-view></ng-view> 
   </div>
 </body
 ```
+
+> :bulb:
+The `ngApp` directive designates the root element of the application
+
+>`ngView` is a directive that complements the $route service by including the rendered template of the current route into the layout
 
 The next step is to create an angular controller for list:
 
