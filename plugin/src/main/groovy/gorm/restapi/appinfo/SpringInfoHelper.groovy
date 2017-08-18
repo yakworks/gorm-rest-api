@@ -6,6 +6,7 @@ import org.springframework.beans.factory.config.BeanDefinition
 /**
  * @author <a href='mailto:burt@burtbeckwith.com'>Burt Beckwith</a>
  */
+@SuppressWarnings(['FactoryMethodName','NoDef'])
 class SpringInfoHelper {
 
     static transactional = false

@@ -6,28 +6,28 @@ class UrlMappings {
 
     static mappings = {
 
-        for(controller in getGrailsApplication().controllerClasses) {
+        for (controller in getGrailsApplication().controllerClasses) {
             println "controler $controller.fullName"
             String cName = controller.logicalPropertyName
             String namespace = GrailsClassUtils.getStaticPropertyValue(controller.clazz, 'namespace')
             println "controler $cName with namespace $namespace"
 
-            if(namespace == 'api') {
+            if (namespace == 'api') {
                 group("/api") {
-                    "/${cName}/schema" (controller: "schema", action:"index"){
+                    "/${cName}/schema"(controller: "schema", action: "index") {
                         id = cName
                     }
                     //when a post is called allows an action
-                    post "/${cName}/$action(.$format)?"(controller: cName, namespace:'api')
+                    post "/${cName}/$action(.$format)?"(controller: cName, namespace: 'api')
                     //or
-                    post "/${cName}/actions/$action(.$format)?"(controller: cName, namespace:'api')
+                    post "/${cName}/actions/$action(.$format)?"(controller: cName, namespace: 'api')
 
-                    delete "/${cName}/$id(.$format)?"(controller: cName, action: "delete", namespace:'api')
-                    get "/${cName}(.$format)?"(controller: cName, action: "index", namespace:'api')
-                    get "/${cName}/$id(.$format)?"(controller: cName, action: "show", namespace:'api')
-                    post "/${cName}(.$format)?"(controller: cName, action: "create", namespace:'api')
-                    put "/${cName}/$id(.$format)?"(controller: cName,action: "update", namespace:'api')
-                    patch "/${cName}/$id(.$format)?"(controller: cName, action: "update", namespace:'api')
+                    delete "/${cName}/$id(.$format)?"(controller: cName, action: "delete", namespace: 'api')
+                    get "/${cName}(.$format)?"(controller: cName, action: "index", namespace: 'api')
+                    get "/${cName}/$id(.$format)?"(controller: cName, action: "show", namespace: 'api')
+                    post "/${cName}(.$format)?"(controller: cName, action: "create", namespace: 'api')
+                    put "/${cName}/$id(.$format)?"(controller: cName, action: "update", namespace: 'api')
+                    patch "/${cName}/$id(.$format)?"(controller: cName, action: "update", namespace: 'api')
                 }
             }
         }
@@ -43,14 +43,14 @@ class UrlMappings {
 
         "/schema/$id?(.$format)?"(controller: "schema", action: "index")
 
-        "/$controller/$action?/$id?(.$format)?"{
+        "/$controller/$action?/$id?(.$format)?" {
             constraints {
                 // apply constraints here
             }
         }
 
-        "/"(view:"/index")
-        "500"(view:'/error')
-        "404"(view:'/notFound')
+        "/"(view: "/index")
+        "500"(view: '/error')
+        "404"(view: '/notFound')
     }
 }

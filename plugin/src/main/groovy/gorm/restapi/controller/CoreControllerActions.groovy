@@ -3,6 +3,7 @@ package gorm.restapi.controller
 import grails.converters.JSON
 
 import grails.artefact.Artefact
+
 //import grails.transaction.ReadOnly
 //import grails.gorm.transactions.Transactional
 import grails.transaction.Transactional
@@ -21,6 +22,7 @@ import static org.springframework.http.HttpStatus.*
  *
  * based on Grails' RestFullController
  */
+@SuppressWarnings(['FactoryMethodName'])
 @Artefact("Controller")
 trait CoreControllerActions<T> {
 
@@ -29,7 +31,7 @@ trait CoreControllerActions<T> {
      *
      * @return List of resources or empty if it doesn't exist
      */
-     List<T> listAllResources(Map params) {
+    List<T> listAllResources(Map params) {
         resource.list(params)
     }
 
@@ -38,10 +40,9 @@ trait CoreControllerActions<T> {
      *
      * @return List of resources or empty if it doesn't exist
      */
-     Integer countResources() {
+    Integer countResources() {
         resource.count()
     }
-
 
     /**
      * handles the request for write methods (create, edit, update, save, delete) when controller is in read only mode
@@ -49,7 +50,7 @@ trait CoreControllerActions<T> {
      * @return true if controller is read only
      */
     boolean handleReadOnly() {
-        if(readOnly) {
+        if (readOnly) {
             render status: HttpStatus.METHOD_NOT_ALLOWED.value()
             return true
         } else {
@@ -102,7 +103,6 @@ trait CoreControllerActions<T> {
         instance
     }
 
-
     void notFound() {
         render status: NOT_FOUND
     }
@@ -136,17 +136,16 @@ trait CoreControllerActions<T> {
         resource.delete flush: true
     }
 
-
     String addLocationHeader(response, id = null, String action = null) {
-        String locLink= grailsLinkGenerator.link(
-            resource: this.controllerName,
-            action: action,
-            id: id,
-            absolute: true,
-            namespace: hasProperty('namespace') ? this.namespace : null
+        String locLink = grailsLinkGenerator.link(
+                resource: this.controllerName,
+                action: action,
+                id: id,
+                absolute: true,
+                namespace: hasProperty('namespace') ? this.namespace : null
         )
 
-        response.addHeader(HttpHeaders.LOCATION,locLink)
+        response.addHeader(HttpHeaders.LOCATION, locLink)
     }
 
     String getClassMessageArg() {
@@ -154,4 +153,3 @@ trait CoreControllerActions<T> {
     }
 
 }
-

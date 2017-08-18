@@ -11,7 +11,8 @@ import grails.plugins.rest.client.RestBuilder
 
 // @Integration
 // @Rollback
-abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait{
+@SuppressWarnings(['NoDef', 'AbstractClassWithoutAbstractMethod'])
+abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait {
     boolean vndHeaderOnError = false
     // RestBuilder getRestBuilder() {
     //     new RestBuilder()
@@ -33,35 +34,35 @@ abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait{
         given:
         def response = post_a_valid_resource()
 
-        when:"The index action is requested"
+        when: "The index action is requested"
         response = restBuilder.get(resourcePath)
 
-        then:"The response is correct"
+        then: "The response is correct"
         response.status == OK.value()
         response.json.size() >= 0 // == []
     }
 
     void test_save_post() {
-        when:"The save action is executed with no content"
+        when: "The save action is executed with no content"
         def response = restBuilder.post(resourcePath)
 
-        then:"The response is UNPROCESSABLE_ENTITY"
+        then: "The response is UNPROCESSABLE_ENTITY"
         verify_UNPROCESSABLE_ENTITY(response)
         //subsetEquals(validJson, response.json)
 
-        when:"The save action is executed with invalid data"
+        when: "The save action is executed with invalid data"
         response = restBuilder.post(resourcePath) {
             json invalidData
         }
-        then:"The response is UNPROCESSABLE_ENTITY"
+        then: "The response is UNPROCESSABLE_ENTITY"
         verify_UNPROCESSABLE_ENTITY(response)
 
-        when:"The save action is executed with valid data"
+        when: "The save action is executed with valid data"
         response = restBuilder.post(resourcePath) {
             json insertData
         }
 
-        then:"The response is correct"
+        then: "The response is correct"
         response.status == CREATED.value()
         verifyHeaders(response)
         //response.json.id
@@ -70,7 +71,6 @@ abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait{
         def rget = restBuilder.get("$resourcePath/${response.json.id}")
         subsetEquals(insertData, rget.json)
     }
-
 
     void test_update_put() {
         given:
@@ -82,15 +82,15 @@ abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait{
             json invalidData
         }
 
-        then:"The response is invalid"
+        then: "The response is invalid"
         verify_UNPROCESSABLE_ENTITY(response2)
 
-        when:"The update action is called with valid data"
+        when: "The update action is called with valid data"
         response = restBuilder.put("$resourcePath/$goodId") {
             json updateData
         }
 
-        then:"The response is correct"
+        then: "The response is correct"
         response.status == OK.value()
         //response.json
         subsetEquals(updateData, response.json)
@@ -101,38 +101,38 @@ abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait{
     }
 
     void test_show_get() {
-        given :"The save action is executed with valid data"
+        given: "The save action is executed with valid data"
         def response = post_a_valid_resource()
 
-        when:"When the show action is called to retrieve a resource"
+        when: "When the show action is called to retrieve a resource"
         def id = response.json.id
         response = restBuilder.get("$resourcePath/$id")
 
-        then:"The response is correct"
+        then: "The response is correct"
         response.status == OK.value()
         response.json.id == id
     }
 
     void test_delete() {
-        given :"The save action is executed with valid data"
+        given: "The save action is executed with valid data"
         def response = post_a_valid_resource()
         def id = response.json.id
 
-        when:"When the delete action is executed on an unknown instance"
+        when: "When the delete action is executed on an unknown instance"
         response = restBuilder.delete("$resourcePath/99999")
 
-        then:"The response is bad"
+        then: "The response is bad"
         response.status == NOT_FOUND.value()
 
-        when:"When the delete action is executed on an existing instance"
+        when: "When the delete action is executed on an existing instance"
         response = restBuilder.delete("$resourcePath/$id")
 
-        then:"The response is correct"
+        then: "The response is correct"
         response.status == NO_CONTENT.value()
         //!Project.get(id)
     }
 
-    def post_a_valid_resource(){
+    def post_a_valid_resource() {
         def response = restBuilder.post(resourcePath) {
             json insertData
         }
@@ -142,19 +142,18 @@ abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait{
         return response
     }
 
-    def verifyHeaders(response){
+    def verifyHeaders(response) {
         assert response.headers.getFirst(CONTENT_TYPE) == 'application/json;charset=UTF-8'
         assert response.headers.getFirst(HttpHeaders.LOCATION) == "$resourcePath/${response.json.id}"
         true
     }
 
-    def verify_UNPROCESSABLE_ENTITY(response){
+    def verify_UNPROCESSABLE_ENTITY(response) {
         assert response.status == UNPROCESSABLE_ENTITY.value()
-        if(vndHeaderOnError){
+        if (vndHeaderOnError) {
             assert response.headers.getFirst(CONTENT_TYPE) == 'application/vnd.error;charset=UTF-8'
         }
         true
     }
-
 
 }

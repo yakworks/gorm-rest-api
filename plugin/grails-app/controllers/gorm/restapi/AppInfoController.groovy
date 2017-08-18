@@ -5,6 +5,7 @@ import gorm.restapi.appinfo.AppInfoBuilder
 
 //see http://plugins.grails.org/plugin/grails/spring-security-appinfo
 // for app that shows app-info
+@SuppressWarnings(['NoDef'])
 class AppInfoController {
 
       //injected

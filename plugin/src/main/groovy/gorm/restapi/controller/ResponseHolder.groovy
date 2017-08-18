@@ -1,7 +1,7 @@
 class ResponseHolder {
     Object data
-    def headers = [:]
-    def message
+    Map headers = [:]
+    String message
 
     void addHeader( String name, Object value ) {
         if (!headers[name]) {

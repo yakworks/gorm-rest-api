@@ -16,6 +16,7 @@
 package gorm.restapi.transform
 
 import grails.io.IOUtils
+
 //import org.grails.datastore.gorm.transactions.transform.TransactionalTransform
 import org.grails.transaction.transform.TransactionalTransform
 import org.grails.plugins.web.rest.transform.LinkableTransform
@@ -24,6 +25,7 @@ import static java.lang.reflect.Modifier.*
 import static org.grails.compiler.injection.GrailsASTUtils.*
 import grails.artefact.Artefact
 import grails.compiler.ast.ClassInjector
+
 //import grails.rest.Resource
 //import grails.rest.RestfulController
 import grails.util.GrailsNameUtils
@@ -60,6 +62,7 @@ import org.springframework.beans.factory.annotation.Autowired
 
 import gorm.restapi.controller.SimpleRestApiDomainController
 import gorm.restapi.RestApi
+
 /**
  * The  transform automatically exposes a domain class as a RESTful resource. In effect the transform adds a controller to a Grails application
  * that performs CRUD operations on the domain. See the {@link Resource} annotation for more details
@@ -71,6 +74,7 @@ import gorm.restapi.RestApi
  * @author Graeme Rocher
  *
  */
+@SuppressWarnings(['VariableName', 'AbcMetric', 'ThrowRuntimeException', 'NoDef', 'MethodSize'])
 @CompileStatic
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 class RestApiTransform implements ASTTransformation, CompilationUnitAware {
@@ -82,7 +86,7 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
     public static final String ATTR_URI = "uri"
     public static final String PARAMS_VARIABLE = "params"
     public static final ConstantExpression CONSTANT_STATUS = new ConstantExpression(ARGUMENT_STATUS)
-    public static final String ATTR_NAMESPACE ="namespace"
+    public static final String ATTR_NAMESPACE = "namespace"
     public static final String RENDER_METHOD = "render"
     public static final String ARGUMENT_STATUS = "status"
     public static final String REDIRECT_METHOD = "redirect"
@@ -92,7 +96,6 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
 
     //private static final ConfigObject CO = new ConfigSlurper().parse(getContents(new File("grails-app/conf/application.groovy"))); //grails.io.IOUtils has a better way to do this.
     //see https://github.com/9ci/grails-audit-trail/blob/master/audit-trail-plugin/src/main/groovy/gorm/AuditStampASTTransformation.java for some ideas on how we can tweak this.
-
 
     @Override
     void visit(ASTNode[] astNodes, SourceUnit source) {
@@ -113,8 +116,8 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
         if (resource == null) {
             ClassNode<?> superClassNode
             Expression superClassAttribute = annotationNode.getMember(ATTR_SUPER_CLASS)
-            if(superClassAttribute instanceof ClassExpression) {
-                superClassNode = ((ClassExpression)superClassAttribute).getType()
+            if (superClassAttribute instanceof ClassExpression) {
+                superClassNode = ((ClassExpression) superClassAttribute).getType()
             } else {
                 superClassNode = ClassHelper.make(SimpleRestApiDomainController)
             }
@@ -123,18 +126,20 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
             final newControllerClassNode = new ClassNode(className, PUBLIC, nonGeneric(superClassNode, parent))
 
             final transactionalAnn = new AnnotationNode(TransactionalTransform.MY_TYPE)
-            transactionalAnn.addMember(ATTR_READY_ONLY,ConstantExpression.PRIM_TRUE)
+            transactionalAnn.addMember(ATTR_READY_ONLY, ConstantExpression.PRIM_TRUE)
             newControllerClassNode.addAnnotation(transactionalAnn)
 
             final readOnlyAttr = annotationNode.getMember(ATTR_READY_ONLY)
-            boolean isReadOnly = readOnlyAttr != null && ((ConstantExpression)readOnlyAttr).trueExpression
+            boolean isReadOnly = readOnlyAttr != null && ((ConstantExpression) readOnlyAttr).trueExpression
             addConstructor(newControllerClassNode, parent, isReadOnly)
 
-            List<ClassInjector> injectors = ArtefactTypeAstTransformation.findInjectors(ControllerArtefactHandler.TYPE, GrailsAwareInjectionOperation.getClassInjectors());
+            List<ClassInjector> injectors = ArtefactTypeAstTransformation.findInjectors(ControllerArtefactHandler.TYPE, GrailsAwareInjectionOperation.getClassInjectors())
 
-            ArtefactTypeAstTransformation.performInjection(source, newControllerClassNode, injectors.findAll { !(it instanceof ControllerActionTransformer) })
+            ArtefactTypeAstTransformation.performInjection(source, newControllerClassNode, injectors.findAll {
+                !(it instanceof ControllerActionTransformer)
+            })
 
-            if(unit) {
+            if (unit) {
                 TraitInjectionUtils.processTraitsForNode(source, newControllerClassNode, 'Controller', unit)
             }
 
@@ -151,10 +156,9 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
                         hasHtml = true
                     }
                     responseFormatsExpression.addExpression(responseFormatsAttr)
-                }
-                else if (responseFormatsAttr instanceof ListExpression) {
-                    responseFormatsExpression = (ListExpression)responseFormatsAttr
-                    for(Expression expr in responseFormatsExpression.expressions) {
+                } else if (responseFormatsAttr instanceof ListExpression) {
+                    responseFormatsExpression = (ListExpression) responseFormatsAttr
+                    for (Expression expr in responseFormatsExpression.expressions) {
                         if (expr.text.equalsIgnoreCase('html')) hasHtml = true; break
                     }
                 }
@@ -163,9 +167,9 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
                 responseFormatsExpression.addExpression(new ConstantExpression("xml"))
             }
 
-            if(namespaceAttr != null){
-                final namespace=namespaceAttr?.getText()
-                final namespaceField = new FieldNode('namespace', STATIC, ClassHelper.STRING_TYPE,newControllerClassNode, new ConstantExpression(namespace))
+            if (namespaceAttr != null) {
+                final namespace = namespaceAttr?.getText()
+                final namespaceField = new FieldNode('namespace', STATIC, ClassHelper.STRING_TYPE, newControllerClassNode, new ConstantExpression(namespace))
                 newControllerClassNode.addField(namespaceField)
             }
 
@@ -194,7 +198,6 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
             //         urlMappingsSetter.addAnnotation(controllerMethodAnnotation)
             //         newControllerClassNode.addMethod(urlMappingsSetter)
             //         processVariableScopes(source, newControllerClassNode, urlMappingsSetter)
-
 
             //         final methodBody = new BlockStatement()
 
@@ -233,7 +236,9 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
             newControllerClassNode.addProperty("scope", publicStaticFinal, ClassHelper.STRING_TYPE, new ConstantExpression("singleton"), null, null)
             newControllerClassNode.addProperty("responseFormats", publicStaticFinal, new ClassNode(List).getPlainNodeReference(), responseFormatsExpression, null, null)
 
-            ArtefactTypeAstTransformation.performInjection(source, newControllerClassNode, injectors.findAll { it instanceof ControllerActionTransformer })
+            ArtefactTypeAstTransformation.performInjection(source, newControllerClassNode, injectors.findAll {
+                it instanceof ControllerActionTransformer
+            })
             //new TransactionalTransform().visit(source, transactionalAnn, newControllerClassNode)
             new TransactionalTransform().weaveTransactionalBehavior(source, newControllerClassNode, transactionalAnn)
 
@@ -249,7 +254,7 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
 
     ConstructorNode addConstructor(ClassNode controllerClassNode, ClassNode domainClassNode, boolean readOnly) {
         BlockStatement constructorBody = new BlockStatement()
-        constructorBody.addStatement(new ExpressionStatement(new ConstructorCallExpression(ClassNode.SUPER, new TupleExpression(new ClassExpression(domainClassNode),new ConstantExpression(readOnly, true)))))
+        constructorBody.addStatement(new ExpressionStatement(new ConstructorCallExpression(ClassNode.SUPER, new TupleExpression(new ClassExpression(domainClassNode), new ConstantExpression(readOnly, true)))))
         controllerClassNode.addConstructor(Modifier.PUBLIC, ZERO_PARAMETERS, ClassNode.EMPTY_ARRAY, constructorBody)
     }
 

@@ -2,8 +2,8 @@ package gorm.restapi
 
 class BootStrap {
 
-    def init = { servletContext ->
+    Closure init = { servletContext ->
     }
-    def destroy = {
+    Closure destroy = {
     }
 }
