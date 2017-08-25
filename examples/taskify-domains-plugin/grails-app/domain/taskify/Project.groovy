@@ -27,6 +27,7 @@ class Project {
         startDate	description: "Start date of project.", example:"2017-01-01"
         endDate	    description: "End date of project.", example:"2017-12-30"
         activateDate description: "Date time project is activated", example:"2017-12-30"
+
     }
 
     static mapping = {
