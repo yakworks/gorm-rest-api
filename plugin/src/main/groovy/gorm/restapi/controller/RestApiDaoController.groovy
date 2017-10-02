@@ -283,10 +283,10 @@ class RestApiDaoController<T> {
 
     }
 
-    def buildError(obj, errs) {
-        eachError([bean: obj], {
-            errs << [(it.field): [object          : it.objectName, field: it.field, message: g.message(error: it).toString(),
-                                  'rejected-value': StringEscapeUtils.escapeXml(it.rejectedValue?.toString())]]
+    def buildError (obj, errs) {
+        eachError([bean:obj], {
+            errs << [(it.field): [object: it.objectName, field: it.field, message: g.message(error:it).toString(),
+                'rejected-value': StringEscapeUtils.escapeXml(it.rejectedValue?.toString())]]
         })
         return errs
     }
