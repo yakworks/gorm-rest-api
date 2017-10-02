@@ -1,6 +1,6 @@
 package gorm.restapi.controller
 
-import gorm.tools.Pager
+//import gorm.tools.Pager
 import grails.artefact.Artefact
 import grails.converters.JSON
 import grails.core.GrailsApplication
@@ -9,8 +9,8 @@ import grails.plugin.dao.ErrorMessageService
 import grails.plugin.dao.GormDaoSupport
 import grails.util.GrailsNameUtils
 import grails.validation.ValidationException
-import gorm.tools.beans.BeanPathTools
-import gorm.tools.criteria.CriteriaUtils
+//import gorm.tools.beans.BeanPathTools
+//import gorm.tools.criteria.CriteriaUtils
 import org.apache.commons.lang.StringEscapeUtils
 import org.springframework.context.MessageSource
 import grails.plugin.dao.DaoUtil
@@ -133,7 +133,7 @@ class RestApiDaoController<T> {
 
     //TODO This should be handled in the DAO
     protected def pagedList(dlist) {
-        def pageData = new Pager(params)
+        def pageData = null//new Pager(params)
         def fieldList
         if (hasProperty('listFields')) {
             fieldList = listFields

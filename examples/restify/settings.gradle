@@ -3,3 +3,6 @@ rootProject.name='restify'
 include ':gorm-rest-api'
 project(':gorm-rest-api').projectDir = new File('../../plugin')
 
+include ':dao'
+project(':dao').projectDir = new File('../../../gorm-tools/dao-plugin')
+

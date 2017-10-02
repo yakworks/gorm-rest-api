@@ -1,25 +1,17 @@
 package gorm.restapi
 
-import grails.converters.JSON
 import grails.core.DefaultGrailsApplication
 import grails.core.GrailsDomainClass
 import grails.core.GrailsDomainClassProperty
-import grails.transaction.Transactional
 import grails.util.GrailsNameUtils
 import grails.validation.ConstrainedProperty
 import groovy.transform.CompileDynamic
-import groovy.transform.CompileStatic
 import org.grails.core.DefaultGrailsDomainClass
-import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.orm.hibernate.cfg.HibernateMappingContext
 import org.grails.orm.hibernate.cfg.Mapping
 
 import javax.annotation.Resource
-
-//import javax.inject.Inject
-//import org.springframework.bean.factory.Autowired
-
 import static grails.util.GrailsClassUtils.getStaticPropertyValue
 
 /**
@@ -31,11 +23,11 @@ import static grails.util.GrailsClassUtils.getStaticPropertyValue
  * Created by JBurnett on 6/19/17.
  */
 //@CompileStatic
-@SuppressWarnings(['IfStatementBraces', 'UnnecessaryGetter', 'NoDef', 'AbcMetric'])
 class JsonSchemaGenerator {
 
     @Resource
     HibernateMappingContext grailsDomainClassMappingContext
+
     @Resource
     DefaultGrailsApplication grailsApplication
 
@@ -43,99 +35,150 @@ class JsonSchemaGenerator {
     //https://spacetelescope.github.io/understanding-json-schema/index.html
     //https://docs.spring.io/spring-data/rest/docs/current/reference/html/#metadata.json-schema
     //https://github.com/OAI/OpenAPI-Specification
+    Map generate(Class clazz) {
+        return generate(GrailsNameUtils.getPropertyNameRepresentation(clazz.simpleName))
+    }
+
     Map generate(String domainName) {
-        //TODO figure out a more performant way to do these if possible
         DefaultGrailsDomainClass domClass = getDomainClass(domainName)
-        Mapping mapping = getMapping(domainName)
+        Map schema = [:]
+        schema['$schema'] = "http://json-schema.org/schema#"
+        schema['$id'] = "http://localhost:8080/schema/${domClass.name}.json"
+        schema["definitions"] = [:]
+        schema.putAll generate(domClass, schema)
+        return schema
+    }
+
+    Map generate(GrailsDomainClass domainClass, Map schema) {
+        Map map = [:]
+        //TODO figure out a more performant way to do these if
+        Mapping mapping = getMapping(domainClass.name)
 
         //Map cols = mapping.columns
-        List<GrailsDomainClassProperty> props = resolvePersistentProperties(domClass)
+        map.title = domainClass.name //TODO Should come from application.yml !?
 
-        def map = ['$schema': "http://json-schema.org/schema#",
-                   '$id'    : "http://localhost:8080/schema/${domainName}", //<-TODO come from application.yml?
-                   title    : domClass.name]
-        if (mapping?.comment) map.description = mapping.comment
-        if (domClass.clazz.isAnnotationPresent(RestApi.class)) {
-            map.description = domClass.clazz.getAnnotation(RestApi.class).description()
+        if(mapping?.comment) map.description = mapping.comment
+        if(domainClass.clazz.isAnnotationPresent(RestApi.class)){
+            map.description = domainClass.clazz.getAnnotation(RestApi.class).description()
         }
+
         map.type = 'Object'
         map.required = []
-        map.properties = [:]
 
-        //ID
-        def idProp = domClass.getIdentifier()
-        map.properties[idProp.name] = [
-                type    : getJsonType(idProp.type).type,
-                readOnly: true
-        ]
+        def (props, required) = getDomainProperties(domainClass, schema)
+
+        map.properties = props
+        map.required = required
+
+        return map
+    }
+
+    private List getDomainProperties(DefaultGrailsDomainClass domClass, Map schema) {
+        String domainName = GrailsNameUtils.getPropertyNameRepresentation(domClass.name)
+        LinkedHashMap<String, String> map = [:]
+        List required = []
+
+        GrailsDomainClassProperty idProp = domClass.getIdentifier()
+
+        //id
+        map[idProp.name] = [type : getJsonType(idProp.type).type, readOnly: true]
+
         //version
-        if (domClass.version) map.properties[domClass.version.name] = [type: 'integer', readOnly: true]
+        if(domClass.version) map[domClass.version.name] = [type : 'integer', readOnly: true]
 
-        for (def prop : props) {
+
+        Mapping mapping = getMapping(domainName)
+        List<GrailsDomainClassProperty> props = resolvePersistentProperties(domClass)
+
+        for (GrailsDomainClassProperty prop : props) {
             ConstrainedProperty constraints = domClass.constrainedProperties.get(prop.name)
             //Map mappedBy = domClass.mappedBy
             if (!constraints.display) continue //skip if display is false
-            def m = prop.getMetaPropertyValues()
-            def jprop = [:]
-            //jprop.title = prop.naturalName
-            jprop.title = constraints.getMetaConstraintValue("title") ?: prop.naturalName
-            //title override
-            //def metaConstraints = constraints.getMetaConstraintValue()metaConstraints
-            //if(constraints.attributes?.title) jprop.title = constraints.attributes.title
-            //if(constraints.getMetaConstraintValue("title"))
-            String description = constraints.getMetaConstraintValue("description")
-            if (description) jprop.description = description
 
-            //Example
-            String example = constraints.getMetaConstraintValue("example")
-            if (example) jprop.example = example
 
-            //type
-            Map typeFormat = getJsonType(constraints.propertyType)
-            jprop.type = typeFormat.type
-            //format
-            if (typeFormat.format) jprop.format = typeFormat.format
-            //format override from constraints
-            if (constraints.format) jprop.format = constraints.format
-            if (constraints.email) jprop.format = 'email'
-            //pattern TODO
+            if(prop.isAssociation()) {
+                GrailsDomainClass referencedDomainClass = prop.referencedDomainClass
+                if((prop.isManyToOne() || prop.isOneToOne() && !schema.definitions.containsKey(referencedDomainClass.name))) {
+                    if(!referencedDomainClass.clazz.isAnnotationPresent(RestApi)) {
+                        //treat as definition in same schema
+                        schema.definitions[referencedDomainClass.name] = [:]
+                        schema.definitions[referencedDomainClass.name] = generate(referencedDomainClass, schema)
+                        map[prop.name] = ['$ref': "#/definitions/$prop.referencedDomainClass.name"]
+                    } else {
+                        //treat as a seperate file
+                        map[prop.name] = ['$ref': "${prop.referencedDomainClass.name}.json"]
+                    }
 
-            //defaults
-            String defVal = getDefaultValue(mapping, prop.name)
-            if (defVal != null) jprop.default = defVal //TODO convert to string?
-
-            //required
-            if (!constraints.isNullable() && constraints.editable) {
-                //TODO update this so it can use config too
-                if (prop.name in ['dateCreated', 'lastUpdated']) {
-                    jprop.readOnly = true
-                }
-                //if its nullable:false but has a default then its not required as it will get filled in.
-                else if (jprop.default == null) {
-                    jprop.required = true
-                    (map.required as List).add(prop.name)
+                    if (!constraints.isNullable() && constraints.editable) {
+                        required.add(prop.name)
+                    }
                 }
             }
-            //readOnly
-            if (!constraints.editable) jprop.readOnly = true
-            //default TODO
-            //minLength
-            if (constraints.getMaxSize()) jprop.maxLength = constraints.getMaxSize()
-            //maxLength
-            if (constraints.getMinSize()) jprop.minLength = constraints.getMinSize()
+            else {
 
-            if (constraints.getMin() != null) jprop.minimum = constraints.getMin()
-            if (constraints.getMax() != null) jprop.maximum = constraints.getMax()
-            if (constraints.getScale() != null) jprop.multipleOf = 1 / Math.pow(10, constraints.getScale())
+                Map jprop = [:]
+                //jprop.title = prop.naturalName
+                jprop.title = constraints.getMetaConstraintValue("title") ?: prop.naturalName
+                //title override
+                //def metaConstraints = constraints.getMetaConstraintValue()metaConstraints
+                //if(constraints.attributes?.title) jprop.title = constraints.attributes.title
+                //if(constraints.getMetaConstraintValue("title"))
+                String description = constraints.getMetaConstraintValue("description")
+                if (description) jprop.description = description
+
+                //Example
+                String example = constraints.getMetaConstraintValue("example")
+                if (example) jprop.example = example
+
+                //type
+                Map typeFormat = getJsonType(constraints.propertyType)
+                jprop.type = typeFormat.type
+                //format
+                if (typeFormat.format) jprop.format = typeFormat.format
+                if (typeFormat.enum) jprop.enum = typeFormat.enum
+
+                //format override from constraints
+                if (constraints.format) jprop.format = constraints.format
+                if (constraints.email) jprop.format = 'email'
+                //pattern TODO
+
+                //defaults
+                String defVal = getDefaultValue(mapping, prop.name)
+                if (defVal != null) jprop.default = defVal //TODO convert to string?
+
+                //required
+                if (!constraints.isNullable() && constraints.editable) {
+                    //TODO update this so it can use config too
+                    if (prop.name in ['dateCreated', 'lastUpdated']) {
+                        jprop.readOnly = true
+                    }
+                    //if its nullable:false but has a default then its not required as it will get filled in.
+                    else if (jprop.default == null) {
+                        jprop.required = true
+                        required.add(prop.name)
+                    }
+                }
+                //readOnly
+                if (!constraints.editable) jprop.readOnly = true
+                //default TODO
+                //minLength
+                if (constraints.getMaxSize()) jprop.maxLength = constraints.getMaxSize()
+                //maxLength
+                if (constraints.getMinSize()) jprop.minLength = constraints.getMinSize()
+
+                if (constraints.getMin() != null) jprop.minimum = constraints.getMin()
+                if (constraints.getMax() != null) jprop.maximum = constraints.getMax()
+                if (constraints.getScale() != null) jprop.multipleOf = 1 / Math.pow(10, constraints.getScale())
+
+                map[prop.name] = jprop
+            }
 
             //def typeFormat = getJsonType(constraints)
             //map.properties[prop.pathFromRoot] = typeFormat
-            map.properties[prop.name] = jprop
+
         }
 
-        return map
-        //def fooMap = [foo:'bar']
-        //render map as JSON
+        return [map, required]
     }
 
     String getDefaultValue(Mapping mapping, String propName) {
@@ -144,12 +187,12 @@ class JsonSchemaGenerator {
     }
 
     @CompileDynamic
-    DefaultGrailsDomainClass getDomainClass(String domainName) {
+    DefaultGrailsDomainClass getDomainClass(String domainName){
         grailsApplication.domainClasses.find { it.propertyName == domainName }
     }
 
     @CompileDynamic
-    Mapping getMapping(String domainName) {
+    Mapping getMapping(String domainName){
         PersistentEntity pe = grailsDomainClassMappingContext.persistentEntities.find {
             GrailsNameUtils.getPropertyName(it.name) == domainName
         }
@@ -160,16 +203,16 @@ class JsonSchemaGenerator {
      * big decimal defaults to money
      */
 
-    protected Map getJsonType(propertyType) {
+    protected Map getJsonType(Class propertyType){
         Map typeFormat = [type: 'string']
-        switch (propertyType) {
-            case [Boolean, Byte]:
+        switch (propertyType){
+            case [Boolean,Byte]:
                 typeFormat.type = 'boolean'
                 break
-            case [Integer, Long, Short]:
+            case [Integer,Long,Short]:
                 typeFormat.type = 'integer'
                 break
-            case [Double, Float, BigDecimal]:
+            case [Double,Float,BigDecimal]:
                 typeFormat.type = 'number'
                 break
             case [BigDecimal]:
@@ -189,17 +232,21 @@ class JsonSchemaGenerator {
             case [String]:
                 typeFormat.type = 'string'
                 break
+            case {it.isEnum()}:
+                typeFormat.type = 'string'
+                typeFormat.enum = propertyType.values()*.name() as String[]
+
         }
-        //TODO what about types like Byte etc..? or enums?
+        //TODO what about types like Byte etc..?
         return typeFormat
     }
 
     //copied from FormFieldsTagLib in the Fields plugin
     @CompileDynamic
-    private List<GrailsDomainClassProperty> resolvePersistentProperties(GrailsDomainClass domainClass, Map attrs = [:]) {
+    private List<GrailsDomainClassProperty> resolvePersistentProperties(GrailsDomainClass domainClass, Map attrs =[:]) {
         List<GrailsDomainClassProperty> properties
 
-        if (attrs.order) {
+        if(attrs.order) {
             def orderBy = attrs.order?.tokenize(',')*.trim() ?: []
             properties = orderBy.collect { propertyName -> domainClass.getPersistentProperty(propertyName) }
         } else {

@@ -17,6 +17,7 @@ class ProjectRestApiSpec extends RestApiFuncSpec {
         "${baseUrl}api/project"
     }
 
+    //FIXME the following should not be needed as we know everythign we need to generate this from constraints
     Map getInsertData() {[ name: "project", num: "x123"]}
 
     Map getUpdateData() { [name: "project Update", num: "x123u"]}
