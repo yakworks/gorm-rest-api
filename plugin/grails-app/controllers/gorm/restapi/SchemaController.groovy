@@ -2,6 +2,7 @@ package gorm.restapi
 
 import grails.converters.JSON
 
+@SuppressWarnings(['NoDef'])
 class SchemaController {
 
 	//static namespace = 'api'

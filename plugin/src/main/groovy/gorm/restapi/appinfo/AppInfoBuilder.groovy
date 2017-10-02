@@ -36,7 +36,7 @@ class AppInfoBuilder {
 
     List urlMappings() {
 
-        def urlMappings = grailsUrlMappingsHolder.urlMappings.collect { [
+        List urlMappings = grailsUrlMappingsHolder.urlMappings.collect { [
               name: it.mappingName?:'',
               url: it.urlData.logicalUrls.first(),
               methods: it.parameterValues,
@@ -47,8 +47,7 @@ class AppInfoBuilder {
     }
 
     Map beanInfo() {
-
-        def springInfo = new SpringInfoHelper()
+        SpringInfoHelper springInfo = new SpringInfoHelper()
         springInfo.grailsApplication = grailsApplication
 
         return springInfo.splitBeans()
@@ -69,20 +68,20 @@ class AppInfoBuilder {
      */
     Map<String, Object> memoryInfo() {
 
-        def heapPoolNames = []
-        def heapNumbers = [:]
+        List heapPoolNames = []
+        Map heapNumbers = [:]
         generatePoolGraphData MemoryType.HEAP, heapPoolNames, heapNumbers
 
-        def nonheapPoolNames = []
-        def nonheapNumbers = [:]
+        List nonheapPoolNames = []
+        Map nonheapNumbers = [:]
         generatePoolGraphData MemoryType.NON_HEAP, nonheapPoolNames, nonheapNumbers
 
         long memoryTotal = Runtime.runtime.totalMemory()
         long memoryFree = Runtime.runtime.freeMemory()
         long memoryUsed = memoryTotal - memoryFree
 
-        def memoryNames = ['Heap']
-        def memoryNumbers = ['Free': [formatMB(memoryFree)],
+        List memoryNames = ['Heap']
+        Map memoryNumbers = ['Free': [formatMB(memoryFree)],
                                     'Used': [formatMB(memoryUsed)]]
 
         [heapPoolNames: heapPoolNames,

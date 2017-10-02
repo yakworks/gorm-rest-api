@@ -1,6 +1,7 @@
 package gorm.restapi.controller
 
 import grails.artefact.Artefact
+
 //import grails.transaction.ReadOnly
 //import grails.gorm.transactions.Transactional
 import grails.transaction.Transactional
@@ -19,9 +20,10 @@ import static org.springframework.http.HttpStatus.*
  *
  * based on Grails' RestFullController
  */
+@SuppressWarnings(['FactoryMethodName', 'NoDef'])
 @Artefact("Controller")
 //@Transactional(readOnly = true)
-class SimpleRestApiDomainController<T,ID extends Serializable>  implements CoreControllerActions<T> {
+class SimpleRestApiDomainController<T, ID extends Serializable> implements CoreControllerActions<T> {
     static allowedMethods = [create: "POST", update: ["PUT", "PATCH"], delete: "DELETE"]
 
     static responseFormats = ['json']
@@ -70,7 +72,7 @@ class SimpleRestApiDomainController<T,ID extends Serializable>  implements CoreC
      */
     @Transactional
     def create() {
-        if(handleReadOnly()) {
+        if (handleReadOnly()) {
             return
         }
         def instance = createResource()
@@ -78,13 +80,13 @@ class SimpleRestApiDomainController<T,ID extends Serializable>  implements CoreC
         instance.validate()
         if (instance.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond instance.errors, view:'create' // STATUS CODE 422
+            respond instance.errors, view: 'create' // STATUS CODE 422
             return
         }
 
         saveResource instance
         addLocationHeader(response, instance.id, 'show')
-        respond instance, [status: CREATED, view:'show']
+        respond instance, [status: CREATED, view: 'show']
     }
 
     /**
@@ -102,7 +104,7 @@ class SimpleRestApiDomainController<T,ID extends Serializable>  implements CoreC
      */
     @Transactional
     def update() {
-        if(handleReadOnly()) {
+        if (handleReadOnly()) {
             return
         }
 
@@ -118,7 +120,7 @@ class SimpleRestApiDomainController<T,ID extends Serializable>  implements CoreC
         if (instance.hasErrors()) {
             println "ERRORS !!!!"
             transactionStatus.setRollbackOnly()
-            respond instance.errors, view:'edit' // STATUS CODE 422
+            respond instance.errors, view: 'edit' // STATUS CODE 422
             return
         }
         println "NO ERRORS !!!!"
@@ -135,7 +137,7 @@ class SimpleRestApiDomainController<T,ID extends Serializable>  implements CoreC
      */
     @Transactional
     def delete() {
-        if(handleReadOnly()) {
+        if (handleReadOnly()) {
             return
         }
 
@@ -149,7 +151,6 @@ class SimpleRestApiDomainController<T,ID extends Serializable>  implements CoreC
         deleteResource instance
         render status: NO_CONTENT
     }
-
 
 }
 

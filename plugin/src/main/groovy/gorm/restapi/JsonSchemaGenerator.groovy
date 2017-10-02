@@ -23,6 +23,7 @@ import static grails.util.GrailsClassUtils.getStaticPropertyValue
  * Created by JBurnett on 6/19/17.
  */
 //@CompileStatic
+@SuppressWarnings(['UnnecessaryGetter', 'NoDef', 'AbcMetric'])
 class JsonSchemaGenerator {
 
     @Resource
@@ -57,8 +58,8 @@ class JsonSchemaGenerator {
         //Map cols = mapping.columns
         map.title = domainClass.name //TODO Should come from application.yml !?
 
-        if(mapping?.comment) map.description = mapping.comment
-        if(domainClass.clazz.isAnnotationPresent(RestApi.class)){
+        if (mapping?.comment) map.description = mapping.comment
+        if (domainClass.clazz.isAnnotationPresent(RestApi.class)) {
             map.description = domainClass.clazz.getAnnotation(RestApi.class).description()
         }
 
@@ -81,10 +82,10 @@ class JsonSchemaGenerator {
         GrailsDomainClassProperty idProp = domClass.getIdentifier()
 
         //id
-        map[idProp.name] = [type : getJsonType(idProp.type).type, readOnly: true]
+        map[idProp.name] = [type: getJsonType(idProp.type).type, readOnly: true]
 
         //version
-        if(domClass.version) map[domClass.version.name] = [type : 'integer', readOnly: true]
+        if (domClass.version) map[domClass.version.name] = [type: 'integer', readOnly: true]
 
 
         Mapping mapping = getMapping(domainName)
@@ -96,10 +97,10 @@ class JsonSchemaGenerator {
             if (!constraints.display) continue //skip if display is false
 
 
-            if(prop.isAssociation()) {
+            if (prop.isAssociation()) {
                 GrailsDomainClass referencedDomainClass = prop.referencedDomainClass
-                if((prop.isManyToOne() || prop.isOneToOne() && !schema.definitions.containsKey(referencedDomainClass.name))) {
-                    if(!referencedDomainClass.clazz.isAnnotationPresent(RestApi)) {
+                if ((prop.isManyToOne() || prop.isOneToOne() && !schema.definitions.containsKey(referencedDomainClass.name))) {
+                    if (!referencedDomainClass.clazz.isAnnotationPresent(RestApi)) {
                         //treat as definition in same schema
                         schema.definitions[referencedDomainClass.name] = [:]
                         schema.definitions[referencedDomainClass.name] = generate(referencedDomainClass, schema)
@@ -113,9 +114,7 @@ class JsonSchemaGenerator {
                         required.add(prop.name)
                     }
                 }
-            }
-            else {
-
+            } else {
                 Map jprop = [:]
                 //jprop.title = prop.naturalName
                 jprop.title = constraints.getMetaConstraintValue("title") ?: prop.naturalName
@@ -187,12 +186,12 @@ class JsonSchemaGenerator {
     }
 
     @CompileDynamic
-    DefaultGrailsDomainClass getDomainClass(String domainName){
+    DefaultGrailsDomainClass getDomainClass(String domainName) {
         grailsApplication.domainClasses.find { it.propertyName == domainName }
     }
 
     @CompileDynamic
-    Mapping getMapping(String domainName){
+    Mapping getMapping(String domainName) {
         PersistentEntity pe = grailsDomainClassMappingContext.persistentEntities.find {
             GrailsNameUtils.getPropertyName(it.name) == domainName
         }
@@ -203,16 +202,16 @@ class JsonSchemaGenerator {
      * big decimal defaults to money
      */
 
-    protected Map getJsonType(Class propertyType){
+    protected Map getJsonType(Class propertyType) {
         Map typeFormat = [type: 'string']
-        switch (propertyType){
-            case [Boolean,Byte]:
+        switch (propertyType) {
+            case [Boolean, Byte]:
                 typeFormat.type = 'boolean'
                 break
-            case [Integer,Long,Short]:
+            case [Integer, Long, Short]:
                 typeFormat.type = 'integer'
                 break
-            case [Double,Float,BigDecimal]:
+            case [Double, Float, BigDecimal]:
                 typeFormat.type = 'number'
                 break
             case [BigDecimal]:
@@ -232,7 +231,7 @@ class JsonSchemaGenerator {
             case [String]:
                 typeFormat.type = 'string'
                 break
-            case {it.isEnum()}:
+            case { it.isEnum() }:
                 typeFormat.type = 'string'
                 typeFormat.enum = propertyType.values()*.name() as String[]
 
@@ -243,10 +242,10 @@ class JsonSchemaGenerator {
 
     //copied from FormFieldsTagLib in the Fields plugin
     @CompileDynamic
-    private List<GrailsDomainClassProperty> resolvePersistentProperties(GrailsDomainClass domainClass, Map attrs =[:]) {
+    private List<GrailsDomainClassProperty> resolvePersistentProperties(GrailsDomainClass domainClass, Map attrs = [:]) {
         List<GrailsDomainClassProperty> properties
 
-        if(attrs.order) {
+        if (attrs.order) {
             def orderBy = attrs.order?.tokenize(',')*.trim() ?: []
             properties = orderBy.collect { propertyName -> domainClass.getPersistentProperty(propertyName) }
         } else {

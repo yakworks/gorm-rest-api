@@ -18,65 +18,67 @@ import org.grails.core.artefact.ControllerArtefactHandler
 import org.grails.core.artefact.DomainClassArtefactHandler
 import org.grails.plugins.web.rest.render.DefaultRendererRegistry
 
-@SuppressWarnings(['EmptyMethod'])
+@SuppressWarnings(['NoDef', 'EmptyMethod', 'VariableName', 'EmptyCatchBlock'])
 class GormRestApiGrailsPlugin extends Plugin {
 
     // the version or versions of Grails the plugin is designed for
-    def grailsVersion = "3.2.11 > *"
+    String grailsVersion = "3.2.11 > *"
     // resources that are excluded from plugin packaging
-    def pluginExcludes = [
-        "grails-app/views/error.gsp"
+    List pluginExcludes = [
+            "grails-app/views/error.gsp"
     ]
 
     // TODO Fill in these fields
-    def title = "Gorm Rest Api Tools" // Headline display name of the plugin
-    def author = "Your name"
-    def authorEmail = ""
-    def description = '''\
+    String title = "Gorm Rest Api Tools" // Headline display name of the plugin
+    String author = "Your name"
+    String authorEmail = ""
+    String description = '''\
 Brief summary/description of the plugin.
 '''
-    //def profiles = ['web']
-    def loadBefore = ['controllers']
-    def observe = ['domainClass']
+    //List profiles = ['web']
+    List loadBefore = ['controllers']
+    List observe = ['domainClass']
 
     // URL to the plugin's documentation
-    def documentation = "http://grails.org/plugin/gorm-rest-tools"
+    String documentation = "http://grails.org/plugin/gorm-rest-tools"
 
     // Extra (optional) plugin metadata
 
     // License: one of 'APACHE', 'GPL2', 'GPL3'
-//    def license = "APACHE"
+//    String license = "APACHE"
 
     // Details of company behind the plugin (if there is one)
-//    def organization = [ name: "My Company", url: "http://www.my-company.com/" ]
+//    Map organization = [ name: "My Company", url: "http://www.my-company.com/" ]
 
     // Any additional developers beyond the author specified above.
-//    def developers = [ [ name: "Joe Bloggs", email: "joe@bloggs.net" ]]
+//    List developers = [ [ name: "Joe Bloggs", email: "joe@bloggs.net" ]]
 
     // Location of the plugin's issue tracker.
-//    def issueManagement = [ system: "JIRA", url: "http://jira.grails.org/browse/GPMYPLUGIN" ]
+//    Map issueManagement = [ system: "JIRA", url: "http://jira.grails.org/browse/GPMYPLUGIN" ]
 
     // Online location of the plugin's browseable source code.
-//    def scm = [ url: "http://svn.codehaus.org/grails-plugins/" ]
+//    Map scm = [ url: "http://svn.codehaus.org/grails-plugins/" ]
 
     GrailsApplication grailsApplication
 
-    Closure doWithSpring() { {->
+    Closure doWithSpring() {
+        { ->
 
-        jsonSchemaGenerator(JsonSchemaGenerator){ bean ->
-            // Autowiring behaviour. The other option is 'byType'. <<autowire>>
-            // bean.autowire = 'byName'
+            jsonSchemaGenerator(JsonSchemaGenerator) { bean ->
+                // Autowiring behaviour. The other option is 'byType'. <<autowire>>
+                // bean.autowire = 'byName'
+            }
+
+            appInfoBuilder(AppInfoBuilder) { bean ->
+                // Autowiring behaviour. The other option is 'byType'. <<autowire>>
+                // bean.autowire = 'byName'
+            }
+
+            GrailsApplication application = grailsApplication
+            GormRestApiGrailsPlugin.registryRestApiControllers(application)
+
         }
-
-        appInfoBuilder(AppInfoBuilder){ bean ->
-            // Autowiring behaviour. The other option is 'byType'. <<autowire>>
-            // bean.autowire = 'byName'
-        }
-
-        def application = grailsApplication
-        GormRestApiGrailsPlugin.registryRestApiControllers(application)
-
-    }}
+    }
 
     @Override
     void onChange(Map<String, Object> event) {
@@ -85,12 +87,12 @@ Brief summary/description of the plugin.
 
     @CompileStatic
     static void registryRestApiControllers(GrailsApplication app) {
-        for(GrailsClass grailsClass in app.getArtefacts(DomainClassArtefactHandler.TYPE)) {
+        for (GrailsClass grailsClass in app.getArtefacts(DomainClassArtefactHandler.TYPE)) {
             final clazz = grailsClass.clazz
             if (clazz.getAnnotation(RestApi)) {
                 //println "${clazz.name}"
                 String controllerClassName = "${clazz.name}Controller"
-                if (!app.getArtefact(ControllerArtefactHandler.TYPE,controllerClassName)) {
+                if (!app.getArtefact(ControllerArtefactHandler.TYPE, controllerClassName)) {
 
                     try {
                         app.addArtefact(ControllerArtefactHandler.TYPE, app.classLoader.loadClass(controllerClassName))
@@ -102,8 +104,6 @@ Brief summary/description of the plugin.
             }
         }
     }
-
-
 
 }
 

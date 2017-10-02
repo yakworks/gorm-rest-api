@@ -44,6 +44,7 @@ import org.springframework.validation.Errors
  *
  * Copied from Grails since internalRespond is private, so we can tweak it,
  */
+@SuppressWarnings(['VariableName', 'NoDef', 'AbcMetric', 'FieldName', 'UnnecessaryCollectCall'])
 @CompileStatic
 trait RestResponder {
 
@@ -54,7 +55,6 @@ trait RestResponder {
 
     @Autowired(required = false)
     ProxyHandler proxyHandler
-
 
     /**
      * Same as {@link RestResponder#respond(java.lang.Object, java.lang.Object, java.util.Map)}, but here to support Groovy named arguments
@@ -99,7 +99,7 @@ trait RestResponder {
         internalRespond value, args
     }
 
-    private internalRespond(value, Map args=[:]) {
+    private internalRespond(value, Map args = [:]) {
         Integer statusCode
         if (args.status) {
             final statusValue = args.status
@@ -110,14 +110,14 @@ trait RestResponder {
             }
         }
         if (value == null) {
-            return callRender([status:statusCode ?: 404 ])
+            return callRender([status: statusCode ?: 404])
         }
 
         if (proxyHandler != null) {
             value = proxyHandler.unwrapIfProxy(value)
         }
 
-        final webRequest = ((Controller)this).getWebRequest()
+        final webRequest = ((Controller) this).getWebRequest()
         List<String> formats = calculateFormats(webRequest.actionName, value, args)
         final response = webRequest.getCurrentResponse()
         MimeType[] mimeTypes = getResponseFormat(response)
@@ -129,19 +129,18 @@ trait RestResponder {
 
         Renderer renderer = null
 
-        for(MimeType mimeType in mimeTypes) {
+        for (MimeType mimeType in mimeTypes) {
             if (mimeType == MimeType.ALL && formats) {
                 final allMimeTypes = MimeType.getConfiguredMimeTypes()
                 final firstFormat = formats[0]
-                mimeType = allMimeTypes.find { MimeType mt -> mt.extension == firstFormat}
-                if(mimeType) {
+                mimeType = allMimeTypes.find { MimeType mt -> mt.extension == firstFormat }
+                if (mimeType) {
                     webRequest.currentRequest.setAttribute(GrailsApplicationAttributes.RESPONSE_MIME_TYPE, mimeType)
                 }
             }
 
             if (mimeType && formats.contains(mimeType.extension)) {
                 Errors errors = value.hasProperty(GrailsDomainClassProperty.ERRORS) ? getDomainErrors(value) : null
-
 
                 if (errors && errors.hasErrors()) {
                     def target = errors instanceof BeanPropertyBindingResult ? errors.getTarget() : null
@@ -154,22 +153,22 @@ trait RestResponder {
                         if (args.view) {
                             context.viewName = args.view as String
                         }
-                        if(statusCode != null) {
+                        if (statusCode != null) {
                             context.setStatus(HttpStatus.valueOf(statusCode))
                         }
                         errorsRenderer.render(errors, context)
-                        if(context.wasWrittenTo() && !response.isCommitted()) {
+                        if (context.wasWrittenTo() && !response.isCommitted()) {
                             response.flushBuffer()
                         }
                         return
                     }
 
-                    return callRender([status: statusCode ?: 404 ])
+                    return callRender([status: statusCode ?: 404])
                 }
 
                 final valueType = value.getClass()
                 if (registry.isContainerType(valueType)) {
-                    renderer = registry.findContainerRenderer(mimeType,valueType, value)
+                    renderer = registry.findContainerRenderer(mimeType, valueType, value)
                     if (renderer == null) {
                         renderer = registry.findRenderer(mimeType, value)
                     }
@@ -178,25 +177,25 @@ trait RestResponder {
                 }
             }
 
-            if(renderer) break
+            if (renderer) break
         }
 
         if (renderer) {
             final context = new ServletRenderContext(webRequest, args)
-            if(statusCode != null) {
+            if (statusCode != null) {
                 context.setStatus(HttpStatus.valueOf(statusCode))
             }
             renderer.render(value, context)
-            if(context.wasWrittenTo() && !response.isCommitted()) {
+            if (context.wasWrittenTo() && !response.isCommitted()) {
                 response.flushBuffer()
             }
             return
         }
-        callRender([status: statusCode ?: HttpStatus.NOT_ACCEPTABLE.value() ])
+        callRender([status: statusCode ?: HttpStatus.NOT_ACCEPTABLE.value()])
     }
 
     private callRender(Map args) {
-        ((ResponseRenderer)this).render args
+        ((ResponseRenderer) this).render args
     }
 
     private List<String> calculateFormats(String actionName, value, Map args) {

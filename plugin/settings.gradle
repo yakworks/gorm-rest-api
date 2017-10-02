@@ -1,1 +1,3 @@
 rootProject.name='gorm-restapi'
+include ':dao'
+project(':dao').projectDir = new File('../../gorm-tools/dao-plugin')
