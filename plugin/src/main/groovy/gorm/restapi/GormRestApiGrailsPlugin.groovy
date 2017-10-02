@@ -18,7 +18,7 @@ import org.grails.core.artefact.ControllerArtefactHandler
 import org.grails.core.artefact.DomainClassArtefactHandler
 import org.grails.plugins.web.rest.render.DefaultRendererRegistry
 
-@SuppressWarnings(['EmptyMethod', 'VariableName', 'EmptyCatchBlock'])
+@SuppressWarnings(['NoDef', 'EmptyMethod', 'VariableName', 'EmptyCatchBlock'])
 class GormRestApiGrailsPlugin extends Plugin {
 
     // the version or versions of Grails the plugin is designed for

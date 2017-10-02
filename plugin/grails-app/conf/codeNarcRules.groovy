@@ -161,18 +161,10 @@ ruleset {
     //'LineLength' doNotApplyToFilesMatching: '*Spec.groovy'
     MissingBlankLineAfterImports
     MissingBlankLineAfterPackage
-    SpaceAfterCatch
     SpaceAfterClosingBrace
     SpaceAfterComma
-    SpaceAfterFor
-    SpaceAfterIf
     SpaceAfterOpeningBrace
     SpaceAfterSemicolon
-    SpaceAfterSwitch
-    SpaceAfterWhile
-    //SpaceAroundClosureArrow
-    //SpaceAroundMapEntryColon
-    //SpaceAroundOperator
     SpaceBeforeClosingBrace
     SpaceBeforeOpeningBrace
     TrailingWhitespace
