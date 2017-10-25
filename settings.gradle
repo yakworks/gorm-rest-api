@@ -6,6 +6,8 @@ findProject(':plugin').name = 'gorm-rest-api'
 
 include 'test-projects/taskify-domains-plugin'
 include 'test-projects/grails-funcytown'
+include 'test-projects/restify'
 
 findProject(':test-projects/taskify-domains-plugin').name = 'taskify-domains-plugin'
 findProject(':test-projects/grails-funcytown').name = 'grails-funcytown'
+findProject(':test-projects/restify').name = 'restify'
