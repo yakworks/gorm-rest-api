@@ -1,11 +1,7 @@
 package gorm.restapi.testing
 
-import static grails.web.http.HttpHeaders.*
-import static org.springframework.http.HttpStatus.*
-import spock.lang.*
-import geb.spock.*
 import grails.plugins.rest.client.RestBuilder
-import groovy.transform.CompileStatic
+
 
 //@CompileStatic
 trait RestApiTestTrait {

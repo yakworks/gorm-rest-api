@@ -35,7 +35,7 @@ dependencies {
     testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
 
-    compile "org.grails.plugins:dao:latest.integration"
+    compile "org.grails.plugins:dao:3.3.2-SNAPSHOT"
     compileOnly "org.grails:grails-plugin-testing"
     compileOnly "org.grails.plugins:geb"
 

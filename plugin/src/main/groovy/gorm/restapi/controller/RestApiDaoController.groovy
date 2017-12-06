@@ -1,19 +1,18 @@
 package gorm.restapi.controller
 
+import gorm.tools.dao.DaoUtil
+import gorm.tools.dao.GormDao
+
 //import gorm.tools.Pager
 import grails.artefact.Artefact
 import grails.converters.JSON
 import grails.core.GrailsApplication
-import grails.plugin.dao.DomainException
 import grails.plugin.dao.ErrorMessageService
-import grails.plugin.dao.GormDaoSupport
 import grails.util.GrailsNameUtils
 import grails.validation.ValidationException
-//import gorm.tools.beans.BeanPathTools
-//import gorm.tools.criteria.CriteriaUtils
 import org.apache.commons.lang.StringEscapeUtils
 import org.springframework.context.MessageSource
-import grails.plugin.dao.DaoUtil
+
 
 /**
  * Credits: took rally.BaseDomainController with core concepts from grails RestfulConroller
@@ -54,7 +53,7 @@ class RestApiDaoController<T> {
         resourceName = GrailsNameUtils.getPropertyName(resource)
     }
 
-    protected GormDaoSupport getDao() {
+    protected GormDao getDao() {
         return domainClass.dao
     }
 
