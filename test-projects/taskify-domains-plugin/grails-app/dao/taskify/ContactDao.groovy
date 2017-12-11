@@ -1,21 +1,19 @@
 package taskify
 
-//import grails.plugin.dao.GormDaoSupport
-import grails.transaction.Transactional
+import gorm.tools.dao.DefaultGormDao
+import grails.gorm.transactions.Transactional
 
 @Transactional
-class ContactDao {
-//extends GormDaoSupport {
-	Class domainClass = Contact
-
-	Map insert(Map params) {
+class ContactDao extends DefaultGormDao<Contact> {
+	@Override
+	Contact create(Map params) {
 		String name = params.remove("name")
 		if (name) {
 			def (fname, lname) = name.split()
 			params.firstName = fname
 			params.lastName = lname
 		}
-		super.insert(params)
+		super.create(params)
 	}
 
 	Contact inactivate(Long id) {

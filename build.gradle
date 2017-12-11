@@ -51,7 +51,7 @@ subprojects {
 
 	apply from:"$commonBuild/common.gradle"
 
-
+	String seleniumVersion = "3.8.1"
 	dependencies {
 		compile "org.springframework.boot:spring-boot-starter-logging"
 		compile "org.springframework.boot:spring-boot-autoconfigure"
@@ -86,13 +86,13 @@ subprojects {
 		runtime "org.apache.tomcat:tomcat-jdbc"
 		//runtime "com.bertramlabs.plugins:asset-pipeline-grails:2.14.6"
 
-		testCompile "org.grails:grails-gorm-testing-support"
-		testCompile "org.grails:grails-web-testing-support"
-		testCompile "org.grails.plugins:geb"
-		testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:3.6.0"
-		testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:3.6.0"
-		testRuntime "org.seleniumhq.selenium:selenium-remote-driver:3.6.0"
-		testRuntime "org.seleniumhq.selenium:selenium-api:3.6.0"
+		compile "org.grails:grails-gorm-testing-support"
+		compile "org.grails:grails-web-testing-support"
+		compile "org.grails.plugins:geb"
+		compile "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
+		compile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
+		compile "org.seleniumhq.selenium:selenium-remote-driver:$seleniumVersion"
+		compile "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
 	}
 
 

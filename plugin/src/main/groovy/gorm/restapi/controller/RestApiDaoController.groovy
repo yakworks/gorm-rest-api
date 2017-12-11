@@ -13,7 +13,6 @@ import grails.validation.ValidationException
 import org.apache.commons.lang.StringEscapeUtils
 import org.springframework.context.MessageSource
 
-
 /**
  * Credits: took rally.BaseDomainController with core concepts from grails RestfulConroller
  * Some of this is, especailly the cache part is lifted from the older grails2 restful-api plugin

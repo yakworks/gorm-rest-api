@@ -1,14 +1,16 @@
 package gorm.restapi.testing
 
+import geb.spock.GebSpec
+import grails.testing.mixin.integration.Integration
+
 import static grails.web.http.HttpHeaders.*
 import grails.web.http.HttpHeaders
 import static org.springframework.http.HttpStatus.*
-import geb.spock.*
 
 // @Integration
 // @Rollback
 @SuppressWarnings(['NoDef', 'AbstractClassWithoutAbstractMethod'])
-abstract class RestApiFuncSpec /*extends GebSpec*/ implements RestApiTestTrait {
+abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait {
     boolean vndHeaderOnError = false
     // RestBuilder getRestBuilder() {
     //     new RestBuilder()
