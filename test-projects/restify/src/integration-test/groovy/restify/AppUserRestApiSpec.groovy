@@ -3,6 +3,7 @@ package restify
 import grails.testing.mixin.integration.Integration
 import grails.transaction.*
 import gorm.restapi.testing.RestApiFuncSpec
+import spock.lang.Stepwise
 
 @Integration
 @Rollback

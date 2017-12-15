@@ -4,7 +4,7 @@ import grails.artefact.Artefact
 
 //import grails.transaction.ReadOnly
 //import grails.gorm.transactions.Transactional
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 import grails.util.GrailsNameUtils
 import grails.web.http.HttpHeaders
 

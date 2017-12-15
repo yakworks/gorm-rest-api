@@ -2,27 +2,11 @@ package gorm.restapi.appinfo
 
 //import grails.converters.JSON
 import grails.core.DefaultGrailsApplication
-import grails.core.GrailsDomainClass
-import grails.core.GrailsDomainClassProperty
-import grails.transaction.Transactional
-import grails.util.GrailsNameUtils
-import grails.validation.ConstrainedProperty
-import groovy.transform.CompileDynamic
-import groovy.transform.CompileStatic
-import org.grails.core.DefaultGrailsDomainClass
-import org.grails.datastore.mapping.model.MappingContext
-import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.orm.hibernate.cfg.HibernateMappingContext
-import org.grails.orm.hibernate.cfg.Mapping
-
 import java.lang.management.ManagementFactory
 import java.lang.management.MemoryPoolMXBean
 import java.lang.management.MemoryType
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
-
-import grails.util.GrailsClassUtils
-
 import javax.annotation.Resource
 
 /**

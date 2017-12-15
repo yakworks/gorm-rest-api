@@ -89,10 +89,7 @@ subprojects {
 		compile "org.grails:grails-gorm-testing-support"
 		compile "org.grails:grails-web-testing-support"
 		compile "org.grails.plugins:geb"
-		compile "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
-		compile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
-		compile "org.seleniumhq.selenium:selenium-remote-driver:$seleniumVersion"
-		compile "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
+		testCompile "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
 	}
 
 

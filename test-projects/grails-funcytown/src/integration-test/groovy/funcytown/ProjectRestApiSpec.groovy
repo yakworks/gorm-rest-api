@@ -1,16 +1,11 @@
 package funcytown
 
-import grails.test.mixin.integration.Integration
-import grails.transaction.*
-import static grails.web.http.HttpHeaders.*
-import static org.springframework.http.HttpStatus.*
-import spock.lang.*
-import geb.spock.*
-import grails.plugins.rest.client.RestBuilder
+import grails.gorm.transactions.Rollback
+import grails.testing.mixin.integration.Integration
 import gorm.restapi.testing.RestApiFuncSpec
 
-@Integration
-//@Rollback
+@Integration(applicationClass=Application)
+@Rollback
 class ProjectRestApiSpec extends RestApiFuncSpec {
 
     String getResourcePath() {
@@ -24,4 +19,6 @@ class ProjectRestApiSpec extends RestApiFuncSpec {
 
     Map getInvalidData() { ["name": null] }
 
+    @Override
+    def cleanup(){}
 }
