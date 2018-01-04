@@ -50,7 +50,12 @@ There are 3 ways to generate json.
 2. using the [grails-views plugin](https://github.com/grails/grails-views/).
 3. using JSON.ObjectMarshaller which seems to be out of favor in the docs and is not longer mentioned
 but remains in the grails-plugin-converter's main [JSON].
-[this is a good overview](https://kylewbanks.com/blog/Customizing-JSON-Grails-Object-Marshalling)
+[this is a good overview](https://kylewbanks.com/blog/Customizing-JSON-Grails-Object-Marshalling) 
+and this for using [name config](https://stackoverflow.com/questions/25573270/grails-2-4-named-configuration-for-json-not-working) 
+with [unit testing example](https://stackoverflow.com/questions/24604747/how-do-i-unit-test-named-configurations-for-object-marshallers)
+and [mrhaki's write up on name configurtions](http://mrhaki.blogspot.com/2014/07/grails-goodness-using-converter-named.html)
+
+https://jlstrater.github.io/restful-grails3/
 
 [JSON]: https://github.com/grails-plugins/grails-plugin-converters/blob/master/src/main/groovy/grails/converters/JSON.java
 
