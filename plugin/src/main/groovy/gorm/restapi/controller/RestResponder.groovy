@@ -15,7 +15,6 @@
  */
 package gorm.restapi.controller
 
-import groovy.transform.CompileDynamic
 import grails.artefact.Controller
 import grails.artefact.controller.support.ResponseRenderer
 import grails.core.GrailsDomainClassProperty
@@ -24,18 +23,18 @@ import grails.rest.Resource
 import grails.rest.render.Renderer
 import grails.rest.render.RendererRegistry
 import grails.web.mime.MimeType
-import org.grails.web.util.GrailsApplicationAttributes
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
-
-import javax.servlet.http.HttpServletResponse
-
 import org.grails.plugins.web.rest.render.DefaultRendererRegistry
 import org.grails.plugins.web.rest.render.ServletRenderContext
+import org.grails.web.util.GrailsApplicationAttributes
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.validation.BeanPropertyBindingResult
 import org.springframework.validation.Errors
+
+import javax.servlet.http.HttpServletResponse
 
 /**
  *

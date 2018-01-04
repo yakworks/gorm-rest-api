@@ -1,10 +1,9 @@
 package gorm.restapi.testing
 
 import geb.spock.GebSpec
-import grails.testing.mixin.integration.Integration
-
-import static grails.web.http.HttpHeaders.*
 import grails.web.http.HttpHeaders
+
+import static grails.web.http.HttpHeaders.CONTENT_TYPE
 import static org.springframework.http.HttpStatus.*
 
 // @Integration

@@ -3,7 +3,7 @@ class ResponseHolder {
     Map headers = [:]
     String message
 
-    void addHeader( String name, Object value ) {
+    void addHeader(String name, Object value) {
         if (!headers[name]) {
             headers[name] = []
         }

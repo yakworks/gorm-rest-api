@@ -1,15 +1,15 @@
 package gorm.restapi.controller
 
-import gorm.tools.dao.DaoUtil
-import gorm.tools.dao.GormDao
+import gorm.tools.repository.api.RepositoryApi
+import grails.artefact.Artefact
 
 //import gorm.tools.Pager
-import grails.artefact.Artefact
 import grails.converters.JSON
 import grails.core.GrailsApplication
-import grails.plugin.dao.ErrorMessageService
+import gorm.tools.repository.errors.RepoExceptionSupport
 import grails.util.GrailsNameUtils
 import grails.validation.ValidationException
+import groovy.transform.CompileStatic
 import org.apache.commons.lang.StringEscapeUtils
 import org.springframework.context.MessageSource
 
@@ -23,40 +23,40 @@ import org.springframework.context.MessageSource
 // we can get some good ideas from how that plugin does things
 @SuppressWarnings(['CatchException', 'NoDef', 'ClosureAsLastMethodParameter', 'FactoryMethodName'])
 @Artefact("Controller")
-class RestApiDaoController<T> {
+class RestApiDaoController<D> {
     static allowedMethods = [list  : ["GET", "POST"], create: "POST",
                              update: ["PUT", "PATCH"], delete: "DELETE"]
 
     static responseFormats = ['json']
     static namespace = 'api'
 
-    Class<T> resource
+    Class<D> resource
     String resourceName
     String resourceClassName
     boolean readOnly
 
     MessageSource messageSource
-    ErrorMessageService errorMessageService
+    RepoExceptionSupport repoExceptionSupport
 
     //AppSetupService appSetupService
     GrailsApplication grailsApplication
 
-    RestApiDaoController(Class<T> resource) {
+    RestApiDaoController(Class<D> resource) {
         this(resource, false)
     }
 
-    RestApiDaoController(Class<T> resource, boolean readOnly) {
+    RestApiDaoController(Class<D> resource, boolean readOnly) {
         this.resource = resource
         this.readOnly = readOnly
         resourceClassName = resource.simpleName
         resourceName = GrailsNameUtils.getPropertyName(resource)
     }
 
-    protected GormDao getDao() {
-        return domainClass.dao
+    protected RepositoryApi<D> getDao() {
+        return domainClass.repo
     }
 
-    Class<T> getDomainClass() {
+    Class<D> getDomainClass() {
         resource
     }
 
@@ -204,20 +204,20 @@ class RestApiDaoController<T> {
             log.error("saveJson with error", e)
             response.status = 422
             def responseJson = [
-                    "code"       : 422,
-                    "status"     : "error",
-                    "message"    : errorMessageService.buildMsg(e.messageMap),
-                    "messageCode": e.messageMap.code
+                "code"       : 422,
+                "status"     : "error",
+                "message"    : errorMessageService.buildMsg(e.messageMap),
+                "messageCode": e.messageMap.code
             ]
             render responseJson as JSON
         } catch (Exception e) {
             log.error("saveJson with error", e)
             response.status = 400
             def responseJson = [
-                    "code"   : 400,
-                    "status" : "error",
-                    "message": e.message,
-                    "error"  : e.message
+                "code"   : 400,
+                "status" : "error",
+                "message": e.message,
+                "error"  : e.message
             ]
             render responseJson as JSON
         }
@@ -271,20 +271,20 @@ class RestApiDaoController<T> {
         }
         //FIXME implement new way
         return [
-                "code"       : 422,
-                "status"     : "error",
-                "message"    : message,
-                "messageCode": messageCode,
-                "id"         : entity ? "${entity.id}" : "",
-                'errors'     : errs
+            "code"       : 422,
+            "status"     : "error",
+            "message"    : message,
+            "messageCode": messageCode,
+            "id"         : entity ? "${entity.id}" : "",
+            'errors'     : errs
         ]
 
     }
 
-    def buildError (obj, errs) {
-        eachError([bean:obj], {
-            errs << [(it.field): [object: it.objectName, field: it.field, message: g.message(error:it).toString(),
-                'rejected-value': StringEscapeUtils.escapeXml(it.rejectedValue?.toString())]]
+    def buildError(obj, errs) {
+        eachError([bean: obj], {
+            errs << [(it.field): [object          : it.objectName, field: it.field, message: g.message(error: it).toString(),
+                                  'rejected-value': StringEscapeUtils.escapeXml(it.rejectedValue?.toString())]]
         })
         return errs
     }

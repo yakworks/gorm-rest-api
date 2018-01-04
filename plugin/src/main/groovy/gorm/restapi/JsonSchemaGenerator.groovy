@@ -2,24 +2,19 @@ package gorm.restapi
 
 import gorm.tools.GormMetaUtils
 import grails.core.DefaultGrailsApplication
-import grails.core.GrailsDomainClass
 import grails.gorm.validation.ConstrainedProperty
 import grails.util.GrailsNameUtils
 import groovy.transform.CompileDynamic
-import org.grails.core.DefaultGrailsDomainClass
 import org.grails.core.io.support.GrailsFactoriesLoader
-import org.grails.datastore.mapping.model.MappingFactory
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.datastore.mapping.model.types.Association
 import org.grails.orm.hibernate.cfg.HibernateMappingContext
-import org.grails.orm.hibernate.cfg.HibernatePersistentEntity
 import org.grails.orm.hibernate.cfg.Mapping
 import org.grails.validation.discovery.ConstrainedDiscovery
 import org.springframework.core.annotation.AnnotationUtils
 
 import javax.annotation.Resource
-import java.lang.reflect.Method
 
 import static grails.util.GrailsClassUtils.getStaticPropertyValue
 
@@ -107,7 +102,7 @@ class JsonSchemaGenerator {
             if (!constraints.display) continue //skip if display is false
             if (prop instanceof Association) {
                 PersistentEntity referencedDomainClass = GormMetaUtils.getPersistentEntity(prop.type)
-                if (/*(prop.isManyToOne() || prop.isOneToOne()) && */!schema.definitions.containsKey(referencedDomainClass.name)) {
+                if (/*(prop.isManyToOne() || prop.isOneToOne()) && */ !schema.definitions.containsKey(referencedDomainClass.name)) {
                     if (referencedDomainClass.javaClass.isAnnotationPresent(RestApi)) {
                         //treat as a seperate file
                         map[prop.name] = ['$ref': "${prop.owner.name}.json"]
@@ -125,16 +120,16 @@ class JsonSchemaGenerator {
             } else {
                 Map jprop = [:]
                 //jprop.title = prop.naturalName
-                jprop.title = getMetaConstraintValue(constraints,"title") ?: prop.name
+                jprop.title = getMetaConstraintValue(constraints, "title") ?: prop.name
                 //title override
                 //def metaConstraints = constraints.getMetaConstraintValue()metaConstraints
                 //if(constraints.attributes?.title) jprop.title = constraints.attributes.title
                 //if(constraints.getMetaConstraintValue("title"))
-                String description = getMetaConstraintValue(constraints,"description")
+                String description = getMetaConstraintValue(constraints, "description")
                 if (description) jprop.description = description
 
                 //Example
-                String example = getMetaConstraintValue(constraints,"example")
+                String example = getMetaConstraintValue(constraints, "example")
                 if (example) jprop.example = example
 
                 //type
@@ -192,7 +187,7 @@ class JsonSchemaGenerator {
         //cols[prop.name]?.columns?.getAt(0)?.defaultValue
     }
 
-    String getMetaConstraintValue(ConstrainedProperty constraints,String name){
+    String getMetaConstraintValue(ConstrainedProperty constraints, String name) {
         constraints?.property?.metaConstraints?."$name"
     }
 

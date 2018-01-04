@@ -1,8 +1,8 @@
 package gorm.restapi
 
-import grails.boot.*
+import grails.boot.GrailsApp
 import grails.boot.config.GrailsAutoConfiguration
-import grails.plugins.metadata.*
+import grails.plugins.metadata.PluginSource
 
 @PluginSource
 class Application extends GrailsAutoConfiguration {

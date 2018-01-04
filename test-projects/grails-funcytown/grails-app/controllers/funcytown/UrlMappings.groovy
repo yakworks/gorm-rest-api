@@ -1,7 +1,5 @@
 package funcytown
 
-import grails.util.GrailsClassUtils
-
 class UrlMappings {
 
     //def grailsApplication
@@ -36,13 +34,13 @@ class UrlMappings {
         // }
 
         //normal controllers
-        "/$controller/$action?/$id?(.$format)?"{
+        "/$controller/$action?/$id?(.$format)?" {
             constraints {
                 // apply constraints here
             }
         }
 
-        "/"(controller: 'application', action:'index')
+        "/"(controller: 'application', action: 'index')
         //"schema"(controller: 'schema')
         "500"(view: '/error')
         "404"(view: '/notFound')

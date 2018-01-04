@@ -8,7 +8,7 @@ buildscript {
     }
 }
 
-apply plugin:"org.grails.plugins.views-json"
+apply plugin: "org.grails.plugins.views-json"
 
 
 dependencies {
