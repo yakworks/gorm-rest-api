@@ -18,16 +18,19 @@ While REST is not CRUD a lot of it really is. This project aims to makes it easy
 
 - [ ] Near zero configuration to expose [Swagger] documented resources (the Gorm domains)
 - [ ]  Rely on the domain's contraints as much as possible for configurations and docs.
-- [ ]  Out of the box CRUD Controller modified from Grails [@Resource annotation and RestfulController](http://docs.grails.org/latest/guide/REST.html#domainResources) that can delegate to transactional Services (DAOs Repositories, Data Services) flavored services based on naming convention or configuration. Uses the [DAO] plugin by deafault for this.
+- [ ]  Out of the box CRUD Controller modified from Grails [@Resource annotation and RestfulController] 
+      that can delegate to transactional Services (Repositories, Data Services) flavored services based on naming 
+      convention or configuration. Uses the [gorm-tools] plugin by deafault for this.
 - [ ]  Custom schema selects for retruned JSON fields that can be confiugured at runtime by a customer (does not require recompiling views)
 - [ ]  Consistent documented use of HTTP status codes and headers
 - [ ]  Uses [cache-headers](https://github.com/grails-plugins/cache-headers) for faster loading
-- [ ]  Use [Services/DAO/Repository] pattern by defualt to keep the CRUD code in its own transactional service
+- [ ]  Use [Repository] pattern by defualt to keep the CRUD code in its own transactional service
 - [ ]  Ability to 'query by POST' (to allow query criteria to be provided within the request body)
 - [ ]  Intelligent defaults for security plugin with OATH and JWT.
 - [ ]  Tools to ease GEB functional tests with Spock
 - [ ]  Extensive regression tests
 
+[@Resource annotation and RestfulController]: http://docs.grails.org/latest/guide/REST.html#domainResources
 
 ## Install
 
@@ -60,9 +63,9 @@ is a must preview does a good job of explaining the different options towards th
 The goal is to provide the fastest way to render and object or collection
 that allows custom includes or excludes.
 
-A `static includes = ...` can be set on the domain, the dao or the controller.
+A `static includes = ...` can be set on the domain, the repository or the controller.
 An gets overriden in that order. For example: if I set excludes on the domain
-if I set in on a Dao CRUD controller for that domain the it uses that. A setting
+if I set in on a Repository CRUD controller for that domain the it uses that. A setting
 in the AppSetupConfig overides them all and a includes param sent into the endpoint
 will be used above all others.
 I would be nice to put the grails-views into this picture as well so that if there is a `*.gson` file
@@ -99,14 +102,14 @@ most of a rest api can be setup and documented with nothing more than just the d
 ### @RestApi annotation
 inspired by the Grails [@Resource annotation](provide link)
 Adding this to your domains with create a controller using AST under the `api` namespace with common actions
-and UrlMappings for a rest api. It uses a dao/crud transactional data service by default.
+and UrlMappings for a rest api. It uses a transactional Repository data service by default.
 
 |    attribute    |                                                  desc                                                  |       default        |
 | --------------- | ------------------------------------------------------------------------------------------------------ | -------------------- |
 | description     | information to appear to a dev and in the Open api docs                                                | ""                   |
 | endpoint        | if this annotation only for api docs and you don't want a controller generated then set this to false. | true                 |
 | readOnly        | Whether this is a read-only endpoint (one that doesn't allow DELETE, POST, PUT or PATCH requests)      | false                |
-| controllerClass | The Controller class to generate. Can be set to null to skip the generation                            | RestApiDaoController |
+| controllerClass | The Controller class to generate. Can be set to null to skip the generation                            | RestApiRepoController |
 
 **Example**
 ```groovy
@@ -116,7 +119,7 @@ import gorm.restapi.RestApi
 class AppUser {
 ```
 
-see the section on the [RestApiDaoController](insert link here) for more details about the controller setup
+see the section on the [RestApiRepoController](insert link here) for more details about the controller setup
 
 ### OpenAPI and json-schema
 

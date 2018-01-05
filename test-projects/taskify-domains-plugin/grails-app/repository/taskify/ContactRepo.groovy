@@ -1,19 +1,19 @@
 package taskify
 
-import gorm.tools.repository.DefaultGormRepo
+import gorm.tools.databinding.BindAction
+import gorm.tools.repository.GormRepo
 import grails.gorm.transactions.Transactional
 
 @Transactional
-class ContactDao extends DefaultGormRepo<Contact> {
-    @Override
-    Contact create(Map params) {
+class ContactRepo implements GormRepo<Contact> {
+
+    void beforeBind(Contact city, Map params, BindAction ba) {
         String name = params.remove("name")
         if (name) {
             def (fname, lname) = name.split()
             params.firstName = fname
             params.lastName = lname
         }
-        super.create(params)
     }
 
     Contact inactivate(Long id) {

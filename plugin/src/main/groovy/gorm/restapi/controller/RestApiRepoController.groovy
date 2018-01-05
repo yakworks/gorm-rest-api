@@ -9,7 +9,6 @@ import grails.core.GrailsApplication
 import gorm.tools.repository.errors.RepoExceptionSupport
 import grails.util.GrailsNameUtils
 import grails.validation.ValidationException
-import groovy.transform.CompileStatic
 import org.apache.commons.lang.StringEscapeUtils
 import org.springframework.context.MessageSource
 
@@ -23,7 +22,7 @@ import org.springframework.context.MessageSource
 // we can get some good ideas from how that plugin does things
 @SuppressWarnings(['CatchException', 'NoDef', 'ClosureAsLastMethodParameter', 'FactoryMethodName'])
 @Artefact("Controller")
-class RestApiDaoController<D> {
+class RestApiRepoController<D> {
     static allowedMethods = [list  : ["GET", "POST"], create: "POST",
                              update: ["PUT", "PATCH"], delete: "DELETE"]
 
@@ -41,11 +40,11 @@ class RestApiDaoController<D> {
     //AppSetupService appSetupService
     GrailsApplication grailsApplication
 
-    RestApiDaoController(Class<D> resource) {
+    RestApiRepoController(Class<D> resource) {
         this(resource, false)
     }
 
-    RestApiDaoController(Class<D> resource, boolean readOnly) {
+    RestApiRepoController(Class<D> resource, boolean readOnly) {
         this.resource = resource
         this.readOnly = readOnly
         resourceClassName = resource.simpleName
@@ -119,17 +118,17 @@ class RestApiDaoController<D> {
      * returns the list of domain obects
      */
     protected def listPost(body, requestParams) {
-        return getDaoService().list(body, requestParams)
+        return getRepo().list(body, requestParams)
     }
 
     /**
      * returns the list of domain obects
      */
     protected def listGet(requestParams) {
-        return getDaoService().list(requestParams)
+        return getRepo().list(requestParams)
     }
 
-    //TODO This should be handled in the DAO
+    //TODO This should be handled in the repo
     protected def pagedList(dlist) {
         def pageData = null//new Pager(params)
         def fieldList
@@ -227,24 +226,20 @@ class RestApiDaoController<D> {
      */
     protected def insertDomain(p) {
         log.info("saveDomain(${p})")
-        return dao.insert(p)
+        return getRepo().insert(p)
     }
 
     protected def updateDomain(p, opts = null) {
         params.remove('companyId') //TODO XXX - why is it here for every controllers ?
         log.debug "updateDomain with ${p}"
-        def res = dao.update(p)
-        if (opts?.flush) DaoUtil.flush()
+        def res = getRepo().update(p)
+        if (opts?.flush) //TODO call flush
         return res
     }
 
     //
     protected def deleteDomain(p) {
-        return dao.remove(p)
-    }
-
-    protected def getDataService() {
-        return dao
+        return getRepo().remove(p)
     }
 
     //Build human readable error message
