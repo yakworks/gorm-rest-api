@@ -2,6 +2,7 @@ package gorm.restapi.controller
 
 import gorm.tools.repository.GormRepoEntity
 import gorm.tools.repository.api.RepositoryApi
+import grails.artefact.controller.RestResponder
 import grails.artefact.controller.support.ResponseRenderer
 import grails.databinding.SimpleMapDataBindingSource
 import grails.web.Action
@@ -9,6 +10,7 @@ import grails.web.api.ServletAttributes
 import grails.web.databinding.DataBindingUtils
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+import org.codehaus.groovy.runtime.InvokerHelper
 import org.springframework.core.GenericTypeResolver
 
 import static org.springframework.http.HttpStatus.*
@@ -36,9 +38,10 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      * Gets the repository for the entityClass
      * @return The repository
      */
-    @CompileDynamic
+    //@CompileDynamic
     RepositoryApi<D> getRepo() {
-        getEntityClass().getRepo()
+        (RepositoryApi<D>) InvokerHelper.invokeStaticMethod(getEntityClass(), 'getRepo', null)
+        //getEntityClass().getRepo()
     }
 
     /**
@@ -84,7 +87,7 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      * The Map object that can be bound to create or update domain entity.  Defaults whats in the request based on mime-type.
      * Subclasses may override this
      */
-    @CompileDynamic
+    @CompileDynamic //so it can access the SimpleMapDataBindingSource.map
     Map getDataMap() {
         SimpleMapDataBindingSource bsrc =
             (SimpleMapDataBindingSource) DataBindingUtils.createDataBindingSource(grailsApplication, getEntityClass(), getRequest())
