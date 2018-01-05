@@ -38,9 +38,7 @@ import org.grails.compiler.injection.TraitInjectionUtils
 import org.grails.compiler.web.ControllerActionTransformer
 import org.grails.core.artefact.ControllerArtefactHandler
 import org.grails.plugins.web.rest.transform.LinkableTransform
-import org.grails.transaction.transform.TransactionalTransform
-
-//import org.grails.datastore.gorm.transactions.transform.TransactionalTransform
+import org.grails.datastore.gorm.transactions.transform.TransactionalTransform
 import org.springframework.beans.factory.annotation.Autowired
 
 import java.lang.reflect.Modifier
@@ -57,7 +55,8 @@ import static org.grails.compiler.injection.GrailsASTUtils.nonGeneric
  * that performs CRUD operations on the domain. See the {@link Resource} annotation for more details
  *
  *
- * modified to use the RestApiController and get rid of the bad bits that mess with the URL mapping
+ * This is modified from {@link org.grails.plugins.web.rest.transform.ResourceTransform}
+ * to use the RestApiController and get rid of the bits that mess with the URL mapping
  *
  * @author Joshua Burnett
  * @author Graeme Rocher
@@ -228,9 +227,7 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
             ArtefactTypeAstTransformation.performInjection(source, newControllerClassNode, injectors.findAll {
                 it instanceof ControllerActionTransformer
             })
-            //new TransactionalTransform().visit(source, transactionalAnn, newControllerClassNode)
-            new TransactionalTransform().weaveTransactionalBehavior(source, newControllerClassNode, transactionalAnn)
-
+            new TransactionalTransform().visit(source, transactionalAnn, newControllerClassNode)
             newControllerClassNode.setModule(ast)
 
             final artefactAnnotation = new AnnotationNode(new ClassNode(Artefact))

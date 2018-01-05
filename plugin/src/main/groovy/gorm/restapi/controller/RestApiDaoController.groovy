@@ -52,7 +52,7 @@ class RestApiDaoController<D> {
         resourceName = GrailsNameUtils.getPropertyName(resource)
     }
 
-    protected RepositoryApi<D> getDao() {
+    protected RepositoryApi<D> getRepository() {
         return domainClass.repo
     }
 
@@ -159,7 +159,6 @@ class RestApiDaoController<D> {
     /**
      * The core method to update or insert from json. once json is convertd it calls back out or
      */
-    //XXX this should be called insertOrUpdate, is very confusing
     def create() {
         try {
             def p = BeanPathTools.flattenMap(request, request.JSON)
@@ -177,7 +176,6 @@ class RestApiDaoController<D> {
     /**
      * The core method to update or insert from json. once json is convertd it calls back out or
      */
-    //XXX this should be called insertOrUpdate, is very confusing
     def update() {
         try {
             def p = BeanPathTools.flattenMap(request, request.JSON)
@@ -227,7 +225,6 @@ class RestApiDaoController<D> {
      * Called from the saves and saveOrUpdateJson,
      * providing a place to override functionality
      */
-    //XXX this should be called insertDomain(), it is very confusing
     protected def insertDomain(p) {
         log.info("saveDomain(${p})")
         return dao.insert(p)
