@@ -10,7 +10,7 @@ class UrlMappings {
             println "controler $controller.fullName"
             String cName = controller.logicalPropertyName
             String namespace = GrailsClassUtils.getStaticPropertyValue(controller.clazz, 'namespace')
-            println "controler $cName with namespace $namespace"
+            println "controller $cName with namespace $namespace"
 
             if (namespace == 'api') {
                 group("/api") {
@@ -24,10 +24,12 @@ class UrlMappings {
 
                     delete "/${cName}/$id(.$format)?"(controller: cName, action: "delete", namespace: 'api')
                     get "/${cName}(.$format)?"(controller: cName, action: "index", namespace: 'api')
-                    get "/${cName}/$id(.$format)?"(controller: cName, action: "show", namespace: 'api')
-                    post "/${cName}(.$format)?"(controller: cName, action: "create", namespace: 'api')
-                    put "/${cName}/$id(.$format)?"(controller: cName, action: "update", namespace: 'api')
-                    patch "/${cName}/$id(.$format)?"(controller: cName, action: "update", namespace: 'api')
+                    get "/${cName}/$id(.$format)?"(controller: cName, action: "get", namespace: 'api')
+                    get "/${cName}/list(.$format)?"(controller: cName, action: "listGet", namespace: 'api')
+                    post "/${cName}/list(.$format)?"(controller: cName, action: "listPost", namespace: 'api')
+                    post "/${cName}(.$format)?"(controller: cName, action: "post", namespace: 'api')
+                    put "/${cName}/$id(.$format)?"(controller: cName, action: "put", namespace: 'api')
+                    patch "/${cName}/$id(.$format)?"(controller: cName, action: "put", namespace: 'api')
                 }
             }
         }
