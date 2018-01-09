@@ -82,7 +82,8 @@ Brief summary/description of the plugin.
             if (clazz.getAnnotation(RestApi)) {
                 //println "${clazz.name}"
                 String controllerClassName = "${clazz.name}Controller"
-                if (!app.getArtefact(ControllerArtefactHandler.TYPE, controllerClassName)) {
+                //Check if we already have such controller in app
+                if (!app.getArtefact(ControllerArtefactHandler.TYPE, controllerClassName) && !(app.getArtefacts(ControllerArtefactHandler.TYPE)*.name.contains(clazz.simpleName))) {
 
                     try {
                         app.addArtefact(ControllerArtefactHandler.TYPE, app.classLoader.loadClass(controllerClassName))

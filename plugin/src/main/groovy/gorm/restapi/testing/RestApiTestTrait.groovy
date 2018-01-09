@@ -2,7 +2,6 @@ package gorm.restapi.testing
 
 import grails.plugins.rest.client.RestBuilder
 
-
 //@CompileStatic
 trait RestApiTestTrait {
 
@@ -12,6 +11,8 @@ trait RestApiTestTrait {
     RestBuilder getRestBuilder() {
         new RestBuilder()
     }
+
+    List<String> getExcludes(){[]}
 
     // String getResourcePath() {
     //     "${baseUrl}/api/project"
@@ -25,9 +26,9 @@ trait RestApiTestTrait {
      * @param full the full map
      * http://csierra.github.io/posts/2013/02/12/loosely-test-for-map-equality-using-groovy/
      */
-    boolean subsetEquals(Map subset, Map full) {
-        if (!full.keySet().containsAll(subset.keySet())) return false
-        subset.every { it.value == full[it.key] }
+    boolean subsetEquals(Map subset, Map full, List<String> exclude=[]) {
+        //if (!full.keySet().containsAll(subset.keySet())) return false
+        subset.findAll{!exclude.contains(it.key)}.every {  it.value == full[it.key]}
     }
 
 }
