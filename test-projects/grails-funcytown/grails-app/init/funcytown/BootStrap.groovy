@@ -1,7 +1,5 @@
 package funcytown
 
-import taskify.*
-
 class BootStrap {
     static Random rand = new Random()
 
@@ -40,7 +38,7 @@ class BootStrap {
         return dt
     }
 
-    static String randomID(){
+    static String randomID() {
         int num = rand.nextInt(49)
 
     }

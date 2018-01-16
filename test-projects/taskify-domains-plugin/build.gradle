@@ -1,5 +1,3 @@
-
-
 dependencies {
     compile project(":gorm-rest-api")
 

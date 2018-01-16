@@ -1,6 +1,6 @@
 package funcytown.domains.plugin
 
-import grails.plugins.*
+import grails.plugins.Plugin
 
 class TaskifyDomainsPluginGrailsPlugin extends Plugin {
 
@@ -12,7 +12,8 @@ class TaskifyDomainsPluginGrailsPlugin extends Plugin {
     ]
 
 
-    Closure doWithSpring() { {->
+    Closure doWithSpring() {
+        { ->
             // TODO Implement runtime spring config (optional)
         }
     }

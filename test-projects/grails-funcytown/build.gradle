@@ -8,7 +8,7 @@ buildscript {
     }
 }
 
-apply plugin:"org.grails.plugins.views-json"
+apply plugin: "org.grails.plugins.views-json"
 
 
 dependencies {
@@ -37,10 +37,10 @@ dependencies {
     testCompile "org.grails:grails-plugin-testing"
     testCompile "org.grails:grails-datastore-rest-client"
 
-    testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
-    testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
-    testCompile "org.grails.plugins:geb"
-
+    testCompile "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
+    compile "org.grails:grails-gorm-testing-support"
+    compile "org.grails:grails-web-testing-support"
+    compile "org.grails.plugins:geb"
 
     compile project(":gorm-rest-api")
     compile project(":taskify-domains-plugin")

@@ -1,11 +1,11 @@
 package taskify
 
-import grails.rest.Resource
+import gorm.restapi.RestApi
 
 import javax.persistence.Transient
 import java.time.LocalDate
+
 //import gorm.restapi.RestApiController
-import gorm.restapi.RestApi
 /**
  * __This is test docs__
  * A task is an activity that **needs** to be accomplished within a defined period of time or
@@ -17,37 +17,37 @@ class Task {
     //its not required to add fields to constraints, they just need to be here if a specifc order is needed
     //if they should not be shown then add with display:false
     static constraints = {
-        name            description: "The task summary/description", example: "Design App",
-                        nullable: false, maxSize:100
+        name  description: "The task summary/description", example: "Design App",
+              nullable: false, maxSize: 100
         //see https://github.com/json-schema-form/angular-schema-form/blob/master/docs/index.md#form-defaults-in-schema
-        project         description: "The project for this task",
-                        nullable: false, widget: 'picklist'
+        project description: "The project for this task",
+                nullable: false, widget: 'picklist'
 
-        type            description: "The type of Task",
-                        nullable: false
+        type description: "The type of Task",
+             nullable: false
 
-        note            maxSize:1000,
-                        widget: '{"type": "textarea","placeholder": "Don\'t hold back.\nEnter a note."}'
+        note maxSize: 1000,
+             widget: '{"type": "textarea","placeholder": "Don\'t hold back.\nEnter a note."}'
 
-        completed       nullable: false
+        completed nullable: false
 
-        dueDate         description: "The day this task is due"
+        dueDate description: "The day this task is due"
 
         reminderEmail   description: "Email will be used for evil.",
-                        email:true,
-                        maxSize:50
+                        email: true,
+                        maxSize: 50
 
         billable        nullable: false
         estimatedHours  title: 'Est. Hours', scale: 2
         estimatedCost   title: 'Est. Cost', format: 'money', scale: 2
-        progressPct     title:'Progress', format: 'percent', max:1.0, min:0.0, scale:2
+        progressPct     title: 'Progress', format: 'percent', max: 1.0, min: 0.0, scale: 2
 
         roleVisibility  description: "What user roles are able to see this task",
-                        editable:true,
+                        editable: true,
                         widget: '{"type": "select","titleMap": "??some indicator of the source for the json"}'
 
         flex            description: "Extra user fields"
-        fooHide         display:false //hide it from Fields and json-schema by default
+        fooHide         display: false //hide it from Fields and json-schema by default
 
         //dateCreated() //these default to editable=false
         //lastUpdated()
@@ -82,16 +82,18 @@ class Task {
     Date lastUpdated
 
     @Transient
-    String getRoleVisibility(){
+    String getRoleVisibility() {
         'admin'
     }
-    void setRoleVisibility(blah){}
+
+    void setRoleVisibility(blah) {}
 
     @Transient
-    String getFooHide(){
+    String getFooHide() {
         'bar'
     }
-    void setFooHide(blah){}
+
+    void setFooHide(blah) {}
 
 }
 
