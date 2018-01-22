@@ -1,9 +1,12 @@
 package gorm.restapi.controller
 
+import gorm.tools.repository.EntityFieldsHandler
+import gorm.tools.repository.GormRepo
 import gorm.tools.repository.GormRepoEntity
 import gorm.tools.repository.api.RepositoryApi
 import grails.artefact.controller.RestResponder
 import grails.artefact.controller.support.ResponseRenderer
+import grails.converters.JSON
 import grails.databinding.SimpleMapDataBindingSource
 import grails.web.Action
 import grails.web.api.ServletAttributes
@@ -51,7 +54,8 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
     def post() {
         try {
             D instance = getRepo().create(getDataMap())
-            respond instance, [status: CREATED] //201
+            response.status = CREATED.value() //201
+            callRespond instance
         } catch (RuntimeException e){
             handleException(e)
         }
@@ -96,7 +100,12 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
     @Action
     def get() {
         try {
-            respond getRepo().get(params)
+            D entity = getRepo().get(params)
+            if (((GormRepo) getRepo()).getShowFieldsConfig()){
+                    respond(((EntityFieldsHandler) getRepo()).getFields(entity))}
+            else {
+                callRespond(entity)
+            }
         } catch (RuntimeException e){
             handleException(e)
         }
@@ -114,7 +123,12 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      */
     @Action
     def listPost() {
-        respond query((request.JSON?:[:]) as Map, params)
+        List list =  query((request.JSON?:[:]) as Map, params)
+        if (((EntityFieldsHandler) getRepo()).getListFieldsConfig()){
+            list = ((EntityFieldsHandler) getRepo()).getListFields(list)
+        }
+        respond(list)
+
     }
 
     /**
@@ -124,7 +138,11 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      */
     @Action
     def listGet() {
-        respond query(params)
+        List list = query(params)
+        if (((EntityFieldsHandler) getRepo()).getListFieldsConfig()){
+            list = ((EntityFieldsHandler) getRepo()).getListFields(list)
+        }
+        respond(list)
     }
 
     /**
