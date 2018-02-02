@@ -31,7 +31,7 @@ import static grails.util.GrailsClassUtils.getStaticPropertyValue
 class JsonSchemaGenerator {
 
     @Resource
-    HibernateMappingContext PersistentEntityMappingContext
+    HibernateMappingContext persistentEntityMappingContext
 
     @Resource
     DefaultGrailsApplication grailsApplication
@@ -82,7 +82,7 @@ class JsonSchemaGenerator {
 
     private List getDomainProperties(PersistentEntity domClass, Map schema) {
         String domainName = GrailsNameUtils.getPropertyNameRepresentation(domClass.name)
-        LinkedHashMap<String, String> map = [:]
+        Map<String, String> map = [:]
         List required = []
 
         PersistentProperty idProp = domClass.getIdentity()
@@ -199,7 +199,7 @@ class JsonSchemaGenerator {
     @CompileDynamic
     Mapping getMapping(String domainName) {
         PersistentEntity pe = getDomainClass(domainName)
-        return PersistentEntityMappingContext.mappingFactory?.entityToMapping?.get(pe)
+        return persistentEntityMappingContext.mappingFactory?.entityToMapping?.get(pe)
     }
     /* see http://epoberezkin.github.io/ajv/#formats */
     /* We are adding 'money' and 'date' as formats too

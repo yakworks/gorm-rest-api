@@ -15,7 +15,7 @@
  */
 package gorm.restapi
 
-import gorm.restapi.controller.SimpleRestApiDomainController
+import gorm.restapi.controller.RestApiRepoController
 import org.codehaus.groovy.transform.GroovyASTTransformationClass
 
 import java.lang.annotation.ElementType
@@ -74,5 +74,5 @@ public @interface RestApi {
     /**
      * @return The Controller class to generate. Can be set to null to skip the generation
      */
-    Class<?> controllerClass() default SimpleRestApiDomainController
+    Class<?> controllerClass() default RestApiRepoController
 }

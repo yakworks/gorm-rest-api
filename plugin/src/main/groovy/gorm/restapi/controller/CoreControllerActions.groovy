@@ -45,9 +45,8 @@ trait CoreControllerActions<T> {
         if (readOnly) {
             render status: HttpStatus.METHOD_NOT_ALLOWED.value()
             return true
-        } else {
-            return false
         }
+        return false
     }
 
     /**

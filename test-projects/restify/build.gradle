@@ -31,6 +31,7 @@ dependencies {
     compile "org.grails.plugins:views-json-templates"
 
     compile project(":gorm-rest-api")
+    compile project(":taskify-domains-plugin")
 
     console "org.grails:grails-console"
     profile "org.grails.profiles:rest-api"

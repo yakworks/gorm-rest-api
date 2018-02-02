@@ -31,6 +31,10 @@ endpoints:
     enabled: false
     jmx:
         enabled: true
+domainFields:
+    Company:
+        list: ["name"]
+        select: ["city", "staffQuantity"]
 
 ---
 grails:

@@ -21,8 +21,9 @@ import static org.springframework.http.HttpStatus.*
  */
 @SuppressWarnings(['FactoryMethodName', 'NoDef'])
 @Artefact("Controller")
+@Deprecated
 //@Transactional(readOnly = true)
-class SimpleRestApiDomainController<T, ID extends Serializable> implements CoreControllerActions<T> {
+class SimpleRestApiDomainController<T, ID extends Serializable> implements CoreControllerActions<T>, RestControllerErrorHandling {
     static allowedMethods = [create: "POST", update: ["PUT", "PATCH"], delete: "DELETE"]
 
     static responseFormats = ['json']

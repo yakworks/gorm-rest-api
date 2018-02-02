@@ -16,7 +16,7 @@
 package gorm.restapi.transform
 
 import gorm.restapi.RestApi
-import gorm.restapi.controller.SimpleRestApiDomainController
+import gorm.restapi.controller.RestApiRepoController
 import grails.artefact.Artefact
 import grails.compiler.ast.ClassInjector
 import grails.io.IOUtils
@@ -62,7 +62,7 @@ import static org.grails.compiler.injection.GrailsASTUtils.nonGeneric
  * @author Graeme Rocher
  *
  */
-@SuppressWarnings(['VariableName', 'AbcMetric', 'ThrowRuntimeException', 'NoDef', 'MethodSize'])
+@SuppressWarnings(['VariableName', 'AbcMetric', 'ThrowRuntimeException', 'NoDef', 'MethodSize', 'ExplicitCallToEqualsMethod'])
 @CompileStatic
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 class RestApiTransform implements ASTTransformation, CompilationUnitAware {
@@ -107,7 +107,7 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
             if (superClassAttribute instanceof ClassExpression) {
                 superClassNode = ((ClassExpression) superClassAttribute).getType()
             } else {
-                superClassNode = ClassHelper.make(SimpleRestApiDomainController)
+                superClassNode = ClassHelper.make(RestApiRepoController)
             }
 
             final ast = source.getAST()
