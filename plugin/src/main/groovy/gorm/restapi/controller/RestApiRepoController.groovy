@@ -1,19 +1,16 @@
 package gorm.restapi.controller
 
-//import gorm.tools.Pager
+import gorm.tools.repository.api.RepositoryApi
 import grails.artefact.Artefact
+
+//import gorm.tools.Pager
 import grails.converters.JSON
 import grails.core.GrailsApplication
-import grails.plugin.dao.DomainException
-import grails.plugin.dao.ErrorMessageService
-import grails.plugin.dao.GormDaoSupport
+import gorm.tools.repository.errors.RepoExceptionSupport
 import grails.util.GrailsNameUtils
 import grails.validation.ValidationException
-//import gorm.tools.beans.BeanPathTools
-//import gorm.tools.criteria.CriteriaUtils
 import org.apache.commons.lang.StringEscapeUtils
 import org.springframework.context.MessageSource
-import grails.plugin.dao.DaoUtil
 
 /**
  * Credits: took rally.BaseDomainController with core concepts from grails RestfulConroller
@@ -25,40 +22,40 @@ import grails.plugin.dao.DaoUtil
 // we can get some good ideas from how that plugin does things
 @SuppressWarnings(['CatchException', 'NoDef', 'ClosureAsLastMethodParameter', 'FactoryMethodName'])
 @Artefact("Controller")
-class RestApiDaoController<T> {
+class RestApiRepoController<D> {
     static allowedMethods = [list  : ["GET", "POST"], create: "POST",
                              update: ["PUT", "PATCH"], delete: "DELETE"]
 
     static responseFormats = ['json']
     static namespace = 'api'
 
-    Class<T> resource
+    Class<D> resource
     String resourceName
     String resourceClassName
     boolean readOnly
 
     MessageSource messageSource
-    ErrorMessageService errorMessageService
+    RepoExceptionSupport repoExceptionSupport
 
     //AppSetupService appSetupService
     GrailsApplication grailsApplication
 
-    RestApiDaoController(Class<T> resource) {
+    RestApiRepoController(Class<D> resource) {
         this(resource, false)
     }
 
-    RestApiDaoController(Class<T> resource, boolean readOnly) {
+    RestApiRepoController(Class<D> resource, boolean readOnly) {
         this.resource = resource
         this.readOnly = readOnly
         resourceClassName = resource.simpleName
         resourceName = GrailsNameUtils.getPropertyName(resource)
     }
 
-    protected GormDaoSupport getDao() {
-        return domainClass.dao
+    protected RepositoryApi<D> getRepository() {
+        return domainClass.repo
     }
 
-    Class<T> getDomainClass() {
+    Class<D> getDomainClass() {
         resource
     }
 
@@ -121,17 +118,17 @@ class RestApiDaoController<T> {
      * returns the list of domain obects
      */
     protected def listPost(body, requestParams) {
-        return getDaoService().list(body, requestParams)
+        return getRepo().list(body, requestParams)
     }
 
     /**
      * returns the list of domain obects
      */
     protected def listGet(requestParams) {
-        return getDaoService().list(requestParams)
+        return getRepo().list(requestParams)
     }
 
-    //TODO This should be handled in the DAO
+    //TODO This should be handled in the repo
     protected def pagedList(dlist) {
         def pageData = null//new Pager(params)
         def fieldList
@@ -161,7 +158,6 @@ class RestApiDaoController<T> {
     /**
      * The core method to update or insert from json. once json is convertd it calls back out or
      */
-    //XXX this should be called insertOrUpdate, is very confusing
     def create() {
         try {
             def p = BeanPathTools.flattenMap(request, request.JSON)
@@ -179,7 +175,6 @@ class RestApiDaoController<T> {
     /**
      * The core method to update or insert from json. once json is convertd it calls back out or
      */
-    //XXX this should be called insertOrUpdate, is very confusing
     def update() {
         try {
             def p = BeanPathTools.flattenMap(request, request.JSON)
@@ -206,20 +201,20 @@ class RestApiDaoController<T> {
             log.error("saveJson with error", e)
             response.status = 422
             def responseJson = [
-                    "code"       : 422,
-                    "status"     : "error",
-                    "message"    : errorMessageService.buildMsg(e.messageMap),
-                    "messageCode": e.messageMap.code
+                "code"       : 422,
+                "status"     : "error",
+                "message"    : errorMessageService.buildMsg(e.messageMap),
+                "messageCode": e.messageMap.code
             ]
             render responseJson as JSON
         } catch (Exception e) {
             log.error("saveJson with error", e)
             response.status = 400
             def responseJson = [
-                    "code"   : 400,
-                    "status" : "error",
-                    "message": e.message,
-                    "error"  : e.message
+                "code"   : 400,
+                "status" : "error",
+                "message": e.message,
+                "error"  : e.message
             ]
             render responseJson as JSON
         }
@@ -229,27 +224,22 @@ class RestApiDaoController<T> {
      * Called from the saves and saveOrUpdateJson,
      * providing a place to override functionality
      */
-    //XXX this should be called insertDomain(), it is very confusing
     protected def insertDomain(p) {
         log.info("saveDomain(${p})")
-        return dao.insert(p)
+        return getRepo().insert(p)
     }
 
     protected def updateDomain(p, opts = null) {
         params.remove('companyId') //TODO XXX - why is it here for every controllers ?
         log.debug "updateDomain with ${p}"
-        def res = dao.update(p)
-        if (opts?.flush) DaoUtil.flush()
+        def res = getRepo().update(p)
+        if (opts?.flush) //TODO call flush
         return res
     }
 
     //
     protected def deleteDomain(p) {
-        return dao.remove(p)
-    }
-
-    protected def getDataService() {
-        return dao
+        return getRepo().remove(p)
     }
 
     //Build human readable error message
@@ -273,20 +263,20 @@ class RestApiDaoController<T> {
         }
         //FIXME implement new way
         return [
-                "code"       : 422,
-                "status"     : "error",
-                "message"    : message,
-                "messageCode": messageCode,
-                "id"         : entity ? "${entity.id}" : "",
-                'errors'     : errs
+            "code"       : 422,
+            "status"     : "error",
+            "message"    : message,
+            "messageCode": messageCode,
+            "id"         : entity ? "${entity.id}" : "",
+            'errors'     : errs
         ]
 
     }
 
-    def buildError (obj, errs) {
-        eachError([bean:obj], {
-            errs << [(it.field): [object: it.objectName, field: it.field, message: g.message(error:it).toString(),
-                'rejected-value': StringEscapeUtils.escapeXml(it.rejectedValue?.toString())]]
+    def buildError(obj, errs) {
+        eachError([bean: obj], {
+            errs << [(it.field): [object          : it.objectName, field: it.field, message: g.message(error: it).toString(),
+                                  'rejected-value': StringEscapeUtils.escapeXml(it.rejectedValue?.toString())]]
         })
         return errs
     }

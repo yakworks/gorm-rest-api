@@ -1,12 +1,11 @@
 package gorm.restapi.controller
 
 import grails.artefact.Artefact
+import grails.gorm.transactions.Transactional
 
 //import grails.transaction.ReadOnly
 //import grails.gorm.transactions.Transactional
-import grails.transaction.Transactional
 import grails.util.GrailsNameUtils
-import grails.web.http.HttpHeaders
 
 import static org.springframework.http.HttpStatus.*
 

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.config.BeanDefinition
 /**
  * @author <a href='mailto:burt@burtbeckwith.com'>Burt Beckwith</a>
  */
-@SuppressWarnings(['FactoryMethodName','NoDef'])
+@SuppressWarnings(['FactoryMethodName', 'NoDef'])
 class SpringInfoHelper {
 
     static transactional = false
@@ -24,31 +24,27 @@ class SpringInfoHelper {
         def beanFactory = ctx.beanFactory
 
         def split = [Controller: [],
-                         Domain: [],
-                         Filter: [],
-                         Service: [],
-                         TagLib: []]
+                     Domain    : [],
+                     Filter    : [],
+                     Service   : [],
+                     TagLib    : []]
 
         def names = ctx.beanDefinitionNames as List
         for (String name : names) {
             BeanDefinition beanDefinition = beanFactory.getBeanDefinition(name)
             if (name.endsWith('ServiceClass')) {
                 findServiceBeanName name, names, ctx, beanFactory, split.Service
-            }
-            else if (name.endsWith('DomainClass')) {
+            } else if (name.endsWith('DomainClass')) {
                 findDomainClassBeanName name, names, beanFactory, split.Domain
-            }
-            else if (name.endsWith('TagLib')) {
+            } else if (name.endsWith('TagLib')) {
                 if (beanDefinition.singleton) {
                     split.TagLib << name
                 }
-            }
-            else if (name.endsWith('Controller')) {
+            } else if (name.endsWith('Controller')) {
                 if (beanDefinition.prototype) {
                     split.Controller << name
                 }
-            }
-            else if (name.endsWith('Filters')) {
+            } else if (name.endsWith('Filters')) {
                 if (beanDefinition.singleton) {
                     split.Filter << name
                 }
@@ -120,13 +116,13 @@ class SpringInfoHelper {
         for (String name : names) {
             BeanDefinition beanDefinition = beanFactory.getBeanDefinition(name)
             String className = buildClassName(beanFactory, name, beanDefinition)
-            beanDescriptions << [name: name,
-                                 className: className,
-                                 scope: beanDefinition.scope ?: 'singleton',
-                                        lazy: beanDefinition.lazyInit,
-                                 isAbstract: beanDefinition.isAbstract(),
-                                        parent: beanDefinition.parentName,
-                                        beanClassName: beanDefinition.beanClassName]
+            beanDescriptions << [name         : name,
+                                 className    : className,
+                                 scope        : beanDefinition.scope ?: 'singleton',
+                                 lazy         : beanDefinition.lazyInit,
+                                 isAbstract   : beanDefinition.isAbstract(),
+                                 parent       : beanDefinition.parentName,
+                                 beanClassName: beanDefinition.beanClassName]
         }
 
         beanDescriptions
@@ -137,7 +133,7 @@ class SpringInfoHelper {
      * proxy, factory, etc.
      *
      * @param beanFactory the BeanFactory
-     * @param name  the bean name
+     * @param name the bean name
      * @param beanDefinition the BeanDefinition
      * @return the name
      */

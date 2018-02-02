@@ -1,29 +1,14 @@
 package gorm.restapi.appinfo
 
-//import grails.converters.JSON
 import grails.core.DefaultGrailsApplication
-import grails.core.GrailsDomainClass
-import grails.core.GrailsDomainClassProperty
-import grails.transaction.Transactional
-import grails.util.GrailsNameUtils
-import grails.validation.ConstrainedProperty
-import groovy.transform.CompileDynamic
-import groovy.transform.CompileStatic
-import org.grails.core.DefaultGrailsDomainClass
-import org.grails.datastore.mapping.model.MappingContext
-import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.orm.hibernate.cfg.HibernateMappingContext
-import org.grails.orm.hibernate.cfg.Mapping
 
+//import grails.converters.JSON
+import javax.annotation.Resource
 import java.lang.management.ManagementFactory
 import java.lang.management.MemoryPoolMXBean
 import java.lang.management.MemoryType
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
-
-import grails.util.GrailsClassUtils
-
-import javax.annotation.Resource
 
 /**
  * Misc Application Info. TODO probably move to its own plugin
@@ -31,18 +16,22 @@ import javax.annotation.Resource
 //@CompileStatic
 class AppInfoBuilder {
     //HibernateMappingContext grailsDomainClassMappingContext
-    @Resource DefaultGrailsApplication grailsApplication
-    @Resource def grailsUrlMappingsHolder
+    @Resource
+    DefaultGrailsApplication grailsApplication
+    @Resource
+    def grailsUrlMappingsHolder
 
     List urlMappings() {
 
-        List urlMappings = grailsUrlMappingsHolder.urlMappings.collect { [
-              name: it.mappingName?:'',
-              url: it.urlData.logicalUrls.first(),
-              methods: it.parameterValues,
-              parameters: it.constraints.propertyName
+        List urlMappings = grailsUrlMappingsHolder.urlMappings.collect {
+            [
+                name      : it.mappingName ?: '',
+                url       : it.urlData.logicalUrls.first(),
+                methods   : it.parameterValues,
+                parameters: it.constraints.propertyName
 
-        ] }
+            ]
+        }
         return urlMappings
     }
 
@@ -82,17 +71,17 @@ class AppInfoBuilder {
 
         List memoryNames = ['Heap']
         Map memoryNumbers = ['Free': [formatMB(memoryFree)],
-                                    'Used': [formatMB(memoryUsed)]]
+                             'Used': [formatMB(memoryUsed)]]
 
-        [heapPoolNames: heapPoolNames,
-         heapSectionNames: heapNumbers.keySet(),
-         heapNumbers: heapNumbers,
-         nonheapPoolNames: nonheapPoolNames,
+        [heapPoolNames      : heapPoolNames,
+         heapSectionNames   : heapNumbers.keySet(),
+         heapNumbers        : heapNumbers,
+         nonheapPoolNames   : nonheapPoolNames,
          nonheapSectionNames: nonheapNumbers.keySet(),
-         nonheapNumbers: nonheapNumbers,
-         memoryNames: memoryNames,
-         memorySectionNames: memoryNumbers.keySet(),
-         memoryNumbers: memoryNumbers]
+         nonheapNumbers     : nonheapNumbers,
+         memoryNames        : memoryNames,
+         memorySectionNames : memoryNumbers.keySet(),
+         memoryNumbers      : memoryNumbers]
     }
 
     void generatePoolGraphData(MemoryType type, poolNames, numbers) {

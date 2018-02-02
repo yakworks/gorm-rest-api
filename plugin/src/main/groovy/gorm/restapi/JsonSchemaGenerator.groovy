@@ -1,17 +1,21 @@
 package gorm.restapi
 
+import gorm.tools.GormMetaUtils
 import grails.core.DefaultGrailsApplication
-import grails.core.GrailsDomainClass
-import grails.core.GrailsDomainClassProperty
+import grails.gorm.validation.ConstrainedProperty
 import grails.util.GrailsNameUtils
-import grails.validation.ConstrainedProperty
 import groovy.transform.CompileDynamic
-import org.grails.core.DefaultGrailsDomainClass
+import org.grails.core.io.support.GrailsFactoriesLoader
 import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.datastore.mapping.model.PersistentProperty
+import org.grails.datastore.mapping.model.types.Association
 import org.grails.orm.hibernate.cfg.HibernateMappingContext
 import org.grails.orm.hibernate.cfg.Mapping
+import org.grails.validation.discovery.ConstrainedDiscovery
+import org.springframework.core.annotation.AnnotationUtils
 
 import javax.annotation.Resource
+
 import static grails.util.GrailsClassUtils.getStaticPropertyValue
 
 /**
@@ -27,7 +31,7 @@ import static grails.util.GrailsClassUtils.getStaticPropertyValue
 class JsonSchemaGenerator {
 
     @Resource
-    HibernateMappingContext grailsDomainClassMappingContext
+    HibernateMappingContext PersistentEntityMappingContext
 
     @Resource
     DefaultGrailsApplication grailsApplication
@@ -37,20 +41,21 @@ class JsonSchemaGenerator {
     //https://docs.spring.io/spring-data/rest/docs/current/reference/html/#metadata.json-schema
     //https://github.com/OAI/OpenAPI-Specification
     Map generate(Class clazz) {
-        return generate(GrailsNameUtils.getPropertyNameRepresentation(clazz.simpleName))
+        return generate(clazz.name)
     }
 
     Map generate(String domainName) {
-        DefaultGrailsDomainClass domClass = getDomainClass(domainName)
+        println(domainName)
+        PersistentEntity domClass = GormMetaUtils.getPersistentEntity(domainName)
         Map schema = [:]
         schema['$schema'] = "http://json-schema.org/schema#"
-        schema['$id'] = "http://localhost:8080/schema/${domClass.name}.json"
+        schema['$id'] = "http://localhost:8080/schema/${domClass.getDecapitalizedName().capitalize()}.json"
         schema["definitions"] = [:]
         schema.putAll generate(domClass, schema)
         return schema
     }
 
-    Map generate(GrailsDomainClass domainClass, Map schema) {
+    Map generate(PersistentEntity domainClass, Map schema) {
         Map map = [:]
         //TODO figure out a more performant way to do these if
         Mapping mapping = getMapping(domainClass.name)
@@ -59,8 +64,9 @@ class JsonSchemaGenerator {
         map.title = domainClass.name //TODO Should come from application.yml !?
 
         if (mapping?.comment) map.description = mapping.comment
-        if (domainClass.clazz.isAnnotationPresent(RestApi.class)) {
-            map.description = domainClass.clazz.getAnnotation(RestApi.class).description()
+
+        if (AnnotationUtils.findAnnotation(domainClass.class, RestApi.class)) {
+            map.description = AnnotationUtils.getAnnotationAttributes(AnnotationUtils.findAnnotation(domainClass.class, RestApi.class)).description
         }
 
         map.type = 'Object'
@@ -74,12 +80,12 @@ class JsonSchemaGenerator {
         return map
     }
 
-    private List getDomainProperties(DefaultGrailsDomainClass domClass, Map schema) {
+    private List getDomainProperties(PersistentEntity domClass, Map schema) {
         String domainName = GrailsNameUtils.getPropertyNameRepresentation(domClass.name)
         LinkedHashMap<String, String> map = [:]
         List required = []
 
-        GrailsDomainClassProperty idProp = domClass.getIdentifier()
+        PersistentProperty idProp = domClass.getIdentity()
 
         //id
         map[idProp.name] = [type: getJsonType(idProp.type).type, readOnly: true]
@@ -87,27 +93,24 @@ class JsonSchemaGenerator {
         //version
         if (domClass.version) map[domClass.version.name] = [type: 'integer', readOnly: true]
 
-
         Mapping mapping = getMapping(domainName)
-        List<GrailsDomainClassProperty> props = resolvePersistentProperties(domClass)
+        List<PersistentProperty> props = resolvePersistentProperties(domClass)
 
-        for (GrailsDomainClassProperty prop : props) {
-            ConstrainedProperty constraints = domClass.constrainedProperties.get(prop.name)
+        for (PersistentProperty prop : props) {
+            ConstrainedProperty constraints = getConstrainedProperties(domClass).get(prop.name)
             //Map mappedBy = domClass.mappedBy
             if (!constraints.display) continue //skip if display is false
-
-
-            if (prop.isAssociation()) {
-                GrailsDomainClass referencedDomainClass = prop.referencedDomainClass
-                if ((prop.isManyToOne() || prop.isOneToOne() && !schema.definitions.containsKey(referencedDomainClass.name))) {
-                    if (!referencedDomainClass.clazz.isAnnotationPresent(RestApi)) {
-                        //treat as definition in same schema
-                        schema.definitions[referencedDomainClass.name] = [:]
-                        schema.definitions[referencedDomainClass.name] = generate(referencedDomainClass, schema)
-                        map[prop.name] = ['$ref': "#/definitions/$prop.referencedDomainClass.name"]
-                    } else {
+            if (prop instanceof Association) {
+                PersistentEntity referencedDomainClass = GormMetaUtils.getPersistentEntity(prop.type)
+                if (/*(prop.isManyToOne() || prop.isOneToOne()) && */ !schema.definitions.containsKey(referencedDomainClass.name)) {
+                    if (referencedDomainClass.javaClass.isAnnotationPresent(RestApi)) {
                         //treat as a seperate file
-                        map[prop.name] = ['$ref': "${prop.referencedDomainClass.name}.json"]
+                        map[prop.name] = ['$ref': "${prop.owner.name}.json"]
+                    } else {
+                        //treat as definition in same schema
+                        schema.definitions[referencedDomainClass.getDecapitalizedName().capitalize()] = [:]
+                        schema.definitions[referencedDomainClass.getDecapitalizedName().capitalize()] = generate(referencedDomainClass, schema)
+                        map[prop.name] = ['$ref': "#/definitions/$prop.owner.name"]
                     }
 
                     if (!constraints.isNullable() && constraints.editable) {
@@ -117,16 +120,16 @@ class JsonSchemaGenerator {
             } else {
                 Map jprop = [:]
                 //jprop.title = prop.naturalName
-                jprop.title = constraints.getMetaConstraintValue("title") ?: prop.naturalName
+                jprop.title = getMetaConstraintValue(constraints, "title") ?: prop.name
                 //title override
                 //def metaConstraints = constraints.getMetaConstraintValue()metaConstraints
                 //if(constraints.attributes?.title) jprop.title = constraints.attributes.title
                 //if(constraints.getMetaConstraintValue("title"))
-                String description = constraints.getMetaConstraintValue("description")
+                String description = getMetaConstraintValue(constraints, "description")
                 if (description) jprop.description = description
 
                 //Example
-                String example = constraints.getMetaConstraintValue("example")
+                String example = getMetaConstraintValue(constraints, "example")
                 if (example) jprop.example = example
 
                 //type
@@ -135,10 +138,9 @@ class JsonSchemaGenerator {
                 //format
                 if (typeFormat.format) jprop.format = typeFormat.format
                 if (typeFormat.enum) jprop.enum = typeFormat.enum
-
                 //format override from constraints
-                if (constraints.format) jprop.format = constraints.format
-                if (constraints.email) jprop.format = 'email'
+                if (constraints.property.format) jprop.format = constraints.property.format
+                //if (constraints.property?.appliedConstraints?.email) jprop.format = 'email'
                 //pattern TODO
 
                 //defaults
@@ -181,21 +183,23 @@ class JsonSchemaGenerator {
     }
 
     String getDefaultValue(Mapping mapping, String propName) {
-        mapping.columns[propName]?.columns?.getAt(0)?.defaultValue
+        mapping?.columns?."$propName"?.columns?.getAt(0)?.defaultValue
         //cols[prop.name]?.columns?.getAt(0)?.defaultValue
     }
 
+    String getMetaConstraintValue(ConstrainedProperty constraints, String name) {
+        constraints?.property?.metaConstraints?."$name"
+    }
+
     @CompileDynamic
-    DefaultGrailsDomainClass getDomainClass(String domainName) {
-        grailsApplication.domainClasses.find { it.propertyName == domainName }
+    PersistentEntity getDomainClass(String domainName) {
+        grailsApplication.domainClasses.find { it.naturalName == domainName } as PersistentEntity
     }
 
     @CompileDynamic
     Mapping getMapping(String domainName) {
-        PersistentEntity pe = grailsDomainClassMappingContext.persistentEntities.find {
-            GrailsNameUtils.getPropertyName(it.name) == domainName
-        }
-        return grailsDomainClassMappingContext.mappingFactory?.entityToMapping?.get(pe)
+        PersistentEntity pe = getDomainClass(domainName)
+        return PersistentEntityMappingContext.mappingFactory?.entityToMapping?.get(pe)
     }
     /* see http://epoberezkin.github.io/ajv/#formats */
     /* We are adding 'money' and 'date' as formats too
@@ -242,9 +246,8 @@ class JsonSchemaGenerator {
 
     //copied from FormFieldsTagLib in the Fields plugin
     @CompileDynamic
-    private List<GrailsDomainClassProperty> resolvePersistentProperties(GrailsDomainClass domainClass, Map attrs = [:]) {
-        List<GrailsDomainClassProperty> properties
-
+    private List<PersistentProperty> resolvePersistentProperties(PersistentEntity domainClass, Map attrs = [:]) {
+        List properties
         if (attrs.order) {
             def orderBy = attrs.order?.tokenize(',')*.trim() ?: []
             properties = orderBy.collect { propertyName -> domainClass.getPersistentProperty(propertyName) }
@@ -252,17 +255,24 @@ class JsonSchemaGenerator {
             properties = domainClass.persistentProperties as List
             def blacklist = attrs.except?.tokenize(',')*.trim() ?: []
             //blacklist << 'dateCreated' << 'lastUpdated'
-            Map scaffoldProp = getStaticPropertyValue(domainClass.clazz, 'scaffold')
+            Map scaffoldProp = getStaticPropertyValue(domainClass.class, 'scaffold')
             if (scaffoldProp) {
                 blacklist.addAll(scaffoldProp.exclude)
             }
             properties.removeAll { it.name in blacklist }
-            properties.removeAll { !it.domainClass.constrainedProperties[it.name]?.display }
-            properties.removeAll { it.derived }
+            properties.removeAll { !getConstrainedProperties(it.owner)[it.name]?.display }
+            properties.removeAll { it.propertyMapping.mappedForm.derived }
 
-            Collections.sort(properties, new org.grails.validation.DomainClassPropertyComparator(domainClass))
+            //Collections.sort(properties, new org.grails.validation.DomainClassPropertyComparator(domainClass))
         }
 
         return properties
+    }
+
+    Map getConstrainedProperties(PersistentEntity persistentEntity) {
+        Map constrainedProperties = [:]
+        ConstrainedDiscovery constrainedDiscovery = GrailsFactoriesLoader.loadFactory(ConstrainedDiscovery.class)
+        constrainedProperties = constrainedDiscovery.findConstrainedProperties(persistentEntity)
+        return constrainedProperties
     }
 }

@@ -15,37 +15,16 @@
  */
 package gorm.restapi.transform
 
-import grails.io.IOUtils
-
-//import org.grails.datastore.gorm.transactions.transform.TransactionalTransform
-import org.grails.transaction.transform.TransactionalTransform
-import org.grails.plugins.web.rest.transform.LinkableTransform
-
-import static java.lang.reflect.Modifier.*
-import static org.grails.compiler.injection.GrailsASTUtils.*
+import gorm.restapi.RestApi
+import gorm.restapi.controller.SimpleRestApiDomainController
 import grails.artefact.Artefact
 import grails.compiler.ast.ClassInjector
-
-//import grails.rest.Resource
-//import grails.rest.RestfulController
+import grails.io.IOUtils
 import grails.util.GrailsNameUtils
 import groovy.transform.CompilationUnitAware
 import groovy.transform.CompileStatic
-
-import java.lang.reflect.Modifier
-
-import org.codehaus.groovy.ast.ASTNode
-import org.codehaus.groovy.ast.AnnotationNode
-import org.codehaus.groovy.ast.ClassHelper
-import org.codehaus.groovy.ast.ClassNode
-import org.codehaus.groovy.ast.ConstructorNode
-import org.codehaus.groovy.ast.FieldNode
-import org.codehaus.groovy.ast.expr.ClassExpression
-import org.codehaus.groovy.ast.expr.ConstantExpression
-import org.codehaus.groovy.ast.expr.ConstructorCallExpression
-import org.codehaus.groovy.ast.expr.Expression
-import org.codehaus.groovy.ast.expr.ListExpression
-import org.codehaus.groovy.ast.expr.TupleExpression
+import org.codehaus.groovy.ast.*
+import org.codehaus.groovy.ast.expr.*
 import org.codehaus.groovy.ast.stmt.BlockStatement
 import org.codehaus.groovy.ast.stmt.ExpressionStatement
 import org.codehaus.groovy.control.CompilationUnit
@@ -58,17 +37,26 @@ import org.grails.compiler.injection.GrailsAwareInjectionOperation
 import org.grails.compiler.injection.TraitInjectionUtils
 import org.grails.compiler.web.ControllerActionTransformer
 import org.grails.core.artefact.ControllerArtefactHandler
+import org.grails.plugins.web.rest.transform.LinkableTransform
+import org.grails.datastore.gorm.transactions.transform.TransactionalTransform
 import org.springframework.beans.factory.annotation.Autowired
 
-import gorm.restapi.controller.SimpleRestApiDomainController
-import gorm.restapi.RestApi
+import java.lang.reflect.Modifier
+
+import static java.lang.reflect.Modifier.*
+
+//import grails.rest.Resource
+//import grails.rest.RestfulController
+import static org.grails.compiler.injection.GrailsASTUtils.ZERO_PARAMETERS
+import static org.grails.compiler.injection.GrailsASTUtils.nonGeneric
 
 /**
  * The  transform automatically exposes a domain class as a RESTful resource. In effect the transform adds a controller to a Grails application
  * that performs CRUD operations on the domain. See the {@link Resource} annotation for more details
  *
  *
- * modified to use the RestApiController and get rid of the bad bits that mess with the URL mapping
+ * This is modified from {@link org.grails.plugins.web.rest.transform.ResourceTransform}
+ * to use the RestApiController and get rid of the bits that mess with the URL mapping
  *
  * @author Joshua Burnett
  * @author Graeme Rocher
@@ -239,9 +227,7 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
             ArtefactTypeAstTransformation.performInjection(source, newControllerClassNode, injectors.findAll {
                 it instanceof ControllerActionTransformer
             })
-            //new TransactionalTransform().visit(source, transactionalAnn, newControllerClassNode)
-            new TransactionalTransform().weaveTransactionalBehavior(source, newControllerClassNode, transactionalAnn)
-
+            new TransactionalTransform().visit(source, transactionalAnn, newControllerClassNode)
             newControllerClassNode.setModule(ast)
 
             final artefactAnnotation = new AnnotationNode(new ClassNode(Artefact))

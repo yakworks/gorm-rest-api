@@ -1,22 +1,12 @@
 package gorm.restapi
 
-import grails.plugins.*
 import gorm.restapi.appinfo.AppInfoBuilder
-
-import grails.config.Settings
 import grails.core.GrailsApplication
 import grails.core.GrailsClass
-import grails.core.support.GrailsApplicationAware
 import grails.plugins.Plugin
-import grails.rest.Resource
-import grails.util.GrailsUtil
 import groovy.transform.CompileStatic
-
-import org.apache.commons.logging.Log
-import org.apache.commons.logging.LogFactory
 import org.grails.core.artefact.ControllerArtefactHandler
 import org.grails.core.artefact.DomainClassArtefactHandler
-import org.grails.plugins.web.rest.render.DefaultRendererRegistry
 
 @SuppressWarnings(['NoDef', 'EmptyMethod', 'VariableName', 'EmptyCatchBlock'])
 class GormRestApiGrailsPlugin extends Plugin {
@@ -25,7 +15,7 @@ class GormRestApiGrailsPlugin extends Plugin {
     String grailsVersion = "3.2.11 > *"
     // resources that are excluded from plugin packaging
     List pluginExcludes = [
-            "grails-app/views/error.gsp"
+        "grails-app/views/error.gsp"
     ]
 
     // TODO Fill in these fields

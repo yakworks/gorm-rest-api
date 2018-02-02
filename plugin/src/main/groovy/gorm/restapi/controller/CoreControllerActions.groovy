@@ -1,18 +1,10 @@
 package gorm.restapi.controller
 
-import grails.converters.JSON
-
 import grails.artefact.Artefact
-
-//import grails.transaction.ReadOnly
-//import grails.gorm.transactions.Transactional
-import grails.transaction.Transactional
-import grails.util.GrailsNameUtils
-import grails.web.Action
 import grails.web.http.HttpHeaders
 import org.springframework.http.HttpStatus
 
-import static org.springframework.http.HttpStatus.*
+import static org.springframework.http.HttpStatus.NOT_FOUND
 
 /**
  *
@@ -138,11 +130,11 @@ trait CoreControllerActions<T> {
 
     String addLocationHeader(response, id = null, String action = null) {
         String locLink = grailsLinkGenerator.link(
-                resource: this.controllerName,
-                action: action,
-                id: id,
-                absolute: true,
-                namespace: hasProperty('namespace') ? this.namespace : null
+            resource: this.controllerName,
+            action: action,
+            id: id,
+            absolute: true,
+            namespace: hasProperty('namespace') ? this.namespace : null
         )
 
         response.addHeader(HttpHeaders.LOCATION, locLink)

@@ -1,13 +1,10 @@
 package gorm.restapi.testing
 
-import grails.test.mixin.integration.Integration
-import grails.transaction.*
-import static grails.web.http.HttpHeaders.*
+import geb.spock.GebSpec
 import grails.web.http.HttpHeaders
+
+import static grails.web.http.HttpHeaders.CONTENT_TYPE
 import static org.springframework.http.HttpStatus.*
-import spock.lang.*
-import geb.spock.*
-import grails.plugins.rest.client.RestBuilder
 
 // @Integration
 // @Rollback
