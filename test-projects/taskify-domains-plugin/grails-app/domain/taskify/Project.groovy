@@ -19,10 +19,10 @@ class Project {
                     nullable: false, maxSize: 10
         name        description: "The project name", example: "Cool Project",
                     nullable: false, maxSize: 50
-        inactive    description: "is project inactivated", nullable: false
+        inactive    description: "is project inactivated", nullable: false, example: false
 
         billable    description: "does this get invoiced? If its set to true, tasks can be overriden to be false ",
-                    nullable: false
+                    nullable: false, example: true
 
         startDate   description: "Start date of project.", example: "2017-01-01"
         endDate     description: "End date of project.", example: "2017-12-30"

@@ -1,9 +1,12 @@
 package gorm.restapi.controller
 
+import gorm.tools.repository.EntityFieldsHandler
+import gorm.tools.repository.GormRepo
 import gorm.tools.repository.GormRepoEntity
 import gorm.tools.repository.api.RepositoryApi
 import grails.artefact.controller.RestResponder
 import grails.artefact.controller.support.ResponseRenderer
+import grails.converters.JSON
 import grails.databinding.SimpleMapDataBindingSource
 import grails.web.Action
 import grails.web.api.ServletAttributes
@@ -16,7 +19,8 @@ import org.springframework.core.GenericTypeResolver
 import static org.springframework.http.HttpStatus.*
 
 @CompileStatic
-trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, ServletAttributes{
+@SuppressWarnings(['CatchRuntimeException', 'NoDef'])
+trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, ServletAttributes, MangoControllerApi, RestControllerErrorHandling {
 
     /**
      * The java class for the Gorm domain (persistence entity). will generally get set in constructor or using the generic as
@@ -38,10 +42,8 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      * Gets the repository for the entityClass
      * @return The repository
      */
-    //@CompileDynamic
     RepositoryApi<D> getRepo() {
         (RepositoryApi<D>) InvokerHelper.invokeStaticMethod(getEntityClass(), 'getRepo', null)
-        //getEntityClass().getRepo()
     }
 
     /**
@@ -50,8 +52,13 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      */
     @Action
     def post() {
-        D instance = getRepo().create(getDataMap())
-        respond instance, [status: CREATED] //201
+        try {
+            D instance = getRepo().create(getDataMap())
+            response.status = CREATED.value() //201
+            callRespond instance
+        } catch (RuntimeException e){
+            handleException(e)
+        }
     }
 
     /**
@@ -60,8 +67,15 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      */
     @Action
     def put() {
-        D instance = getRepo().update(getDataMap())
-        respond instance, [status: OK] //200
+        Map data = [id: params.id]
+        data.putAll(getDataMap()) // getDataMap doesnt contains id because it passed in params
+        try {
+            D instance = getRepo().update(data)
+            respond instance, [status: OK] //200
+        } catch (RuntimeException e){
+            handleException(e)
+        }
+
     }
 
     /**
@@ -70,8 +84,13 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      */
     @Action
     def delete() {
-        getRepo().removeById((Serializable)params.id)
-        callRender(status: NO_CONTENT) //204
+        try {
+            getRepo().removeById((Serializable) params.id)
+            callRender(status: NO_CONTENT) //204
+        } catch (RuntimeException e){
+            handleException(e)
+        }
+
     }
 
     /**
@@ -80,7 +99,50 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      */
     @Action
     def get() {
-        respond getRepo().get(params)
+        try {
+            D entity = getRepo().get(params)
+            if (((GormRepo) getRepo()).getShowFieldsConfig()){
+                    respond(((EntityFieldsHandler) getRepo()).getFields(entity))}
+            else {
+                callRespond(entity)
+            }
+        } catch (RuntimeException e){
+            handleException(e)
+        }
+    }
+
+    @Action
+    def index(){
+        listGet()
+    }
+
+    /**
+     * request type is handled in urlMapping
+     *
+     * returns the list of domain objects
+     */
+    @Action
+    def listPost() {
+        List list =  query((request.JSON?:[:]) as Map, params)
+        if (((EntityFieldsHandler) getRepo()).getListFieldsConfig()){
+            list = ((EntityFieldsHandler) getRepo()).getListFields(list)
+        }
+        respond(list)
+
+    }
+
+    /**
+     * request type is handled in urlMapping
+     *
+     * returns the list of domain objects
+     */
+    @Action
+    def listGet() {
+        List list = query(params)
+        if (((EntityFieldsHandler) getRepo()).getListFieldsConfig()){
+            list = ((EntityFieldsHandler) getRepo()).getListFields(list)
+        }
+        respond(list)
     }
 
     /**

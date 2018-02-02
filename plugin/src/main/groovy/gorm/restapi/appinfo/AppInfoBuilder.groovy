@@ -1,6 +1,7 @@
 package gorm.restapi.appinfo
 
 import grails.core.DefaultGrailsApplication
+import grails.web.mapping.UrlMappingsHolder
 
 //import grails.converters.JSON
 import javax.annotation.Resource
@@ -19,7 +20,7 @@ class AppInfoBuilder {
     @Resource
     DefaultGrailsApplication grailsApplication
     @Resource
-    def grailsUrlMappingsHolder
+    UrlMappingsHolder grailsUrlMappingsHolder
 
     List urlMappings() {
 
