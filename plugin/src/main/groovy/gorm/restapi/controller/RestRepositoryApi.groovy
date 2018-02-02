@@ -5,6 +5,7 @@ import gorm.tools.repository.api.RepositoryApi
 import grails.artefact.controller.RestResponder
 import grails.artefact.controller.support.ResponseRenderer
 import grails.databinding.SimpleMapDataBindingSource
+import grails.util.GrailsClassUtils
 import grails.web.Action
 import grails.web.api.ServletAttributes
 import grails.web.databinding.DataBindingUtils
@@ -40,6 +41,7 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      */
     //@CompileDynamic
     RepositoryApi<D> getRepo() {
+        //GrailsClassUtils.getStaticPropertyValue(getEntityClass(),'repo')
         (RepositoryApi<D>) InvokerHelper.invokeStaticMethod(getEntityClass(), 'getRepo', null)
         //getEntityClass().getRepo()
     }
