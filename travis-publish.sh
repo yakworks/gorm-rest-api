@@ -2,15 +2,15 @@
 
 set -e
 
-if [[ -n $TRAVIS_TAG ]] || [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_REPO_SLUG == "yakworks/gorm-tools" && $TRAVIS_PULL_REQUEST == 'false' ]]; then
+if [[ -n $TRAVIS_TAG ]] || [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_REPO_SLUG == "yakworks/gorm-rest-api" && $TRAVIS_PULL_REQUEST == 'false' ]]; then
 
     if [[ -n $TRAVIS_TAG ]]
     then
         echo "### publishing release to BinTray"
-        ./gradlew gorm-tools:bintrayUpload --no-daemon
+        ./gradlew gorm-rest-api:bintrayUpload --no-daemon
     else
          echo "### publishing snapshot"
-        ./gradlew gorm-tools:publish --no-daemon
+        ./gradlew gorm-rest-api:publish --no-daemon
     fi
 
     if [[ $TRAVIS_BRANCH == 'master' ]]
@@ -21,7 +21,7 @@ if [[ -n $TRAVIS_TAG ]] || [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_REPO_SLUG ==
         git config --global user.email "9cibot@9ci.com"
         git config --global credential.helper "store --file=~/.git-credentials"
         echo "https://$GITHUB_TOKEN:@github.com" > ~/.git-credentials
-        git clone https://${GITHUB_TOKEN}@github.com/yakworks/gorm-tools.git -b gh-pages gh-pages --single-branch > /dev/null
+        git clone https://${GITHUB_TOKEN}@github.com/yakworks/gorm-rest-api.git -b gh-pages gh-pages --single-branch > /dev/null
 
         python3 -m mkdocs build
 
