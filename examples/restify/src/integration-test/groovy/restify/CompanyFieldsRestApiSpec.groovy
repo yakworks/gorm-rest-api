@@ -101,7 +101,7 @@ class CompanyFieldsRestApiSpec extends GebSpec implements RestApiTestTrait{
 
     }
 
-    void test_show_get() {
+    /*void test_show_get() {
         given: "The save action is executed with valid data"
         def response = post_a_valid_resource()
 
@@ -114,7 +114,7 @@ class CompanyFieldsRestApiSpec extends GebSpec implements RestApiTestTrait{
         response.json.id == null
         response.json.staffQuantity == 12
         response.json.city == "city"
-    }
+    }*/
 
     void test_delete() {
         given: "The save action is executed with valid data"

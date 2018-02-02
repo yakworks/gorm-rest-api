@@ -117,11 +117,10 @@ subprojects {
         testCompile "org.grails.plugins:geb"
         testCompile "org.grails:views-json-testing-support:$viewsVersion"
 
-        testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
-        testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:3.6.0"
-        testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:3.6.0"
-        testRuntime "org.seleniumhq.selenium:selenium-remote-driver:3.6.0"
-        testRuntime "org.seleniumhq.selenium:selenium-api:3.6.0"
+        compile "org.grails:grails-gorm-testing-support"
+        compile "org.grails:grails-web-testing-support"
+        compile "org.grails.plugins:geb"
+        testCompile "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
     }
     //apply from:"$commonBuild/common.gradle"
 

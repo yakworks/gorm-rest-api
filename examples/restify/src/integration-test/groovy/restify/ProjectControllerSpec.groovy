@@ -16,7 +16,7 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY
 @Integration
 class ProjectControllerSpec extends GebSpec implements RestApiTestTrait{
 
-    Class<Book> domainClass = Project
+    Class<Project> domainClass = Project
     boolean vndHeaderOnError = false
 
     String getResourcePath() {
