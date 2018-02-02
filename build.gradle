@@ -1,23 +1,26 @@
+
 buildscript {
     repositories {
         mavenLocal()
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
+        classpath "org.grails.plugins:views-gradle:$grailsViewsVersion"
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails:grails-docs:$grailsVersion"
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath 'io.github.groovylang.groovydoc:groovydoc-gradle-plugin:1.0.1'
-        classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.8.2"
+        classpath "gradle.plugin.com.energizedwork:idea-gradle-plugins:1.4"
     }
 }
 
 apply plugin: 'idea'
 apply plugin: 'groovy'
+apply plugin: "com.energizedwork.idea-project-components"
 
 repositories {
     mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
+    maven { url "http://repo.9ci.com/artifactory/grails-plugins" }
 }
 
 //Root project and view-tools plugin uses same version.
@@ -28,18 +31,20 @@ project(':gorm-rest-api') {
 }
 
 ext {
-    commonBuild = "https://raw.githubusercontent.com/yakworks/grails-common-build/master"
-    grailsApps = ['grails-funcytown', 'restify']
-    grailsPlugins = ['gorm-rest-api', 'taskify-domains-plugin']
+    //commonBuild = "https://raw.githubusercontent.com/yakworks/grails-common-build/master"
+    commonBuild = new File(project.rootDir, "gradle").absolutePath
+    grailsApps = ['grails-funcytown', 'restify', 'taskify-domains-plugin']
+    grailsPlugins = ['gorm-rest-api']
 }
 
 
+String seleniumVersion = "3.8.1"
 
 subprojects {
 
     boolean isGrailsApp = grailsApps.contains(project.name)
     boolean isGrailsPlugin = grailsPlugins.contains(project.name)
-    //boolean isGrailsProject = isGrailsApp || isGrailsPlugin
+    boolean isGrailsProject = isGrailsApp || isGrailsPlugin
     boolean isBuildSnapshot = version.toString().endsWith("-SNAPSHOT")
 
     println project.name + ":" + version.toString()
@@ -50,25 +55,31 @@ subprojects {
         isSnapshot = isBuildSnapshot
     }
 
+    String artifactoryUsername = System.getenv("ARTIFACTORY_USER") ?:  project.hasProperty('artifactoryUsername') ? project.artifactoryUsername : null
+    String artifactoryPassword = System.getenv("ARTIFACTORY_PASSWORD") ?: project.hasProperty('artifactoryPassword') ? project.artifactoryPassword : null
+
     repositories {
         mavenLocal()
         maven { url "https://repo.grails.org/grails/core" }
-        maven { url "https://dl.bintray.com/9ci/grails-plugins" }
+        maven { url "https://dl.bintray.com/9ci/grails-plugins"}
 
         maven {
             url "http://repo.9ci.com/artifactory/grails-plugins"
+            credentials {
+                username "$artifactoryUsername"
+                password  "$artifactoryPassword"
+            }
         }
     }
 
-    apply plugin: 'groovy'
-    apply plugin: "idea"
+    apply plugin:'groovy'
 
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
 
-    //apply from:"$commonBuild/common.gradle"
 
-    String seleniumVersion = "3.8.1"
+    //apply plugin:"eclipse"
+    apply plugin:"idea"
 
     dependencies {
         compile "org.springframework.boot:spring-boot-starter-logging"
@@ -77,61 +88,66 @@ subprojects {
         compile "org.springframework.boot:spring-boot-starter-actuator"
         compile "org.springframework.boot:spring-boot-starter-tomcat"
         compile "org.grails:grails-web-boot"
+
         compile "org.grails:grails-logging"
-        compile "org.grails:grails-plugin-rest"
         compile "org.grails:grails-plugin-databinding"
-        compile "org.grails:grails-plugin-i18n"
+        //compile "org.grails:grails-plugin-i18n"
         compile "org.grails:grails-plugin-services"
-        compile "org.grails:grails-plugin-url-mappings"
-        compile "org.grails:grails-plugin-interceptors"
-        compile "org.grails.plugins:cache"
-        // compile "org.grails.plugins:async"
-        // compile "org.grails.plugins:scaffolding"
+        compile 'org.grails.plugins:grails-java8:1.2.2'
+        compile "org.grails.plugins:gorm-tools:3.3.2-SNAPSHOT"
+
         compile "org.grails.plugins:events"
+        compile "org.codehaus.gpars:gpars:1.2.0"
+
+        compileOnly "org.grails.plugins:views-json:$viewsVersion"
+        compileOnly "org.grails.plugins:views-json-templates:$viewsVersion"
+        compileOnly "org.grails:views-json-testing-support:$viewsVersion"
+        compileOnly "org.grails:grails-datastore-rest-client"
 
         compile "org.grails.plugins:hibernate5"
-        compile "org.hibernate:hibernate-core:5.1.5.Final"
-        compile "org.hibernate:hibernate-ehcache"
+        compile "org.hibernate:hibernate-core:$hibernateVersion"
+        compile "org.hibernate:hibernate-ehcache:$hibernateVersion"
 
-        compileOnly "org.grails.plugins:views-json:1.2.5"
-        compileOnly "org.grails.plugins:views-json-templates:1.2.5"
+        testRuntime "com.h2database:h2"
+        testRuntime "org.apache.tomcat:tomcat-jdbc"
 
-        //compile "org.grails.plugins:gsp"
-        //console "org.grails:grails-console"
-        //profile "org.grails.profiles:web"
-        //runtime "org.glassfish.web:el-impl:2.1.2-b03"
-        runtime "com.h2database:h2"
-        runtime "org.apache.tomcat:tomcat-jdbc"
-        //runtime "com.bertramlabs.plugins:asset-pipeline-grails:2.14.6"
+        testCompile "org.grails:grails-gorm-testing-support"
+        testCompile "org.grails:grails-web-testing-support"
+        testCompile "org.grails.plugins:build-test-data:$buildTestDataVersion"
+        testCompile "org.grails.plugins:geb"
+        testCompile "org.grails:views-json-testing-support:$viewsVersion"
 
-        compile "org.grails:grails-gorm-testing-support"
-        compile "org.grails:grails-web-testing-support"
-        compile "org.grails.plugins:geb"
-        testCompile "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
+        testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
+        testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:3.6.0"
+        testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:3.6.0"
+        testRuntime "org.seleniumhq.selenium:selenium-remote-driver:3.6.0"
+        testRuntime "org.seleniumhq.selenium:selenium-api:3.6.0"
     }
+    //apply from:"$commonBuild/common.gradle"
+
 
     if (isGrailsPlugin) {
-        apply plugin: "org.grails.grails-plugin"
-        apply plugin: "org.grails.grails-gsp"
+        apply plugin:"org.grails.grails-plugin"
+        //apply plugin:"org.grails.grails-gsp"
 
         dependencies {
             profile "org.grails.profiles:web-plugin"
-            provided "org.grails:grails-plugin-services"
-            provided "org.grails:grails-plugin-domain-class"
+            //provided "org.grails:grails-plugin-services"
+            //provided "org.grails:grails-plugin-domain-class"
 
             console "org.grails:grails-console"
         }
 
         //apply from: "${commonBuild}/common-plugin.gradle"
         //apply from: "${commonBuild}/common-publishing.gradle"
-        //apply from: "../publish.gradle"
+        apply from: "../publish.gradle"
         group "org.grails.plugins"
     }
 
     if (isGrailsApp) {
-        apply plugin: "org.grails.grails-web"
-        apply plugin: "war"
-        apply plugin: "org.grails.grails-gsp"
+        apply plugin:"org.grails.grails-web"
+        apply plugin:"war"
+        apply plugin:"org.grails.grails-gsp"
 
         dependencies {
             profile "org.grails.profiles:web"
@@ -147,6 +163,30 @@ subprojects {
         }
         //apply from: "${commonBuild}/common-project.gradle"
         group "org.grails"
+    }
+
+    // Added to be able to see failed tests and the cause in console on test run.
+    // This really helpful and needed when viewing on Travis CI or others.
+    // integrationTest {
+    //     //Allows to set options related to which test events are logged to the console, and on which detail level.
+    //     // For example, to show more information about exceptions use
+    //     // for more information take a look https://docs.gradle.org/current/dsl/org.gradle.api.tasks.testing.logging.TestLoggingContainer.html
+    //     testLogging {
+    //         exceptionFormat = 'full'
+    //         events "failed"//, "passed", "skipped", "standardOut", "standardError"
+    //     }
+
+    //     // Uncomment line bellow to show in console all tests that were executed in next format:
+    //     //:test-app:integrationTest
+    //     //-- Test Check list(repoapp.OrgSpec)
+    //     //-- Test Filter by Name eq(repoapp.OrgSpec)
+
+    //     //beforeTest { descriptor -> logger.quiet " -- $descriptor" }
+    // }
+
+    test {
+        //testLogging.showStandardStreams = true
+        testLogging.exceptionFormat = 'full'
     }
 
 }
