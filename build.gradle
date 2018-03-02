@@ -20,7 +20,7 @@ apply plugin: "com.energizedwork.idea-project-components"
 repositories {
     mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
-    maven { url "http://repo.9ci.com/grails-plugins" }
+    maven { url "http://repo.9ci.com/oss-snapshots" }
 }
 
 //Root project and view-tools plugin uses same version.
@@ -64,7 +64,7 @@ subprojects {
         maven { url "https://dl.bintray.com/9ci/grails-plugins"}
 
         maven {
-            url "http://repo.9ci.com/grails-plugins"
+            url "http://repo.9ci.com/oss-snapshots"
             credentials {
                 username "$artifactoryUsername"
                 password  "$artifactoryPassword"
