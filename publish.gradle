@@ -34,7 +34,7 @@ if(isSnapshot && artifactoryUsername && artifactoryPassword) {
         println "SNAPSHOT - " + project.name + ":" + version.toString()
         repositories {
             maven {
-                url "http://repo.9ci.com/artifactory/grails-plugins"
+                url "http://repo.9ci.com/oss-snapshots"
                 credentials {
                     username artifactoryUsername
                     password artifactoryPassword
