@@ -1,22 +1,28 @@
 package gorm.restapi.testing
 
 import geb.spock.GebSpec
+import groovy.transform.CompileDynamic
+
+import javax.servlet.http.HttpServletResponse
 
 import static grails.web.http.HttpHeaders.CONTENT_TYPE
 import static org.springframework.http.HttpStatus.*
 
 // @Integration
 // @Rollback
-@SuppressWarnings(['NoDef', 'AbstractClassWithoutAbstractMethod'])
+@SuppressWarnings(['NoDef', 'AbstractClassWithoutAbstractMethod', 'Indentation'])
+@CompileDynamic
 abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait {
     boolean vndHeaderOnError = false
 
     // TODO: add ability to pass input and output data to be able to test overidden repos
     abstract Map getInvalidData()
+
     abstract Map getInsertData()
+
     abstract Map getUpdateData()
 
-    List<String> getExcludes(){
+    List<String> getExcludes() {
         []
     }
     //TODO: figured out how to override test cases
@@ -134,13 +140,13 @@ abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait {
         return response
     }
 
-    def verifyHeaders(response) {
+    def verifyHeaders(Object response) {
         //assert response.headers.getFirst(CONTENT_TYPE) == 'application/json;charset=UTF-8'
         //assert response.headers.getFirst(HttpHeaders.LOCATION) == "$resourcePath/${response.json.id}"
         true
     }
 
-    def verify_UNPROCESSABLE_ENTITY(response) {
+    def verify_UNPROCESSABLE_ENTITY(Object response) {
         assert response.status == UNPROCESSABLE_ENTITY.value()
         if (vndHeaderOnError) {
             assert response.headers.getFirst(CONTENT_TYPE) == 'application/vnd.error;charset=UTF-8'

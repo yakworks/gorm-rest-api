@@ -2,9 +2,11 @@ package gorm.restapi.appinfo
 
 import grails.core.DefaultGrailsApplication
 import grails.web.mapping.UrlMappingsHolder
+import groovy.transform.CompileDynamic
+
+import javax.annotation.Resource
 
 //import grails.converters.JSON
-import javax.annotation.Resource
 import java.lang.management.ManagementFactory
 import java.lang.management.MemoryPoolMXBean
 import java.lang.management.MemoryType
@@ -14,7 +16,7 @@ import java.text.DecimalFormatSymbols
 /**
  * Misc Application Info. TODO probably move to its own plugin
  */
-//@CompileStatic
+@CompileDynamic
 class AppInfoBuilder {
     //HibernateMappingContext grailsDomainClassMappingContext
     @Resource
@@ -26,10 +28,10 @@ class AppInfoBuilder {
 
         List urlMappings = grailsUrlMappingsHolder.urlMappings.collect {
             [
-                name      : it.mappingName ?: '',
-                url       : it.urlData.logicalUrls.first(),
-                methods   : it.parameterValues,
-                parameters: it.constraints.propertyName
+                    name      : it.mappingName ?: '',
+                    url       : it.urlData.logicalUrls.first(),
+                    methods   : it.parameterValues,
+                    parameters: it.constraints.propertyName
 
             ]
         }
@@ -85,7 +87,7 @@ class AppInfoBuilder {
          memoryNumbers      : memoryNumbers]
     }
 
-    void generatePoolGraphData(MemoryType type, poolNames, numbers) {
+    void generatePoolGraphData(MemoryType type, List poolNames, Map numbers) {
 
         numbers.Init = []
         numbers.Used = []
@@ -104,10 +106,8 @@ class AppInfoBuilder {
     }
 
     float formatMB(long value) {
-        String formatted = new DecimalFormat('.000', new DecimalFormatSymbols(Locale.ENGLISH)).format(
-            value / 1024.0 / 1024.0)
+        String formatted = new DecimalFormat('.000', new DecimalFormatSymbols(Locale.ENGLISH)).format(value / 1024.0 / 1024.0)
         formatted.toFloat()
     }
 
 }
-

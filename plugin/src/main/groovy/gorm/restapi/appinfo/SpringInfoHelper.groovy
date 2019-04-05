@@ -1,17 +1,22 @@
 package gorm.restapi.appinfo
 
+import grails.core.GrailsApplication
+import groovy.transform.CompileDynamic
 import org.springframework.aop.support.AopUtils
+import org.springframework.beans.factory.BeanFactory
 import org.springframework.beans.factory.config.BeanDefinition
+import org.springframework.context.ApplicationContext
 
 /**
  * @author <a href='mailto:burt@burtbeckwith.com'>Burt Beckwith</a>
  */
 @SuppressWarnings(['FactoryMethodName', 'NoDef'])
+@CompileDynamic
 class SpringInfoHelper {
 
     static transactional = false
 
-    def grailsApplication
+    GrailsApplication grailsApplication
 
     /**
      * Partition beans into Controller, Domain, Filter, Service, TagLib, and Other.
@@ -20,7 +25,7 @@ class SpringInfoHelper {
      */
     Map splitBeans() {
 
-        def ctx = grailsApplication.mainContext
+        ApplicationContext ctx = grailsApplication.mainContext
         def beanFactory = ctx.beanFactory
 
         def split = [Controller: [],
@@ -71,7 +76,7 @@ class SpringInfoHelper {
      * @param beanFactory the BeanFactory
      * @param typeNames service bean names to add to (passed by reference)
      */
-    void findServiceBeanName(String serviceClassName, names, ctx, beanFactory, typeNames) {
+    void findServiceBeanName(String serviceClassName, List names, ApplicationContext ctx, BeanFactory beanFactory, List typeNames) {
         String beanName = ctx.getBean(serviceClassName).propertyName
         if (names.contains(beanName)) {
             BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanName)
@@ -90,7 +95,7 @@ class SpringInfoHelper {
      * @param beanFactory the BeanFactory
      * @param typeNames domain class bean names to add to (passed by reference)
      */
-    void findDomainClassBeanName(String domainClassName, names, beanFactory, typeNames) {
+    void findDomainClassBeanName(String domainClassName, List names, BeanFactory beanFactory, List typeNames) {
         String beanName = domainClassName - 'DomainClass'
         if (names.contains(beanName)) {
             BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanName)
@@ -108,10 +113,10 @@ class SpringInfoHelper {
      * @param beanFactory the BeanFactory
      * @return the info
      */
-    List<Map<String, Object>> getBeanInfo(names, beanFactory) {
+    List<Map<String, Object>> getBeanInfo(List names, BeanFactory beanFactory) {
         names.sort()
 
-        def beanDescriptions = []
+        List beanDescriptions = []
 
         for (String name : names) {
             BeanDefinition beanDefinition = beanFactory.getBeanDefinition(name)
@@ -137,7 +142,7 @@ class SpringInfoHelper {
      * @param beanDefinition the BeanDefinition
      * @return the name
      */
-    String buildClassName(beanFactory, String name, BeanDefinition beanDefinition) {
+    String buildClassName(BeanFactory beanFactory, String name, BeanDefinition beanDefinition) {
 
         if (beanDefinition.isAbstract()) {
             return '<i>abstract</i>'

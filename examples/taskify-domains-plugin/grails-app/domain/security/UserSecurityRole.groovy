@@ -45,7 +45,7 @@ class UserSecurityRole implements Serializable {
     private static DetachedCriteria criteriaFor(long userId, long securityRoleId) {
         UserSecurityRole.where {
             user == User.load(userId) &&
-                securityRole == SecurityRole.load(securityRoleId)
+                    securityRole == SecurityRole.load(securityRoleId)
         }
     }
 

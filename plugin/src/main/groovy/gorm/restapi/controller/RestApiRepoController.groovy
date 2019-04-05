@@ -4,6 +4,7 @@ import gorm.tools.repository.GormRepoEntity
 import grails.artefact.Artefact
 import grails.core.GrailsApplication
 import grails.util.GrailsNameUtils
+import groovy.transform.CompileDynamic
 import org.springframework.context.MessageSource
 
 /**
@@ -16,6 +17,7 @@ import org.springframework.context.MessageSource
 // we can get some good ideas from how that plugin does things
 @SuppressWarnings(['CatchException', 'NoDef', 'ClosureAsLastMethodParameter', 'FactoryMethodName'])
 @Artefact("Controller")
+@CompileDynamic
 class RestApiRepoController<D extends GormRepoEntity> implements RestRepositoryApi<D> {
     static allowedMethods = [list  : ["GET", "POST"], create: "POST",
                              update: ["PUT", "PATCH"], delete: "DELETE"]

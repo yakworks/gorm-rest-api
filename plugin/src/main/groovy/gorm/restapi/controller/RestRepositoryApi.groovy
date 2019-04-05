@@ -5,7 +5,6 @@ import gorm.tools.repository.api.RepositoryApi
 import grails.artefact.controller.RestResponder
 import grails.artefact.controller.support.ResponseRenderer
 import grails.databinding.SimpleMapDataBindingSource
-import grails.util.GrailsClassUtils
 import grails.web.Action
 import grails.web.api.ServletAttributes
 import grails.web.databinding.DataBindingUtils
@@ -24,7 +23,7 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      * The java class for the Gorm domain (persistence entity). will generally get set in constructor or using the generic as
      * done in {@link gorm.tools.repository.GormRepo#getEntityClass}
      * using the {@link org.springframework.core.GenericTypeResolver}
-     * @see org.grails.datastore.mapping.model.PersistentEntity#getJavaClass().
+     * @see org.grails.datastore.mapping.model.PersistentEntity#getJavaClass() .
      */
     Class<D> entityClass // the domain class this is for
 
@@ -32,7 +31,7 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      * The gorm domain class. uses the {@link org.springframework.core.GenericTypeResolver} is not set during contruction
      */
     Class<D> getEntityClass() {
-        if (!entityClass) this.entityClass = (Class<D>) GenericTypeResolver.resolveTypeArgument(getClass(), RestRepositoryApi.class)
+        if (!entityClass) this.entityClass = (Class<D>) GenericTypeResolver.resolveTypeArgument(getClass(), RestRepositoryApi)
         return entityClass
     }
 
@@ -52,60 +51,57 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
     @Action
     def post() {
         try {
-            D instance = getRepo().create(getDataMap())
+            D instance = (D) getRepo().create(getDataMap())
             respond instance, [status: CREATED] //201
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             handleException(e)
         }
     }
 
     /**
-     * PUT /api/entity/${id}
-     * Update with data
+     * PUT /api/entity/${id}* Update with data
      */
     @Action
     def put() {
         Map data = [id: params.id]
         data.putAll(getDataMap()) // getDataMap doesnt contains id because it passed in params
         try {
-            D instance = getRepo().update(data)
+            D instance = (D) getRepo().update(data)
             respond instance, [status: OK] //200
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             handleException(e)
         }
 
     }
 
     /**
-     * DELETE /api/entity/${id}
-     * update with params
+     * DELETE /api/entity/${id}* update with params
      */
     @Action
     def delete() {
         try {
             getRepo().removeById((Serializable) params.id)
             callRender(status: NO_CONTENT) //204
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             handleException(e)
         }
 
     }
 
     /**
-     * GET /api/entity/${id}
-     * update with params
+     * GET /api/entity/${id}* update with params
      */
     @Action
     def get() {
         try {
             respond getRepo().get(params)
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             handleException(e)
         }
     }
 
     @Action
-    def index(){
+    def index() {
         listGet()
     }
 
@@ -116,7 +112,7 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      */
     @Action
     def listPost() {
-        respond query((request.JSON?:[:]) as Map, params)
+        respond query((request.JSON ?: [:]) as Map, params)
     }
 
     /**
@@ -133,10 +129,11 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      * The Map object that can be bound to create or update domain entity.  Defaults whats in the request based on mime-type.
      * Subclasses may override this
      */
-    @CompileDynamic //so it can access the SimpleMapDataBindingSource.map
+    @CompileDynamic
+    //so it can access the SimpleMapDataBindingSource.map
     Map getDataMap() {
         SimpleMapDataBindingSource bsrc =
-            (SimpleMapDataBindingSource) DataBindingUtils.createDataBindingSource(grailsApplication, getEntityClass(), getRequest())
+                (SimpleMapDataBindingSource) DataBindingUtils.createDataBindingSource(grailsApplication, getEntityClass(), getRequest())
         return bsrc.map
     }
 
@@ -153,9 +150,8 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      * @param value
      * @param args
      */
-    def callRespond(value, Map args = [:]) {
+    def callRespond(Object value, Map args = [:]) {
         ((RestResponder) this).respond value, args
     }
-
 
 }

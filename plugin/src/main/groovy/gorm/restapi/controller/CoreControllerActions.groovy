@@ -2,7 +2,10 @@ package gorm.restapi.controller
 
 import grails.artefact.Artefact
 import grails.web.http.HttpHeaders
+import groovy.transform.CompileDynamic
 import org.springframework.http.HttpStatus
+
+import javax.servlet.http.HttpServletResponse
 
 import static org.springframework.http.HttpStatus.NOT_FOUND
 
@@ -16,6 +19,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND
  */
 @SuppressWarnings(['FactoryMethodName'])
 @Artefact("Controller")
+@CompileDynamic
 trait CoreControllerActions<T> {
 
     /**
@@ -127,13 +131,13 @@ trait CoreControllerActions<T> {
         resource.delete flush: true
     }
 
-    String addLocationHeader(response, id = null, String action = null) {
+    String addLocationHeader(HttpServletResponse response, Long id = null, String action = null) {
         String locLink = grailsLinkGenerator.link(
-            resource: this.controllerName,
-            action: action,
-            id: id,
-            absolute: true,
-            namespace: hasProperty('namespace') ? this.namespace : null
+                resource: this.controllerName,
+                action: action,
+                id: id,
+                absolute: true,
+                namespace: hasProperty('namespace') ? this.namespace : null
         )
 
         response.addHeader(HttpHeaders.LOCATION, locLink)

@@ -4,17 +4,14 @@ import geb.spock.GebSpec
 import gorm.restapi.testing.RestApiTestTrait
 import grails.testing.mixin.integration.Integration
 import grails.transaction.Rollback
+
 import static grails.web.http.HttpHeaders.CONTENT_TYPE
-import static org.springframework.http.HttpStatus.CREATED
-import static org.springframework.http.HttpStatus.NOT_FOUND
-import static org.springframework.http.HttpStatus.NO_CONTENT
-import static org.springframework.http.HttpStatus.OK
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY
+import static org.springframework.http.HttpStatus.*
 
 @Integration
 @Rollback
 //Copied all stuff here, because we cant override test cases, but need to test controller method Overriding
-class LocationRestApiSpec extends GebSpec implements RestApiTestTrait{
+class LocationRestApiSpec extends GebSpec implements RestApiTestTrait {
 
     Class<Book> domainClass = Location
     boolean vndHeaderOnError = false

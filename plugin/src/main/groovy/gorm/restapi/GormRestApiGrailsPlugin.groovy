@@ -15,7 +15,7 @@ class GormRestApiGrailsPlugin extends Plugin {
     String grailsVersion = "3.2.11 > *"
     // resources that are excluded from plugin packaging
     List pluginExcludes = [
-        "grails-app/views/error.gsp"
+            "grails-app/views/error.gsp"
     ]
 
     // TODO Fill in these fields
@@ -97,4 +97,3 @@ Brief summary/description of the plugin.
     }
 
 }
-
