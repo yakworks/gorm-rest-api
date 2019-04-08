@@ -37,17 +37,17 @@ import org.grails.compiler.injection.GrailsAwareInjectionOperation
 import org.grails.compiler.injection.TraitInjectionUtils
 import org.grails.compiler.web.ControllerActionTransformer
 import org.grails.core.artefact.ControllerArtefactHandler
-import org.grails.plugins.web.rest.transform.LinkableTransform
 import org.grails.datastore.gorm.transactions.transform.TransactionalTransform
+import org.grails.plugins.web.rest.transform.LinkableTransform
 import org.springframework.beans.factory.annotation.Autowired
 
 import java.lang.reflect.Modifier
 
 import static java.lang.reflect.Modifier.*
+import static org.grails.compiler.injection.GrailsASTUtils.ZERO_PARAMETERS
 
 //import grails.rest.Resource
 //import grails.rest.RestfulController
-import static org.grails.compiler.injection.GrailsASTUtils.ZERO_PARAMETERS
 import static org.grails.compiler.injection.GrailsASTUtils.nonGeneric
 
 /**
@@ -96,7 +96,7 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
         if (!MY_TYPE.equals(annotationNode.getClassNode())) {
             return
         }
-        println ""
+
         String className = "${parent.name}${ControllerArtefactHandler.TYPE}"
         final File resource = IOUtils.findSourceFile(className)
         LinkableTransform.addLinkingMethods(parent)

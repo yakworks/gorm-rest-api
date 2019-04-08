@@ -7,14 +7,10 @@ import spock.lang.Ignore
 import taskify.Project
 
 import static grails.web.http.HttpHeaders.CONTENT_TYPE
-import static org.springframework.http.HttpStatus.CREATED
-import static org.springframework.http.HttpStatus.NOT_FOUND
-import static org.springframework.http.HttpStatus.NO_CONTENT
-import static org.springframework.http.HttpStatus.OK
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY
+import static org.springframework.http.HttpStatus.*
 
 @Integration
-class ProjectControllerSpec extends GebSpec implements RestApiTestTrait{
+class ProjectControllerSpec extends GebSpec implements RestApiTestTrait {
 
     Class<Project> domainClass = Project
     boolean vndHeaderOnError = false
@@ -23,11 +19,12 @@ class ProjectControllerSpec extends GebSpec implements RestApiTestTrait{
         "${baseUrl}api/project"
     }
 
-    List<String> getExcludes(){ ["activateDate"]}
-
+    List<String> getExcludes() { ["activateDate"] }
 
     //data to force a post or patch failure
-    Map getInsertData() { [name: "project", num: "x123", inactive: true, billable: true, activateDate: new Date(), endDate: new Date(), startDate: new Date()] }
+    Map getInsertData() {
+        [name: "project", num: "x123", inactive: true, billable: true, activateDate: new Date(), endDate: new Date(), startDate: new Date()]
+    }
 
     Map getInvalidData() { ["name": null] }
 

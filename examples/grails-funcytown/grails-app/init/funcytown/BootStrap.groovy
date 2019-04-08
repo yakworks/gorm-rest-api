@@ -32,9 +32,7 @@ class BootStrap {
         Date dateFrom = Date.parse('yyyy-MM-dd', '2016-01-01')
         Range<Date> range = dateFrom..Date.parse('yyyy-MM-dd', '2016-12-31')
         def addPart = new Random().nextInt(range.to - range.from + 1)
-        println addPart
         Date dt = dateFrom + addPart
-        println dt
         return dt
     }
 

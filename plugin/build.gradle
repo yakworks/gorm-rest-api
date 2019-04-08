@@ -6,16 +6,11 @@ buildscript {
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:1.1"
-        classpath "gradle.plugin.com.energizedwork:idea-gradle-plugins:1.4"
-        classpath "org.grails.plugins:hibernate5:${gormVersion-".RELEASE"}"
     }
 }
 
-apply plugin:"idea"
 apply plugin:"com.energizedwork.webdriver-binaries"
-apply plugin:"com.energizedwork.idea-project-components"
-apply plugin: 'codenarc'
-
+apply plugin: 'yakworks.grails-plugin'
 
 repositories {
     mavenLocal()
@@ -28,25 +23,17 @@ configurations.all {
     resolutionStrategy.cacheDynamicVersionsFor 1, 'seconds'
 }
 
-String seleniumVersion = "3.8.1"
 
 dependencies {
-
     compileOnly "org.grails:grails-gorm-testing-support"
     compileOnly "org.grails:grails-web-testing-support"
     compileOnly "org.grails:grails-datastore-rest-client"
-    compileOnly "org.grails.plugins:build-test-data:$buildTestDataVersion"
-
+    compileOnly "org.grails.plugins:build-test-data:$versionBuildTestData"
 
     testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
-
-    codenarc 'org.codenarc:CodeNarc:0.27.0'
-    codenarc "io.9ci.yakworks:codenarc-extra:1.0.1.RC2"
-
-    compile "org.grails.plugins:gorm-tools:3.3.2-SNAPSHOT"
+    compile "org.grails.plugins:gorm-tools:6.1.5-SNAPSHOT"
     compile "org.grails:grails-plugin-testing"
     compile "org.grails.plugins:geb"
-
 }
 
 bootRun {
@@ -56,17 +43,22 @@ bootRun {
 
 bootRepackage.enabled = false
 
-codenarc {
-    toolVersion = '0.27.0'
-    configFile = file("${commonBuild}/codenarc-rules.groovy")//project.resources.text.fromString("${commonBuild}/codenarc-rules.groovy".toURL().text)
-    reportFormat = 'html'
-    //ignoreFailures = true
+//codenarc overrides for yakworks ruleset defaults
+ext.codenarcRuleset= '''
+  getRule('LineLength').enabled = false
+  getRule('CyclomaticComplexity').enabled = false
+  getRule('NoWildcardImports').enabled = false
+  //getRule('Println').enabled = false
+'''
 
-    maxPriority1Violations = 0
-    maxPriority2Violations = 4
-    maxPriority3Violations = 4
+//main codenarc block is setup in yakworks.defaults
+codenarcMain {
+    exclude '**/GormToolsGrailsPlugin.groovy'
+    exclude '**/GormToolsPluginHelper.groovy'
 }
 
 codenarcTest {
+    //don't check any of the tests right now as it just slows it down, look at enabling this in future
+    exclude '**/*'
     ignoreFailures = true
 }

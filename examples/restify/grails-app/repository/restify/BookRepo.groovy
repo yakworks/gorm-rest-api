@@ -7,7 +7,7 @@ import grails.gorm.transactions.Transactional
 class BookRepo extends DefaultGormRepo<Book> {
 
     @Override
-    Book create(Map params){
+    Book create(Map params) {
         super.create(params)
     }
 

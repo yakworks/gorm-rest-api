@@ -2,11 +2,11 @@ package gorm.restapi.controller
 
 import grails.artefact.Artefact
 import grails.gorm.transactions.Transactional
+import grails.util.GrailsNameUtils
+import groovy.transform.CompileDynamic
 
 //import grails.transaction.ReadOnly
 //import grails.gorm.transactions.Transactional
-import grails.util.GrailsNameUtils
-
 import static org.springframework.http.HttpStatus.*
 
 /**
@@ -23,6 +23,7 @@ import static org.springframework.http.HttpStatus.*
 @Artefact("Controller")
 @Deprecated
 //@Transactional(readOnly = true)
+@CompileDynamic
 class SimpleRestApiDomainController<T, ID extends Serializable> implements CoreControllerActions<T>, RestControllerErrorHandling {
     static allowedMethods = [create: "POST", update: ["PUT", "PATCH"], delete: "DELETE"]
 
@@ -118,12 +119,13 @@ class SimpleRestApiDomainController<T, ID extends Serializable> implements CoreC
         instance.properties = getObjectToBind()
 
         if (instance.hasErrors()) {
-            println "ERRORS !!!!"
+            //println "ERRORS !!!!"
             transactionStatus.setRollbackOnly()
             respond instance.errors, view: 'edit' // STATUS CODE 422
             return
         }
-        println "NO ERRORS !!!!"
+
+        //println "NO ERRORS !!!!"
 
         updateResource instance
         addLocationHeader(response, instance.id, 'show')
@@ -153,4 +155,3 @@ class SimpleRestApiDomainController<T, ID extends Serializable> implements CoreC
     }
 
 }
-

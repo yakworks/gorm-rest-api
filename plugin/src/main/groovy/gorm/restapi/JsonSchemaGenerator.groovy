@@ -28,6 +28,7 @@ import static grails.util.GrailsClassUtils.getStaticPropertyValue
  */
 //@CompileStatic
 @SuppressWarnings(['UnnecessaryGetter', 'NoDef', 'AbcMetric'])
+@CompileDynamic
 class JsonSchemaGenerator {
 
     @Resource
@@ -45,7 +46,6 @@ class JsonSchemaGenerator {
     }
 
     Map generate(String domainName) {
-        println(domainName)
         PersistentEntity domClass = GormMetaUtils.getPersistentEntity(domainName)
         Map schema = [:]
         schema['$schema'] = "http://json-schema.org/schema#"
@@ -65,8 +65,8 @@ class JsonSchemaGenerator {
 
         if (mapping?.comment) map.description = mapping.comment
 
-        if (AnnotationUtils.findAnnotation(domainClass.class, RestApi.class)) {
-            map.description = AnnotationUtils.getAnnotationAttributes(AnnotationUtils.findAnnotation(domainClass.class, RestApi.class)).description
+        if (AnnotationUtils.findAnnotation(domainClass.class, RestApi)) {
+            map.description = AnnotationUtils.getAnnotationAttributes(AnnotationUtils.findAnnotation(domainClass.class, RestApi)).description
         }
 
         map.type = 'Object'
@@ -80,6 +80,7 @@ class JsonSchemaGenerator {
         return map
     }
 
+    @SuppressWarnings(['MethodSize'])
     private List getDomainProperties(PersistentEntity domClass, Map schema) {
         String domainName = GrailsNameUtils.getPropertyNameRepresentation(domClass.name)
         Map<String, String> map = [:]
@@ -271,7 +272,7 @@ class JsonSchemaGenerator {
 
     Map getConstrainedProperties(PersistentEntity persistentEntity) {
         Map constrainedProperties = [:]
-        ConstrainedDiscovery constrainedDiscovery = GrailsFactoriesLoader.loadFactory(ConstrainedDiscovery.class)
+        ConstrainedDiscovery constrainedDiscovery = GrailsFactoriesLoader.loadFactory(ConstrainedDiscovery)
         constrainedProperties = constrainedDiscovery.findConstrainedProperties(persistentEntity)
         return constrainedProperties
     }

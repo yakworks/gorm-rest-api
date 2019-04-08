@@ -4,6 +4,7 @@ import gorm.tools.repository.RepoMessage
 import gorm.tools.repository.errors.EntityNotFoundException
 import gorm.tools.repository.errors.EntityValidationException
 import grails.validation.ValidationException
+import groovy.transform.CompileDynamic
 import org.springframework.dao.OptimisticLockingFailureException
 import org.springframework.validation.Errors
 import org.springframework.validation.FieldError
@@ -15,6 +16,7 @@ import static org.springframework.http.HttpStatus.*
  *
  *  Created by alexeyzvegintcev.
  */
+@CompileDynamic
 trait RestControllerErrorHandling {
 
     void handleException(EntityNotFoundException e) {
@@ -22,24 +24,24 @@ trait RestControllerErrorHandling {
         render(status: NOT_FOUND, e.message)
     }
 
-    void handleException(EntityValidationException e){
+    void handleException(EntityValidationException e) {
         String m = buildMsg(e.messageMap, e.errors)
         log.info m
         render(status: UNPROCESSABLE_ENTITY, m)
     }
 
-    void handleException(ValidationException e){
+    void handleException(ValidationException e) {
         String m = buildMsg([defaultMessage: e.message], e.errors)
         log.info m
         render(status: UNPROCESSABLE_ENTITY, m)
     }
 
-    void handleException(OptimisticLockingFailureException e){
+    void handleException(OptimisticLockingFailureException e) {
         log.info e.message
         render(status: CONFLICT, e.message)
     }
 
-    void handleException(RuntimeException e){
+    void handleException(RuntimeException e) {
         log.error e.message
         throw e
     }

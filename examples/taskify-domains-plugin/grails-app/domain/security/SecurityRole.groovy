@@ -14,7 +14,7 @@ class SecurityRole implements Serializable {
 
     static constraints = {
         authority description: 'The role name', example: 'ROLE_ADMIN',
-            blank: false, unique: true
+                blank: false, unique: true
     }
 
     static mapping = {

@@ -1,3 +1,8 @@
+package gorm.restapi.controller
+
+import groovy.transform.CompileDynamic
+
+@CompileDynamic
 class ResponseHolder {
     Object data
     Map headers = [:]

@@ -1,17 +1,24 @@
-package ${packageName}
+package $
 
-import grails.testing.mixin.integration.Integration
-import grails.transaction.*
 import gorm.restapi.testing.RestApiFuncSpec
+import grails.testing.mixin.integration.Integration
+
+{ packageName }
+
+import grails.transaction.Rollback
 
 @Integration
 @Rollback
-class ${className}RestApiSpec extends RestApiFuncSpec {
+class $ {
+    className
+}
 
-	Class<${className}> domainClass = ${className}
-	// set to true if you have configured the _error.gson or controller
-	// to return application/vnd.error vs application/json
-	boolean vndHeaderOnError = false
+RestApiSpec extends RestApiFuncSpec {
+
+    Class < $ { className } > domainClass = $ { className }
+    // set to true if you have configured the _error.gson or controller
+    // to return application/vnd.error vs application/json
+    boolean vndHeaderOnError = false
 
     String getResourcePath() {
         "\${baseUrl}api/${propertyName}"
