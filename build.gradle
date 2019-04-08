@@ -28,6 +28,7 @@ subprojects {
             mavenLocal()
             maven { url "https://repo.grails.org/grails/core" }
             maven { url "https://dl.bintray.com/9ci/grails-plugins" }
+            maven { url "http://repo.9ci.com/oss-snapshots" }
         }
 
         sourceCompatibility = '1.8'
