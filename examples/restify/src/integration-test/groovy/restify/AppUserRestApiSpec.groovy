@@ -25,5 +25,4 @@ class AppUserRestApiSpec extends RestApiFuncSpec {
 
     Map getUpdateData() { [userName: "project Update", magicCode: "x123u"] }
 
-
 }

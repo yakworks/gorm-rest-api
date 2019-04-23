@@ -77,30 +77,7 @@ subprojects {
         }
 
         test {
-            //This way Spock/Groovy power asserts will be  visiblein the build log
-            //Very useful - you don't have to look at the test results to debug a test failure
             testLogging.exceptionFormat = 'full'
         }
     }
-
-
-    // Added to be able to see failed tests and the cause in console on test run.
-    // This really helpful and needed when viewing on Travis CI or others.
-    // integrationTest {
-    //     //Allows to set options related to which test events are logged to the console, and on which detail level.
-    //     // For example, to show more information about exceptions use
-    //     // for more information take a look https://docs.gradle.org/current/dsl/org.gradle.api.tasks.testing.logging.TestLoggingContainer.html
-    //     testLogging {
-    //         exceptionFormat = 'full'
-    //         events "failed"//, "passed", "skipped", "standardOut", "standardError"
-    //     }
-
-    //     // Uncomment line bellow to show in console all tests that were executed in next format:
-    //     //:test-app:integrationTest
-    //     //-- Test Check list(repoapp.OrgSpec)
-    //     //-- Test Filter by Name eq(repoapp.OrgSpec)
-
-    //     //beforeTest { descriptor -> logger.quiet " -- $descriptor" }
-    // }
-
 }

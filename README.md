@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/yakworks/gorm-rest-api.svg?branch=master)](https://travis-ci.org/yakworks/gorm-rest-api)
+![CircleCI](https://img.shields.io/circleci/project/github/yakworks/gorm-rest-api.svg?longCache=true&style=for-the-badge)
 
 ## Layout
 
