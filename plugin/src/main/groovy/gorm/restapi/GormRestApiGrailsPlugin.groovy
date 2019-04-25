@@ -1,6 +1,7 @@
 package gorm.restapi
 
 import gorm.restapi.appinfo.AppInfoBuilder
+import gorm.restapi.json.GormRestApiRendererRegistry
 import grails.core.GrailsApplication
 import grails.core.GrailsClass
 import grails.plugins.Plugin
@@ -63,6 +64,7 @@ Brief summary/description of the plugin.
                 // Autowiring behaviour. The other option is 'byType'. <<autowire>>
                 // bean.autowire = 'byName'
             }
+            rendererRegistry(GormRestApiRendererRegistry)
 
             GrailsApplication application = grailsApplication
             GormRestApiGrailsPlugin.registryRestApiControllers(application)
