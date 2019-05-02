@@ -1,10 +1,12 @@
 package gorm.restapi
 
 import gorm.restapi.appinfo.AppInfoBuilder
-import gorm.restapi.json.GormRestApiRendererRegistry
+import gorm.restapi.json.GormRestApiJsonViewResolver
 import grails.core.GrailsApplication
 import grails.core.GrailsClass
 import grails.plugins.Plugin
+import grails.views.mvc.GenericGroovyTemplateViewResolver
+import grails.views.resolve.PluginAwareTemplateResolver
 import groovy.transform.CompileStatic
 import org.grails.core.artefact.ControllerArtefactHandler
 import org.grails.core.artefact.DomainClassArtefactHandler
@@ -28,6 +30,7 @@ Brief summary/description of the plugin.
 '''
     //List profiles = ['web']
     List loadBefore = ['controllers']
+    List loadAfter = ['views-json']
     List observe = ['domainClass']
 
     // URL to the plugin's documentation
@@ -64,7 +67,11 @@ Brief summary/description of the plugin.
                 // Autowiring behaviour. The other option is 'byType'. <<autowire>>
                 // bean.autowire = 'byName'
             }
-            rendererRegistry(GormRestApiRendererRegistry)
+
+            jsonSmartViewResolver(GormRestApiJsonViewResolver, ref('jsonTemplateEngine')) {
+                templateResolver = bean(PluginAwareTemplateResolver, ref('jsonViewConfiguration'))
+            }
+            jsonViewResolver(GenericGroovyTemplateViewResolver, jsonSmartViewResolver )
 
             GrailsApplication application = grailsApplication
             GormRestApiGrailsPlugin.registryRestApiControllers(application)

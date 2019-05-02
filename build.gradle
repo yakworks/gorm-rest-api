@@ -52,8 +52,8 @@ subprojects {
             compile "org.grails.plugins:events"
             compile "org.codehaus.gpars:gpars:1.2.0"
 
-            compileOnly "org.grails.plugins:views-json:$versionViews"
-            compileOnly "org.grails.plugins:views-json-templates:$versionViews"
+            compile "org.grails.plugins:views-json:$versionViews"
+            compile "org.grails.plugins:views-json-templates:$versionViews"
             compileOnly "org.grails:views-json-testing-support:$versionViews"
             compileOnly "org.grails:grails-datastore-rest-client"
 
