@@ -18,7 +18,7 @@ import org.springframework.context.MessageSource
 @SuppressWarnings(['CatchException', 'NoDef', 'ClosureAsLastMethodParameter', 'FactoryMethodName'])
 @Artefact("Controller")
 @CompileDynamic
-class RestApiRepoController<D extends GormRepoEntity> implements RestRepositoryApi<D> {
+class RestApiRepoController<D extends GormRepoEntity> implements RestRepositoryApi<D>  {
     static allowedMethods = [list  : ["GET", "POST"], create: "POST",
                              update: ["PUT", "PATCH"], delete: "DELETE"]
 

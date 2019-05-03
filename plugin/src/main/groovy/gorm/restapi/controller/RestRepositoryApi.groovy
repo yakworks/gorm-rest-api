@@ -154,4 +154,24 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
         ((RestResponder) this).respond value, args
     }
 
+    @CompileDynamic
+    Map getExternalConfig() {
+        ConfigObject controllerConfig =  grailsApplication.getSetupConfig(true)?.screens."$controllerName"
+        return controllerConfig
+    }
+
+    List<String> getDefaultShowFields() {return ["*"]}
+
+    @CompileDynamic
+    List<String> getSelectFields() {
+        return externalConfig?.show?.fields ?: defaultShowFields
+    }
+
+    List<String> getDefaultListFields() { return ["*"] }
+
+    @CompileDynamic
+    List<String> getListFields() {
+        return externalConfig?.list?.fields ?: defaultListFields
+    }
+
 }

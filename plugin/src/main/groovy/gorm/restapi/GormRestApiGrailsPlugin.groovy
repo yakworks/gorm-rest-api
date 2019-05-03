@@ -10,6 +10,7 @@ import grails.views.resolve.PluginAwareTemplateResolver
 import groovy.transform.CompileStatic
 import org.grails.core.artefact.ControllerArtefactHandler
 import org.grails.core.artefact.DomainClassArtefactHandler
+import org.grails.plugins.appsetupconfig.AppSetupService
 
 @SuppressWarnings(['NoDef', 'EmptyMethod', 'VariableName', 'EmptyCatchBlock'])
 class GormRestApiGrailsPlugin extends Plugin {
@@ -30,7 +31,7 @@ Brief summary/description of the plugin.
 '''
     //List profiles = ['web']
     List loadBefore = ['controllers']
-    List loadAfter = ['views-json']
+    List loadAfter = ['views-json', 'app-setup-config']
     List observe = ['domainClass']
 
     // URL to the plugin's documentation

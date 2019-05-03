@@ -54,6 +54,7 @@ subprojects {
 
             compile "org.grails.plugins:views-json:$versionViews"
             compile "org.grails.plugins:views-json-templates:$versionViews"
+            compile("org.grails.plugins:app-setup-config:1.0-SNAPSHOT") { changing = true }
             compileOnly "org.grails:views-json-testing-support:$versionViews"
             compileOnly "org.grails:grails-datastore-rest-client"
 
