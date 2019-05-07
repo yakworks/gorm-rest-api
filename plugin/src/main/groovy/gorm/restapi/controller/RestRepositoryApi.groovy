@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.*
 
 @CompileStatic
 @SuppressWarnings(['CatchRuntimeException', 'NoDef'])
-trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, ServletAttributes, MangoControllerApi, RestControllerErrorHandling {
+trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, ServletAttributes, MangoControllerApi, RestControllerErrorHandling, GormRestSetupController<D> {
 
     /**
      * The java class for the Gorm domain (persistence entity). will generally get set in constructor or using the generic as
@@ -52,7 +52,7 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
     def post() {
         try {
             D instance = (D) getRepo().create(getDataMap())
-            respond instance, [status: CREATED] //201
+            respond instance, [status: CREATED, includes: showFields] //201
         } catch (RuntimeException e) {
             handleException(e)
         }
@@ -67,7 +67,7 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
         data.putAll(getDataMap()) // getDataMap doesnt contains id because it passed in params
         try {
             D instance = (D) getRepo().update(data)
-            respond instance, [status: OK] //200
+            respond instance, [status: OK, includes: showFields] //200
         } catch (RuntimeException e) {
             handleException(e)
         }
@@ -94,7 +94,7 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
     @Action
     def get() {
         try {
-            respond getRepo().get(params)
+            respond getRepo().get(params), [includes: showFields]
         } catch (RuntimeException e) {
             handleException(e)
         }
@@ -112,7 +112,7 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      */
     @Action
     def listPost() {
-        respond query((request.JSON ?: [:]) as Map, params)
+        respond query((request.JSON ?: [:]) as Map, params), [includes: listFields]
     }
 
     /**
@@ -122,7 +122,7 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      */
     @Action
     def listGet() {
-        respond query(params)
+        respond query(params), [includes: listFields]
     }
 
     /**
@@ -143,35 +143,6 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      */
     void callRender(Map args) {
         ((ResponseRenderer) this).render args
-    }
-
-    /**
-     * CAst this to RestResponder and call respond
-     * @param value
-     * @param args
-     */
-    def callRespond(Object value, Map args = [:]) {
-        ((RestResponder) this).respond value, args
-    }
-
-    @CompileDynamic
-    Map getExternalConfig() {
-        ConfigObject controllerConfig =  grailsApplication.getSetupConfig(true)?.screens."$controllerName"
-        return controllerConfig
-    }
-
-    List<String> getDefaultShowFields() {return ["*"]}
-
-    @CompileDynamic
-    List<String> getSelectFields() {
-        return externalConfig?.show?.fields ?: defaultShowFields
-    }
-
-    List<String> getDefaultListFields() { return ["*"] }
-
-    @CompileDynamic
-    List<String> getListFields() {
-        return externalConfig?.list?.fields ?: defaultListFields
     }
 
 }

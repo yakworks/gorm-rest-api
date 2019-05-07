@@ -11,6 +11,7 @@ class Company {
     String city
     int staffQuantity
 
+    static List<String> getShowFields() { ["name"] }
 
     static constraints = {
 

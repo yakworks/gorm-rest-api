@@ -6,6 +6,9 @@ screens {
         list{
             fields = ["*", "address.*"]
         }
+        show{
+            fields = ["address.*"]
+        }
     }
     defaultActions {
         open {

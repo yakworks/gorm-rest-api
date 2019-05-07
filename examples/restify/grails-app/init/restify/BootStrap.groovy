@@ -12,7 +12,9 @@ class BootStrap {
             credit: (it % 2 ? 5000 : null),
             refId: it * 200 as Long,
             testDate: (new Date() + it).clearTime(),
-            address: new ShipAddress(city: "City#$it", testId: it * 3).persist()).persist()}
+            address: new ShipAddress(city: "City#$it", testId: it * 3).persist()).persist()
+        }
+        new Company(name: "first", city: "NY", staffQuantity: 2).persist(flush: true)
     }
     def destroy = {
     }
