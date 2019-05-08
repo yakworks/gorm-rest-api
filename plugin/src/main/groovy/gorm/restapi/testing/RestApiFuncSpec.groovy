@@ -3,13 +3,9 @@ package gorm.restapi.testing
 import geb.spock.GebSpec
 import groovy.transform.CompileDynamic
 
-import javax.servlet.http.HttpServletResponse
-
 import static grails.web.http.HttpHeaders.CONTENT_TYPE
 import static org.springframework.http.HttpStatus.*
 
-// @Integration
-// @Rollback
 @SuppressWarnings(['NoDef', 'AbstractClassWithoutAbstractMethod', 'Indentation'])
 @CompileDynamic
 abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait {

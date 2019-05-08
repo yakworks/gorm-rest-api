@@ -28,7 +28,8 @@ class GormRestApiGrailsPlugin extends Plugin {
     ]
 
     // TODO Fill in these fields
-    String title = "Gorm Rest Api Tools" // Headline display name of the plugin
+    String title = "Gorm Rest Api Tools"
+    // Headline display name of the plugin
     String author = "Your name"
     String authorEmail = ""
     String description = '''\
@@ -41,23 +42,6 @@ Brief summary/description of the plugin.
 
     // URL to the plugin's documentation
     String documentation = "http://grails.org/plugin/gorm-rest-tools"
-
-    // Extra (optional) plugin metadata
-
-    // License: one of 'APACHE', 'GPL2', 'GPL3'
-//    String license = "APACHE"
-
-    // Details of company behind the plugin (if there is one)
-//    Map organization = [ name: "My Company", url: "http://www.my-company.com/" ]
-
-    // Any additional developers beyond the author specified above.
-//    List developers = [ [ name: "Joe Bloggs", email: "joe@bloggs.net" ]]
-
-    // Location of the plugin's issue tracker.
-//    Map issueManagement = [ system: "JIRA", url: "http://jira.grails.org/browse/GPMYPLUGIN" ]
-
-    // Online location of the plugin's browseable source code.
-//    Map scm = [ url: "http://svn.codehaus.org/grails-plugins/" ]
 
     GrailsApplication grailsApplication
 
@@ -97,7 +81,8 @@ Brief summary/description of the plugin.
                 //println "${clazz.name}"
                 String controllerClassName = "${clazz.name}Controller"
                 //Check if we already have such controller in app
-                if (!app.getArtefact(ControllerArtefactHandler.TYPE, controllerClassName) && !(app.getArtefacts(ControllerArtefactHandler.TYPE)*.name.contains(clazz.simpleName))) {
+                if (!app.getArtefact(ControllerArtefactHandler.TYPE, controllerClassName) && !(app.getArtefacts
+                (ControllerArtefactHandler.TYPE)*.name.contains(clazz.simpleName))) {
 
                     try {
                         app.addArtefact(ControllerArtefactHandler.TYPE, app.classLoader.loadClass(controllerClassName))

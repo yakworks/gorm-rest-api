@@ -62,12 +62,14 @@ public @interface RestApi {
     String[] formats() default ["json", 'xml']
 
     /**
-     * @return The URI of the resource. If specified a {@link grails.web.mapping.UrlMapping} will automatically be registered for the resource
+     * @return The URI of the resource. If specified a {@link grails.web.mapping.UrlMapping}
+     * will automatically be registered for the resource
      */
     String uri() default ""
 
     /**
-     * @return The namespace of the resource. If specified a {@link grails.web.mapping.UrlMapping} with this namespace will automatically be registered for the resource
+     * @return The namespace of the resource. If specified a {@link grails.web.mapping.UrlMapping}
+     * with this namespace will automatically be registered for the resource
      */
     String namespace() default ""
 

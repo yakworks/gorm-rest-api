@@ -23,8 +23,18 @@ import grails.io.IOUtils
 import grails.util.GrailsNameUtils
 import groovy.transform.CompilationUnitAware
 import groovy.transform.CompileStatic
-import org.codehaus.groovy.ast.*
-import org.codehaus.groovy.ast.expr.*
+import org.codehaus.groovy.ast.ASTNode
+import org.codehaus.groovy.ast.AnnotationNode
+import org.codehaus.groovy.ast.ClassHelper
+import org.codehaus.groovy.ast.ClassNode
+import org.codehaus.groovy.ast.ConstructorNode
+import org.codehaus.groovy.ast.FieldNode
+import org.codehaus.groovy.ast.expr.ClassExpression
+import org.codehaus.groovy.ast.expr.ConstantExpression
+import org.codehaus.groovy.ast.expr.ConstructorCallExpression
+import org.codehaus.groovy.ast.expr.Expression
+import org.codehaus.groovy.ast.expr.ListExpression
+import org.codehaus.groovy.ast.expr.TupleExpression
 import org.codehaus.groovy.ast.stmt.BlockStatement
 import org.codehaus.groovy.ast.stmt.ExpressionStatement
 import org.codehaus.groovy.control.CompilationUnit
@@ -45,13 +55,13 @@ import java.lang.reflect.Modifier
 
 import static java.lang.reflect.Modifier.*
 import static org.grails.compiler.injection.GrailsASTUtils.ZERO_PARAMETERS
+import static org.grails.compiler.injection.GrailsASTUtils.nonGeneric
 
 //import grails.rest.Resource
 //import grails.rest.RestfulController
-import static org.grails.compiler.injection.GrailsASTUtils.nonGeneric
-
 /**
- * The  transform automatically exposes a domain class as a RESTful resource. In effect the transform adds a controller to a Grails application
+ * The  transform automatically exposes a domain class as a RESTful resource. In effect the transform adds a
+ * controller to a Grails application
  * that performs CRUD operations on the domain. See the {@link Resource} annotation for more details
  *
  *
@@ -62,7 +72,8 @@ import static org.grails.compiler.injection.GrailsASTUtils.nonGeneric
  * @author Graeme Rocher
  *
  */
-@SuppressWarnings(['VariableName', 'AbcMetric', 'ThrowRuntimeException', 'NoDef', 'MethodSize', 'ExplicitCallToEqualsMethod'])
+@SuppressWarnings(['VariableName', 'AbcMetric', 'ThrowRuntimeException', 'NoDef', 'MethodSize',
+        'ExplicitCallToEqualsMethod'])
 @CompileStatic
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 class RestApiTransform implements ASTTransformation, CompilationUnitAware {
@@ -82,8 +93,10 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
 
     private CompilationUnit unit
 
-    //private static final ConfigObject CO = new ConfigSlurper().parse(getContents(new File("grails-app/conf/application.groovy"))); //grails.io.IOUtils has a better way to do this.
-    //see https://github.com/9ci/grails-audit-trail/blob/master/audit-trail-plugin/src/main/groovy/gorm/AuditStampASTTransformation.java for some ideas on how we can tweak this.
+    //private static final ConfigObject CO = new ConfigSlurper().parse(getContents(new File
+    // ("grails-app/conf/application.groovy"))); //grails.io.IOUtils has a better way to do this.
+    //see https://github.com/9ci/grails-audit-trail/blob/master/audit-trail-plugin/src/main/groovy/gorm
+    // /AuditStampASTTransformation.java for some ideas on how we can tweak this.
 
     @Override
     void visit(ASTNode[] astNodes, SourceUnit source) {
@@ -121,7 +134,8 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
             boolean isReadOnly = readOnlyAttr != null && ((ConstantExpression) readOnlyAttr).trueExpression
             addConstructor(newControllerClassNode, parent, isReadOnly)
 
-            List<ClassInjector> injectors = ArtefactTypeAstTransformation.findInjectors(ControllerArtefactHandler.TYPE, GrailsAwareInjectionOperation.getClassInjectors())
+            List<ClassInjector> injectors = ArtefactTypeAstTransformation.findInjectors(ControllerArtefactHandler
+                    .TYPE, GrailsAwareInjectionOperation.getClassInjectors())
 
             ArtefactTypeAstTransformation.performInjection(source, newControllerClassNode, injectors.findAll {
                 !(it instanceof ControllerActionTransformer)
@@ -157,7 +171,8 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
 
             if (namespaceAttr != null) {
                 final namespace = namespaceAttr?.getText()
-                final namespaceField = new FieldNode('namespace', STATIC, ClassHelper.STRING_TYPE, newControllerClassNode, new ConstantExpression(namespace))
+                final namespaceField = new FieldNode('namespace', STATIC, ClassHelper.STRING_TYPE,
+                        newControllerClassNode, new ConstantExpression(namespace))
                 newControllerClassNode.addField(namespaceField)
             }
 
@@ -168,14 +183,20 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
             //     if(uri || namespace) {
             //         final urlMappingsClassNode = new ClassNode(UrlMappings).getPlainNodeReference()
 
-            //         final lazyInitField = new FieldNode('lazyInit', PUBLIC | STATIC | FINAL, ClassHelper.Boolean_TYPE,newControllerClassNode, new ConstantExpression(Boolean.FALSE))
+            //         final lazyInitField = new FieldNode('lazyInit', PUBLIC | STATIC | FINAL, ClassHelper
+            // .Boolean_TYPE,newControllerClassNode, new ConstantExpression(Boolean.FALSE))
             //         newControllerClassNode.addField(lazyInitField)
 
-            //         final urlMappingsField = new FieldNode('$urlMappings', PRIVATE, urlMappingsClassNode,newControllerClassNode, null)
+            //         final urlMappingsField = new FieldNode('$urlMappings', PRIVATE, urlMappingsClassNode,
+            // newControllerClassNode, null)
             //         newControllerClassNode.addField(urlMappingsField)
             //         final urlMappingsSetterParam = new Parameter(urlMappingsClassNode, "um")
-            //         final controllerMethodAnnotation = new AnnotationNode(new ClassNode(ControllerMethod).getPlainNodeReference())
-            //         MethodNode urlMappingsSetter = new MethodNode("setUrlMappings", PUBLIC, VOID_CLASS_NODE, [urlMappingsSetterParam] as Parameter[], null, new ExpressionStatement(new BinaryExpression(new VariableExpression(urlMappingsField.name),Token.newSymbol(Types.EQUAL, 0, 0), new VariableExpression(urlMappingsSetterParam))))
+            //         final controllerMethodAnnotation = new AnnotationNode(new ClassNode(ControllerMethod)
+            // .getPlainNodeReference())
+            //         MethodNode urlMappingsSetter = new MethodNode("setUrlMappings", PUBLIC, VOID_CLASS_NODE,
+            // [urlMappingsSetterParam] as Parameter[], null, new ExpressionStatement(new BinaryExpression(new
+            // VariableExpression(urlMappingsField.name),Token.newSymbol(Types.EQUAL, 0, 0), new VariableExpression
+            // (urlMappingsSetterParam))))
             //         final autowiredAnnotation = new AnnotationNode(AUTOWIRED_CLASS_NODE)
             //         autowiredAnnotation.addMember("required", ConstantExpression.FALSE)
 
@@ -193,26 +214,37 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
 
             //         MapExpression map=new MapExpression()
             //         if(uri){
-            //             map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression("resources"), new ConstantExpression(domainPropertyName)))
+            //             map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression("resources"), new
+            // ConstantExpression(domainPropertyName)))
             //         }
             //         if(namespace){
-            //             final namespaceField = new FieldNode('namespace', STATIC, ClassHelper.STRING_TYPE,newControllerClassNode, new ConstantExpression(namespace))
+            //             final namespaceField = new FieldNode('namespace', STATIC, ClassHelper.STRING_TYPE,
+            // newControllerClassNode, new ConstantExpression(namespace))
             //             newControllerClassNode.addField(namespaceField)
             //             if(map.getMapEntryExpressions().size()==0){
             //                 uri="/${namespace}/${domainPropertyName}"
-            //                 map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression("resources"), new ConstantExpression(domainPropertyName)))
+            //                 map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression("resources"),
+            // new ConstantExpression(domainPropertyName)))
             //             }
-            //             map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression("namespace"), new ConstantExpression(namespace)))
+            //             map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression("namespace"), new
+            // ConstantExpression(namespace)))
             //         }
 
-            //         final resourcesUrlMapping = new MethodCallExpression(buildThisExpression(), uri, new MapExpression([ new MapEntryExpression(new ConstantExpression("resources"), new ConstantExpression(domainPropertyName))]))
-            //         final urlMappingsClosure = new ClosureExpression(null, new ExpressionStatement(resourcesUrlMapping))
+            //         final resourcesUrlMapping = new MethodCallExpression(buildThisExpression(), uri, new
+            // MapExpression([ new MapEntryExpression(new ConstantExpression("resources"), new ConstantExpression
+            // (domainPropertyName))]))
+            //         final urlMappingsClosure = new ClosureExpression(null, new ExpressionStatement
+            // (resourcesUrlMapping))
 
-            //         def addMappingsMethodCall = applyDefaultMethodTarget(new MethodCallExpression(urlMappingsVar, "addMappings", urlMappingsClosure), urlMappingsClassNode)
-            //         methodBody.addStatement(new IfStatement(new BooleanExpression(urlMappingsVar), new ExpressionStatement(addMappingsMethodCall),new EmptyStatement()))
+            //         def addMappingsMethodCall = applyDefaultMethodTarget(new MethodCallExpression(urlMappingsVar,
+            // "addMappings", urlMappingsClosure), urlMappingsClassNode)
+            //         methodBody.addStatement(new IfStatement(new BooleanExpression(urlMappingsVar), new
+            // ExpressionStatement(addMappingsMethodCall),new EmptyStatement()))
 
-            //         def initialiseUrlMappingsMethod = new MethodNode("initializeUrlMappings", PUBLIC, VOID_CLASS_NODE, ZERO_PARAMETERS, null, methodBody)
-            //         initialiseUrlMappingsMethod.addAnnotation(new AnnotationNode(new ClassNode(PostConstruct).getPlainNodeReference()))
+            //         def initialiseUrlMappingsMethod = new MethodNode("initializeUrlMappings", PUBLIC,
+            // VOID_CLASS_NODE, ZERO_PARAMETERS, null, methodBody)
+            //         initialiseUrlMappingsMethod.addAnnotation(new AnnotationNode(new ClassNode(PostConstruct)
+            // .getPlainNodeReference()))
             //         initialiseUrlMappingsMethod.addAnnotation(controllerMethodAnnotation)
             //         newControllerClassNode.addMethod(initialiseUrlMappingsMethod)
             //         processVariableScopes(source, newControllerClassNode, initialiseUrlMappingsMethod)
@@ -221,8 +253,10 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
 
             final publicStaticFinal = PUBLIC | STATIC | FINAL
 
-            newControllerClassNode.addProperty("scope", publicStaticFinal, ClassHelper.STRING_TYPE, new ConstantExpression("singleton"), null, null)
-            newControllerClassNode.addProperty("responseFormats", publicStaticFinal, new ClassNode(List).getPlainNodeReference(), responseFormatsExpression, null, null)
+            newControllerClassNode.addProperty("scope", publicStaticFinal, ClassHelper.STRING_TYPE, new
+                    ConstantExpression("singleton"), null, null)
+            newControllerClassNode.addProperty("responseFormats", publicStaticFinal, new ClassNode(List)
+                    .getPlainNodeReference(), responseFormatsExpression, null, null)
 
             ArtefactTypeAstTransformation.performInjection(source, newControllerClassNode, injectors.findAll {
                 it instanceof ControllerActionTransformer
@@ -240,7 +274,8 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
 
     ConstructorNode addConstructor(ClassNode controllerClassNode, ClassNode domainClassNode, boolean readOnly) {
         BlockStatement constructorBody = new BlockStatement()
-        constructorBody.addStatement(new ExpressionStatement(new ConstructorCallExpression(ClassNode.SUPER, new TupleExpression(new ClassExpression(domainClassNode), new ConstantExpression(readOnly, true)))))
+        constructorBody.addStatement(new ExpressionStatement(new ConstructorCallExpression(ClassNode.SUPER, new
+                TupleExpression(new ClassExpression(domainClassNode), new ConstantExpression(readOnly, true)))))
         controllerClassNode.addConstructor(Modifier.PUBLIC, ZERO_PARAMETERS, ClassNode.EMPTY_ARRAY, constructorBody)
     }
 

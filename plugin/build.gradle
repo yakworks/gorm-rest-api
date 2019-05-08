@@ -45,10 +45,7 @@ bootRepackage.enabled = false
 
 //codenarc overrides for yakworks ruleset defaults
 ext.codenarcRuleset= '''
-  getRule('LineLength').enabled = false
   getRule('CyclomaticComplexity').enabled = false
-  getRule('NoWildcardImports').enabled = false
-  //getRule('Println').enabled = false
 '''
 
 //main codenarc block is setup in yakworks.defaults
