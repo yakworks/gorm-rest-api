@@ -36,7 +36,7 @@ class GormRestApiGrailsPlugin extends Plugin {
 Brief summary/description of the plugin.
 '''
     //List profiles = ['web']
-    List loadBefore = ['grails-web-common', 'controllers']
+    List loadBefore = ['controllers']
     List loadAfter = [ 'views-json', 'app-setup-config']
     List observe = ['domainClass']
 
