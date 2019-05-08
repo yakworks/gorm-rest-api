@@ -1,7 +1,9 @@
 package gorm.restapi.json
 
 import gorm.tools.beans.BeanPathTools
+import gorm.tools.json.Jsonify
 import grails.core.support.proxy.ProxyHandler
+import grails.orm.PagedResultList
 import grails.rest.render.RenderContext
 import grails.rest.render.Renderer
 import grails.rest.render.RendererRegistry
@@ -74,14 +76,14 @@ class GormRestApiJsonViewJsonRenderer<T> extends DefaultViewRenderer<T> {
         if(view != null) {
             Map<String, Object> model
             if (view == viewResolver.objectView){
-                List includes = context.includes ?: ["*"]
                 def val = [:]
                 if (object instanceof List){
-                    val = object.toArray().collect { obj ->
-                        BeanPathTools.buildMapFromPaths(obj, includes, true)
+                    List list = object.toArray().collect { obj ->
+                        Jsonify.render(obj, [includes: arguments.includes?:["*"]]).json as Map
                     }
+                    val = [data: list, metaData:[totalCount: object.getTotalCount()]] // TODO: dirty way, need to think how to make it smarter
                 } else {
-                    val = BeanPathTools.buildMapFromPaths(object, includes, true)
+                    val = Jsonify.render(object, [includes: arguments.includes?:["*"]]).json as Map
                 }
                 defaultRenderer.render(val, context)
 
