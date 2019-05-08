@@ -3,24 +3,11 @@
 
 screens {
     organisation{
-        list{
-            fields = ["*", "address.*"]
-        }
-        show{
-            fields = ["address.*"]
-        }
+
     }
     defaultActions {
         open {
             enabled = false
-            label = "Open"
-            icon = "fa fa-eye-open"
-            ngClick = "show()"
-            row {
-                enabled = false
-                ngClick = "showRow()"
-            }
-
             show {
 
             }

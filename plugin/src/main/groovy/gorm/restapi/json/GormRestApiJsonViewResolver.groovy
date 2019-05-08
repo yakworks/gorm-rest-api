@@ -3,6 +3,7 @@ package gorm.restapi.json
 import grails.plugin.json.renderer.ErrorsJsonViewRenderer
 import grails.plugin.json.view.JsonViewConfiguration
 import grails.plugin.json.view.JsonViewTemplateEngine
+import grails.plugin.json.view.JsonViewWritableScript
 import grails.plugin.json.view.mvc.JsonViewResolver
 import grails.web.mime.MimeType
 import org.springframework.validation.Errors
@@ -11,17 +12,18 @@ import javax.annotation.PostConstruct
 
 class GormRestApiJsonViewResolver extends JsonViewResolver {
 
+    public static final String JSON_VIEW_SUFFIX = ".${JsonViewWritableScript.EXTENSION}"
+
     GormRestApiJsonViewResolver(JsonViewConfiguration configuration = new JsonViewConfiguration()) {
-        super(new JsonViewTemplateEngine(configuration))
+        this(new JsonViewTemplateEngine(configuration))
     }
 
     GormRestApiJsonViewResolver(JsonViewTemplateEngine templateEngine) {
-        super(templateEngine, JSON_VIEW_SUFFIX, MimeType.JSON.name)
+        this(templateEngine, JSON_VIEW_SUFFIX, MimeType.JSON.name)
     }
 
     GormRestApiJsonViewResolver(JsonViewTemplateEngine templateEngine, String suffix, String contentType) {
         super(templateEngine, suffix, contentType)
-        viewConfiguration = (JsonViewConfiguration)templateEngine.viewConfiguration
     }
 
     @PostConstruct

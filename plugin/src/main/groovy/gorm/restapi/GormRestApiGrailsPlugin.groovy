@@ -4,6 +4,10 @@ import gorm.restapi.appinfo.AppInfoBuilder
 import gorm.restapi.json.GormRestApiJsonViewResolver
 import grails.core.GrailsApplication
 import grails.core.GrailsClass
+import grails.plugin.json.view.JsonViewConfiguration
+import grails.plugin.json.view.JsonViewTemplateEngine
+import grails.plugin.json.view.api.jsonapi.DefaultJsonApiIdRenderer
+import grails.plugin.json.view.mvc.JsonViewResolver
 import grails.plugins.Plugin
 import grails.views.mvc.GenericGroovyTemplateViewResolver
 import grails.views.resolve.PluginAwareTemplateResolver
@@ -11,6 +15,7 @@ import groovy.transform.CompileStatic
 import org.grails.core.artefact.ControllerArtefactHandler
 import org.grails.core.artefact.DomainClassArtefactHandler
 import org.grails.plugins.appsetupconfig.AppSetupService
+import org.grails.web.servlet.view.CompositeViewResolver
 
 @SuppressWarnings(['NoDef', 'EmptyMethod', 'VariableName', 'EmptyCatchBlock'])
 class GormRestApiGrailsPlugin extends Plugin {
@@ -30,8 +35,8 @@ class GormRestApiGrailsPlugin extends Plugin {
 Brief summary/description of the plugin.
 '''
     //List profiles = ['web']
-    List loadBefore = ['controllers']
-    List loadAfter = ['views-json', 'app-setup-config']
+    List loadBefore = ['grails-web-common', 'controllers']
+    List loadAfter = [ 'views-json', 'app-setup-config']
     List observe = ['domainClass']
 
     // URL to the plugin's documentation
@@ -58,7 +63,6 @@ Brief summary/description of the plugin.
 
     Closure doWithSpring() {
         { ->
-
             jsonSchemaGenerator(JsonSchemaGenerator) { bean ->
                 // Autowiring behaviour. The other option is 'byType'. <<autowire>>
                 // bean.autowire = 'byName'
@@ -69,8 +73,8 @@ Brief summary/description of the plugin.
                 // bean.autowire = 'byName'
             }
 
-            jsonSmartViewResolver(GormRestApiJsonViewResolver, ref('jsonTemplateEngine')) {
-                templateResolver = bean(PluginAwareTemplateResolver, ref('jsonViewConfiguration'))
+            jsonSmartViewResolver(GormRestApiJsonViewResolver, jsonTemplateEngine) {
+                templateResolver = bean(PluginAwareTemplateResolver, jsonViewConfiguration)
             }
             jsonViewResolver(GenericGroovyTemplateViewResolver, jsonSmartViewResolver )
 

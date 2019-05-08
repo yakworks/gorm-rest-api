@@ -17,6 +17,9 @@ class Organisation {
     Long refId = 0L
     String event
 
+    static getListFields(){
+        ["*", "address.*"]
+    }
     static quickSearchFields = ["name", "num"]
     static constraints = {
         name blank: false

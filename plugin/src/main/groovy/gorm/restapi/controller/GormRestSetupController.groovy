@@ -34,7 +34,7 @@ trait GormRestSetupController<D> {
      *
      * @return list of fields that should be rendered
      */
-    private List<String> getDefaultShowFields() { (entityClass.getShowFields() ?: getRepo().showFields) ?: ["*"] }
+    List<String> getDefaultShowFields() { (entityClass.getShowFields() ?: getRepo().showFields) ?: ["*"] }
 
     /**
      * Field list that should be rendered on GET/POST/PUT requests for entity
