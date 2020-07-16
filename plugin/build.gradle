@@ -31,7 +31,7 @@ dependencies {
     compileOnly "org.grails.plugins:build-test-data:$versionBuildTestData"
 
     testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
-    compile "org.grails.plugins:gorm-tools:6.1.5-SNAPSHOT"
+    compile "org.grails.plugins:gorm-tools:6.1.11-v.12"
     compile "org.grails:grails-plugin-testing"
     compile "org.grails.plugins:geb"
 }
