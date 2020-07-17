@@ -47,7 +47,7 @@ subprojects {
             //compile "org.grails:grails-plugin-i18n"
             compile "org.grails:grails-plugin-services"
             compile 'org.grails.plugins:grails-java8:1.2.2'
-            compile "org.grails.plugins:gorm-tools:6.1.5-SNAPSHOT"
+            compile "org.grails.plugins:gorm-tools:6.1.11-v.13"
 
             compile "org.grails.plugins:events"
             compile "org.codehaus.gpars:gpars:1.2.0"
