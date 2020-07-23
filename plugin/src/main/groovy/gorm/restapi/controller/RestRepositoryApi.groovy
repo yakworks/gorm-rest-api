@@ -1,4 +1,14 @@
+/*
+* Copyright 2020 Yak.Works - Licensed under the Apache License, Version 2.0 (the "License")
+* You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+*/
 package gorm.restapi.controller
+
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
+
+import org.codehaus.groovy.runtime.InvokerHelper
+import org.springframework.core.GenericTypeResolver
 
 import gorm.tools.repository.GormRepoEntity
 import gorm.tools.repository.api.RepositoryApi
@@ -8,10 +18,6 @@ import grails.databinding.SimpleMapDataBindingSource
 import grails.web.Action
 import grails.web.api.ServletAttributes
 import grails.web.databinding.DataBindingUtils
-import groovy.transform.CompileDynamic
-import groovy.transform.CompileStatic
-import org.codehaus.groovy.runtime.InvokerHelper
-import org.springframework.core.GenericTypeResolver
 
 import static org.springframework.http.HttpStatus.*
 

@@ -1,12 +1,18 @@
+/*
+* Copyright 2020 Yak.Works - Licensed under the Apache License, Version 2.0 (the "License")
+* You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+*/
 package gorm.restapi
+
+import groovy.transform.CompileStatic
+
+import org.grails.core.artefact.ControllerArtefactHandler
+import org.grails.core.artefact.DomainClassArtefactHandler
 
 import gorm.restapi.appinfo.AppInfoBuilder
 import grails.core.GrailsApplication
 import grails.core.GrailsClass
 import grails.plugins.Plugin
-import groovy.transform.CompileStatic
-import org.grails.core.artefact.ControllerArtefactHandler
-import org.grails.core.artefact.DomainClassArtefactHandler
 
 @SuppressWarnings(['NoDef', 'EmptyMethod', 'VariableName', 'EmptyCatchBlock'])
 class GormRestApiGrailsPlugin extends Plugin {

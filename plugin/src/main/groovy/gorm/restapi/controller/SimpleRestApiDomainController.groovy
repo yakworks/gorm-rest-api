@@ -1,12 +1,15 @@
+/*
+* Copyright 2020 Yak.Works - Licensed under the Apache License, Version 2.0 (the "License")
+* You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+*/
 package gorm.restapi.controller
+
+import groovy.transform.CompileDynamic
 
 import grails.artefact.Artefact
 import grails.gorm.transactions.Transactional
 import grails.util.GrailsNameUtils
-import groovy.transform.CompileDynamic
 
-//import grails.transaction.ReadOnly
-//import grails.gorm.transactions.Transactional
 import static org.springframework.http.HttpStatus.*
 
 /**

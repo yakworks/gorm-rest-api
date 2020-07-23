@@ -1,11 +1,17 @@
+/*
+* Copyright 2020 Yak.Works - Licensed under the Apache License, Version 2.0 (the "License")
+* You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+*/
 package gorm.restapi.controller
+
+import javax.servlet.http.HttpServletResponse
+
+import groovy.transform.CompileDynamic
+
+import org.springframework.http.HttpStatus
 
 import grails.artefact.Artefact
 import grails.web.http.HttpHeaders
-import groovy.transform.CompileDynamic
-import org.springframework.http.HttpStatus
-
-import javax.servlet.http.HttpServletResponse
 
 import static org.springframework.http.HttpStatus.NOT_FOUND
 

@@ -2,19 +2,18 @@
 buildscript {
     repositories {
         mavenLocal()
+        maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
         classpath "org.grails.plugins:views-gradle:$grailsViewsVersion"
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails:grails-docs:$grailsVersion"
-        classpath 'io.github.groovylang.groovydoc:groovydoc-gradle-plugin:1.0.1'
-        classpath "gradle.plugin.com.energizedwork:idea-gradle-plugins:1.4"
-        classpath "org.yakworks:gradle-plugins:0.1.45"
+        classpath "org.yakworks:gradle-plugins:1.1.14"
     }
 }
 
-apply plugin: 'yakworks.shipkit'
+apply plugin: 'yakworks.shipyak'
 
 repositories {
     mavenLocal()
