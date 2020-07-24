@@ -1,11 +1,17 @@
+/*
+* Copyright 2020 Yak.Works - Licensed under the Apache License, Version 2.0 (the "License")
+* You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+*/
 package gorm.restapi.appinfo
 
-import grails.core.GrailsApplication
 import groovy.transform.CompileDynamic
+
 import org.springframework.aop.support.AopUtils
 import org.springframework.beans.factory.BeanFactory
 import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.context.ApplicationContext
+
+import grails.core.GrailsApplication
 
 /**
  * @author <a href='mailto:burt@burtbeckwith.com'>Burt Beckwith</a>

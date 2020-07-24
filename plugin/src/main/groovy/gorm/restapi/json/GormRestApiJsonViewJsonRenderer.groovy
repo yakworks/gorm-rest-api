@@ -1,26 +1,35 @@
+/*
+* Copyright 2020 Yak.Works - Licensed under the Apache License, Version 2.0 (the "License")
+* You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+*/
 package gorm.restapi.json
 
-import gorm.tools.beans.BeanPathTools
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
+import groovy.util.logging.Slf4j
+
+import org.grails.plugins.web.rest.render.ServletRenderContext
+import org.springframework.web.servlet.view.AbstractUrlBasedView
+
 import gorm.tools.json.Jsonify
 import grails.core.support.proxy.ProxyHandler
-import grails.orm.PagedResultList
 import grails.rest.render.RenderContext
 import grails.rest.render.Renderer
 import grails.rest.render.RendererRegistry
 import grails.views.mvc.SmartViewResolver
 import grails.views.mvc.renderer.DefaultViewRenderer
 import grails.web.mime.MimeType
-import groovy.util.logging.Slf4j
-import org.grails.plugins.web.rest.render.ServletRenderContext
-import org.springframework.web.servlet.view.AbstractUrlBasedView
 
 @Slf4j
+@CompileDynamic
 class GormRestApiJsonViewJsonRenderer<T> extends DefaultViewRenderer<T> {
-    GormRestApiJsonViewJsonRenderer(Class<T> targetType, SmartViewResolver viewResolver, ProxyHandler proxyHandler, RendererRegistry rendererRegistry, Renderer defaultRenderer) {
+    GormRestApiJsonViewJsonRenderer(Class<T> targetType, SmartViewResolver viewResolver, ProxyHandler proxyHandler, RendererRegistry rendererRegistry,
+                                    Renderer defaultRenderer) {
         super(targetType, viewResolver, proxyHandler, rendererRegistry, defaultRenderer)
     }
 
-    GormRestApiJsonViewJsonRenderer(Class<T> targetType, MimeType mimeType, SmartViewResolver viewResolver, ProxyHandler proxyHandler, RendererRegistry rendererRegistry, Renderer defaultRenderer) {
+    GormRestApiJsonViewJsonRenderer(Class<T> targetType, MimeType mimeType, SmartViewResolver viewResolver, ProxyHandler proxyHandler, RendererRegistry rendererRegistry,
+                                    Renderer defaultRenderer) {
         super(targetType, mimeType, viewResolver, proxyHandler, rendererRegistry, defaultRenderer)
     }
 
@@ -34,7 +43,7 @@ class GormRestApiJsonViewJsonRenderer<T> extends DefaultViewRenderer<T> {
         }
         else {
             final mimeType = context.acceptMimeType ?: mimeTypes[0]
-            if (!mimeType.equals(MimeType.ALL)) {
+            if (!mimeType == MimeType.ALL) {
                 context.setContentType(mimeType.name)
             }
         }

@@ -1,11 +1,17 @@
+/*
+* Copyright 2020 Yak.Works - Licensed under the Apache License, Version 2.0 (the "License")
+* You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+*/
 package gorm.restapi.controller
+
+import groovy.transform.CompileDynamic
+
+import org.springframework.context.MessageSource
 
 import gorm.tools.repository.GormRepoEntity
 import grails.artefact.Artefact
 import grails.core.GrailsApplication
 import grails.util.GrailsNameUtils
-import groovy.transform.CompileDynamic
-import org.springframework.context.MessageSource
 
 /**
  * Credits: took rally.BaseDomainController with core concepts from grails RestfulConroller

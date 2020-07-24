@@ -1,13 +1,19 @@
+/*
+* Copyright 2020 Yak.Works - Licensed under the Apache License, Version 2.0 (the "License")
+* You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+*/
 package gorm.restapi.controller
+
+import groovy.transform.CompileDynamic
+
+import org.springframework.dao.OptimisticLockingFailureException
+import org.springframework.validation.Errors
+import org.springframework.validation.FieldError
 
 import gorm.tools.repository.RepoMessage
 import gorm.tools.repository.errors.EntityNotFoundException
 import gorm.tools.repository.errors.EntityValidationException
 import grails.validation.ValidationException
-import groovy.transform.CompileDynamic
-import org.springframework.dao.OptimisticLockingFailureException
-import org.springframework.validation.Errors
-import org.springframework.validation.FieldError
 
 import static org.springframework.http.HttpStatus.*
 

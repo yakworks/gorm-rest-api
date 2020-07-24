@@ -1,10 +1,13 @@
+/*
+* Copyright 2020 Yak.Works - Licensed under the Apache License, Version 2.0 (the "License")
+* You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+*/
 package gorm.restapi
 
-import gorm.tools.GormMetaUtils
-import grails.core.DefaultGrailsApplication
-import grails.gorm.validation.ConstrainedProperty
-import grails.util.GrailsNameUtils
+import javax.annotation.Resource
+
 import groovy.transform.CompileDynamic
+
 import org.grails.core.io.support.GrailsFactoriesLoader
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
@@ -14,7 +17,10 @@ import org.grails.orm.hibernate.cfg.Mapping
 import org.grails.validation.discovery.ConstrainedDiscovery
 import org.springframework.core.annotation.AnnotationUtils
 
-import javax.annotation.Resource
+import gorm.tools.GormMetaUtils
+import grails.core.DefaultGrailsApplication
+import grails.gorm.validation.ConstrainedProperty
+import grails.util.GrailsNameUtils
 
 import static grails.util.GrailsClassUtils.getStaticPropertyValue
 

@@ -1,21 +1,21 @@
+/*
+* Copyright 2020 Yak.Works - Licensed under the Apache License, Version 2.0 (the "License")
+* You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+*/
 package gorm.restapi
+
+import groovy.transform.CompileStatic
+
+import org.grails.core.artefact.ControllerArtefactHandler
+import org.grails.core.artefact.DomainClassArtefactHandler
 
 import gorm.restapi.appinfo.AppInfoBuilder
 import gorm.restapi.json.GormRestApiJsonViewResolver
 import grails.core.GrailsApplication
 import grails.core.GrailsClass
-import grails.plugin.json.view.JsonViewConfiguration
-import grails.plugin.json.view.JsonViewTemplateEngine
-import grails.plugin.json.view.api.jsonapi.DefaultJsonApiIdRenderer
-import grails.plugin.json.view.mvc.JsonViewResolver
 import grails.plugins.Plugin
 import grails.views.mvc.GenericGroovyTemplateViewResolver
 import grails.views.resolve.PluginAwareTemplateResolver
-import groovy.transform.CompileStatic
-import org.grails.core.artefact.ControllerArtefactHandler
-import org.grails.core.artefact.DomainClassArtefactHandler
-import org.grails.plugins.appsetupconfig.AppSetupService
-import org.grails.web.servlet.view.CompositeViewResolver
 
 @SuppressWarnings(['NoDef', 'EmptyMethod', 'VariableName', 'EmptyCatchBlock'])
 class GormRestApiGrailsPlugin extends Plugin {

@@ -2,19 +2,18 @@
 buildscript {
     repositories {
         mavenLocal()
+        maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
         classpath "org.grails.plugins:views-gradle:$grailsViewsVersion"
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails:grails-docs:$grailsVersion"
-        classpath 'io.github.groovylang.groovydoc:groovydoc-gradle-plugin:1.0.1'
-        classpath "gradle.plugin.com.energizedwork:idea-gradle-plugins:1.4"
-        classpath "org.yakworks:gradle-plugins:0.1.45"
+        classpath "org.yakworks:gradle-plugins:1.1.14"
     }
 }
 
-apply plugin: 'yakworks.shipkit'
+apply plugin: 'yakworks.shipyak'
 
 repositories {
     mavenLocal()
@@ -47,7 +46,7 @@ subprojects {
             //compile "org.grails:grails-plugin-i18n"
             compile "org.grails:grails-plugin-services"
             compile 'org.grails.plugins:grails-java8:1.2.2'
-            compile "org.grails.plugins:gorm-tools:6.1.5-SNAPSHOT"
+            compile "org.grails.plugins:gorm-tools:6.1.11-v.13"
 
             compile "org.grails.plugins:events"
             compile "org.codehaus.gpars:gpars:1.2.0"
@@ -63,7 +62,7 @@ subprojects {
 
             testRuntime "com.h2database:h2"
             testRuntime "org.apache.tomcat:tomcat-jdbc"
-            
+
             testCompile "org.grails:views-json-testing-support:$versionViews"
             testCompile "org.grails:grails-gorm-testing-support"
             testCompile "org.grails:grails-web-testing-support"

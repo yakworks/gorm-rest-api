@@ -1,17 +1,20 @@
+/*
+* Copyright 2020 Yak.Works - Licensed under the Apache License, Version 2.0 (the "License")
+* You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+*/
 package gorm.restapi.appinfo
 
-import grails.core.DefaultGrailsApplication
-import grails.web.mapping.UrlMappingsHolder
-import groovy.transform.CompileDynamic
-
-import javax.annotation.Resource
-
-//import grails.converters.JSON
 import java.lang.management.ManagementFactory
 import java.lang.management.MemoryPoolMXBean
 import java.lang.management.MemoryType
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
+import javax.annotation.Resource
+
+import groovy.transform.CompileDynamic
+
+import grails.core.DefaultGrailsApplication
+import grails.web.mapping.UrlMappingsHolder
 
 /**
  * Misc Application Info. TODO probably move to its own plugin
