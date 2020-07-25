@@ -5,7 +5,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "org.grails.plugins:views-gradle:$grailsViewsVersion"
+        classpath "org.grails.plugins:views-gradle:$versionViews"
     }
 }
 

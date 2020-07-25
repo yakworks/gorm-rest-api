@@ -1,4 +1,4 @@
-
+//It all starts here
 buildscript {
     repositories {
         mavenLocal()
@@ -6,20 +6,12 @@ buildscript {
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
-        classpath "org.grails.plugins:views-gradle:$grailsViewsVersion"
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
-        classpath "org.grails:grails-docs:$grailsVersion"
         classpath "org.yakworks:gradle-plugins:1.1.14"
     }
 }
 
-apply plugin: 'yakworks.shipyak'
-
-repositories {
-    mavenLocal()
-    maven { url "https://repo.grails.org/grails/core" }
-    maven { url "http://repo.9ci.com/oss-snapshots" }
-}
+apply plugin: 'yakworks.shipyak' //our opinionated defaults for gradle groovy & grails projects
 
 subprojects {
     plugins.withId('java') {
@@ -67,6 +59,7 @@ subprojects {
             testCompile "org.grails:grails-web-testing-support"
             testCompile "org.grails.plugins:build-test-data:$versionBuildTestData"
             testCompile "org.grails.plugins:geb"
+            testCompile "org.grails.plugins:views-json:$versionViews"
             testCompile "org.grails:views-json-testing-support:$versionViews"
 
             compile "org.grails:grails-gorm-testing-support"

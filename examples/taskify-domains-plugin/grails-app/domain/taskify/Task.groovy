@@ -5,12 +5,16 @@ import gorm.restapi.RestApi
 import javax.persistence.Transient
 import java.time.LocalDate
 
+import grails.compiler.GrailsCompileStatic
+import static grails.gorm.hibernate.mapping.MappingBuilder.*
+
 //import gorm.restapi.RestApiController
 /**
  * __This is test docs__
  * A task is an activity that **needs** to be accomplished within a defined period of time or
  * by a deadline to work towards work-related goals.
  */
+@GrailsCompileStatic
 @RestApi(description = "This is a task")
 class Task {
     //ordering of contraints flow through to json-schema and the fields plugin for automatic scaffolding
@@ -57,11 +61,11 @@ class Task {
     //see https://github.com/grails/grails-data-mapping/blob/master/grails-datastore-gorm-validation/src/main/groovy/org/grails/datastore/gorm/validation/constraints/EmailConstraint.java
     //for adding new constraints
 
-    static mapping = {
+    static mapping = orm {
         comment "A task is an activity that needs to be accomplished within a defined period of time or by a deadline to work towards work-related goals."
-        completed defaultValue: "0"
-        billable defaultValue: "0"
-        type defaultValue: "Todo"
+        property('completed') { defaultValue: '0'}
+        property('billable') { defaultValue: '0'}
+        property('type') { defaultValue: 'test'}
     }
 
     String name
@@ -82,18 +86,20 @@ class Task {
     Date lastUpdated
 
     @Transient
+    String roleVisibility
+
     String getRoleVisibility() {
         'admin'
     }
+    //void setRoleVisibility( String blah) {}
 
-    void setRoleVisibility(blah) {}
-
+    String fooHide
     @Transient
     String getFooHide() {
         'bar'
     }
 
-    void setFooHide(blah) {}
+    //void setFooHide( String blah) {}
 
 }
 

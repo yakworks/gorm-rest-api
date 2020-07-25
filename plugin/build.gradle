@@ -1,28 +1,4 @@
-buildscript {
-    repositories {
-        mavenLocal()
-        maven { url "https://repo.grails.org/grails/core" }
-    }
-    dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
-        classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:1.1"
-    }
-}
-
-apply plugin:"com.energizedwork.webdriver-binaries"
-apply plugin: 'yakworks.grails-plugin'
-
-repositories {
-    mavenLocal()
-    maven { url "https://repo.grails.org/grails/core" }
-    maven { url = "https://dl.bintray.com/9ci/grails-plugins"}
-    jcenter()
-}
-
-configurations.all {
-    resolutionStrategy.cacheDynamicVersionsFor 1, 'seconds'
-}
-
+apply plugin: "yakworks.grails-plugin"
 
 dependencies {
     compileOnly "org.grails:grails-gorm-testing-support"
@@ -36,11 +12,12 @@ dependencies {
     compile "org.grails.plugins:geb"
 }
 
+//bootRepackage and maybe addResources are needed for the test/example projects grails.plugin.compile dependency to work
+//TODO can we take care of this in the yakworks.defaults plugin, I'm still not clear on what these are for and what they do?
 bootRun {
     jvmArgs('-Dspring.output.ansi.enabled=always')
     addResources = true
 }
-
 bootRepackage.enabled = false
 
 //codenarc overrides for yakworks ruleset defaults
@@ -48,14 +25,7 @@ ext.codenarcRuleset= '''
   getRule('CyclomaticComplexity').enabled = false
 '''
 
-//main codenarc block is setup in yakworks.defaults
-codenarcMain {
-    exclude '**/GormToolsGrailsPlugin.groovy'
-    exclude '**/GormToolsPluginHelper.groovy'
-}
-
-codenarcTest {
-    //don't check any of the tests right now as it just slows it down, look at enabling this in future
-    exclude '**/*'
-    ignoreFailures = true
+test {
+    //testLogging.showStandardStreams = true
+    testLogging.exceptionFormat = 'full'
 }
