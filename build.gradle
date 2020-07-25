@@ -6,7 +6,7 @@ buildscript {
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
-        classpath "org.grails.plugins:views-gradle:$grailsViewsVersion"
+        classpath "org.grails.plugins:views-gradle:$versionViews"
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails:grails-docs:$grailsVersion"
         classpath "org.yakworks:gradle-plugins:1.1.14"
