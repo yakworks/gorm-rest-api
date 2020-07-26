@@ -26,7 +26,7 @@ import grails.util.GrailsNameUtils
 @CompileDynamic
 class RestApiRepoController<D extends GormRepoEntity> implements RestRepositoryApi<D> {
     static allowedMethods = [list  : ["GET", "POST"], create: "POST",
-                             update: ["PUT", "PATCH"], delete: "DELETE"]
+                             update: ["PUT", "PATCH"], put:["PUT", "PATCH"], delete: "DELETE"]
 
     static responseFormats = ['json']
     static namespace = 'api'

@@ -18,6 +18,7 @@ dependencies {
     compile project(":taskify-domains-plugin")
 
     runtime "com.h2database:h2"
+    runtime "org.apache.tomcat:tomcat-jdbc"
 
     testCompile "org.grails:grails-plugin-testing"
     testCompile "org.grails.plugins:geb"
