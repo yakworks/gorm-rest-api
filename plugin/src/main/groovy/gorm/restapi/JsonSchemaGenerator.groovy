@@ -7,6 +7,7 @@ package gorm.restapi
 import javax.annotation.Resource
 
 import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 
 import org.grails.core.io.support.GrailsFactoriesLoader
 import org.grails.datastore.mapping.model.PersistentEntity
@@ -34,7 +35,7 @@ import static grails.util.GrailsClassUtils.getStaticPropertyValue
  */
 //@CompileStatic
 @SuppressWarnings(['UnnecessaryGetter', 'NoDef', 'AbcMetric'])
-@CompileDynamic
+@CompileStatic
 class JsonSchemaGenerator {
 
     @Resource
@@ -62,7 +63,7 @@ class JsonSchemaGenerator {
     }
 
     Map generate(PersistentEntity domainClass, Map schema) {
-        Map map = [:]
+        Map<String, ?> map = [:]
         //TODO figure out a more performant way to do these if
         Mapping mapping = getMapping(domainClass.name)
 
@@ -78,46 +79,55 @@ class JsonSchemaGenerator {
         map.type = 'Object'
         map.required = []
 
-        def (props, required) = getDomainProperties(domainClass, schema)
+        Map propMap = getDomainProperties(domainClass, schema)
 
-        map.properties = props
-        map.required = required
+        map.props = propMap.props
+        map.required = propMap.required
 
         return map
     }
 
     @SuppressWarnings(['MethodSize'])
-    private List getDomainProperties(PersistentEntity domClass, Map schema) {
+    // @CompileDynamic
+    private Map getDomainProperties(PersistentEntity domClass, Map schema) {
         String domainName = GrailsNameUtils.getPropertyNameRepresentation(domClass.name)
-        Map<String, String> map = [:]
+        Map<String, ?> map = [:]
         List required = []
 
         PersistentProperty idProp = domClass.getIdentity()
 
         //id
-        map[idProp.name] = [type: getJsonType(idProp.type).type, readOnly: true]
+        String idJsonType = getJsonType(idProp.type)['type']
+        Map idTypeMap = [type: idJsonType, readOnly: true]
+        map[idProp.name] = idTypeMap
 
         //version
-        if (domClass.version) map[domClass.version.name] = [type: 'integer', readOnly: true]
+        Map verTypeMap = [type: 'integer', readOnly: true]
+        if (domClass.version) map[domClass.version.name] = verTypeMap
 
         Mapping mapping = getMapping(domainName)
         List<PersistentProperty> props = resolvePersistentProperties(domClass)
 
         for (PersistentProperty prop : props) {
-            ConstrainedProperty constraints = getConstrainedProperties(domClass).get(prop.name)
+            ConstrainedProperty constraints = (ConstrainedProperty) getConstrainedProperties(domClass).get(prop.name)
             //Map mappedBy = domClass.mappedBy
             if (!constraints.display) continue //skip if display is false
             if (prop instanceof Association) {
                 PersistentEntity referencedDomainClass = GormMetaUtils.getPersistentEntity(prop.type)
-                if (/*(prop.isManyToOne() || prop.isOneToOne()) && */ !schema.definitions.containsKey(referencedDomainClass.name)) {
+                Map schemaDefs = (Map) schema.definitions
+                if (/*(prop.isManyToOne() || prop.isOneToOne()) && */ !schemaDefs?.containsKey(referencedDomainClass.name)) {
                     if (referencedDomainClass.javaClass.isAnnotationPresent(RestApi)) {
                         //treat as a seperate file
-                        map[prop.name] = ['$ref': "${prop.owner.name}.json"]
+                        Map refMap = ['$ref': "${referencedDomainClass.name}.json"]
+                        map[prop.name] = refMap
                     } else {
                         //treat as definition in same schema
-                        schema.definitions[referencedDomainClass.getDecapitalizedName().capitalize()] = [:]
-                        schema.definitions[referencedDomainClass.getDecapitalizedName().capitalize()] = generate(referencedDomainClass, schema)
-                        map[prop.name] = ['$ref': "#/definitions/$prop.owner.name"]
+                        String refName = referencedDomainClass.getDecapitalizedName().capitalize()
+                        schemaDefs[refName] = [:]
+                        schemaDefs[refName] = generate(referencedDomainClass, schema)
+                        schema.definitions = schemaDefs
+                        Map refMap = ['$ref': "#/definitions/$referencedDomainClass.name"]
+                        map[prop.name] = refMap
                     }
 
                     if (!constraints.isNullable() && constraints.editable) {
@@ -146,7 +156,8 @@ class JsonSchemaGenerator {
                 if (typeFormat.format) jprop.format = typeFormat.format
                 if (typeFormat.enum) jprop.enum = typeFormat.enum
                 //format override from constraints
-                if (constraints.property.format) jprop.format = constraints.property.format
+                // assert constraints.class == PersistentEntity
+                if (constraints.format) jprop.format = constraints.format
                 //if (constraints.property?.appliedConstraints?.email) jprop.format = 'email'
                 //pattern TODO
 
@@ -186,21 +197,24 @@ class JsonSchemaGenerator {
 
         }
 
-        return [map, required]
+        return [props: map, required: required]
     }
 
+    @CompileDynamic
     String getDefaultValue(Mapping mapping, String propName) {
         mapping?.columns?."$propName"?.columns?.getAt(0)?.defaultValue
         //cols[prop.name]?.columns?.getAt(0)?.defaultValue
     }
 
+    @CompileDynamic
     String getMetaConstraintValue(ConstrainedProperty constraints, String name) {
         constraints?.property?.metaConstraints?."$name"
     }
 
-    @CompileDynamic
+    //@CompileDynamic
     PersistentEntity getDomainClass(String domainName) {
-        grailsApplication.domainClasses.find { it.naturalName == domainName } as PersistentEntity
+        GormMetaUtils.findPersistentEntity(domainName)
+        //grailsApplication.domainClasses.find { it.naturalName == domainName } as PersistentEntity
     }
 
     @CompileDynamic
@@ -213,6 +227,7 @@ class JsonSchemaGenerator {
      * big decimal defaults to money
      */
 
+    @CompileDynamic
     protected Map getJsonType(Class propertyType) {
         Map typeFormat = [type: 'string']
         switch (propertyType) {

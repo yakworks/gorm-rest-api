@@ -13,7 +13,7 @@ class Company {
 
 
     static constraints = {
-
+        name nullable: false
     }
 
 }

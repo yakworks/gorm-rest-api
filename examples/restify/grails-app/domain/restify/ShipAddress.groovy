@@ -4,7 +4,7 @@ class ShipAddress {
     String city
     Long testId
     static constraints = {
-        testId nullable: true
+        city nullable: false
     }
 }
 
@@ -12,6 +12,6 @@ class Location {
     String city
     Long testId
     static constraints = {
-        testId nullable: true
+        city nullable: false
     }
 }

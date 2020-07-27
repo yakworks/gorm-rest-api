@@ -1,6 +1,20 @@
 apply plugin: "yakworks.grails-plugin"
 
 dependencies {
+    console "org.grails:grails-console"
+
+    compile "org.springframework.boot:spring-boot-starter-logging"
+    compile "org.springframework.boot:spring-boot-autoconfigure"
+    compile "org.grails:grails-core"
+    compile "org.springframework.boot:spring-boot-starter-tomcat"
+
+    compile "org.grails:grails-web-boot"
+
+    compile "org.grails:grails-logging"
+    compile "org.grails:grails-plugin-databinding"
+    compile "org.grails:grails-plugin-services"
+
+
     compileOnly "org.grails:grails-gorm-testing-support"
     compileOnly "org.grails:grails-web-testing-support"
     compileOnly "org.grails:grails-datastore-rest-client"

@@ -1,5 +1,8 @@
 package taskify
 
+import grails.compiler.GrailsCompileStatic
+
+@GrailsCompileStatic
 class TaskFlex {
     static belongsTo = [task: Task]
 

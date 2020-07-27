@@ -11,7 +11,7 @@ class Book {
 
 
     static constraints = {
-
+        title nullable: false
     }
 
 }

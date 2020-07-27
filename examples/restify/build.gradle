@@ -1,16 +1,8 @@
-buildscript {
-    repositories {
-        mavenLocal()
-        maven { url "https://repo.grails.org/grails/core" }
-    }
 
-    dependencies {
-        classpath "org.grails.plugins:views-gradle:$versionViews"
-    }
-}
-
+// apply plugin:'yakworks.grails-web'
 apply plugin:"org.grails.grails-web"
-apply plugin: "org.grails.plugins.views-json"
+apply plugin:"org.grails.plugins.views-json"
+
 
 dependencies {
     profile "org.grails.profiles:rest-api"

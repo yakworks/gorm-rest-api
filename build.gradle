@@ -7,20 +7,16 @@ buildscript {
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+        classpath "org.grails.plugins:views-gradle:$versionViews"
         classpath "org.yakworks:gradle-plugins:1.1.14"
     }
 }
 
 apply plugin: 'yakworks.shipyak' //our opinionated defaults for gradle groovy & grails projects
 
+
 subprojects {
     plugins.withId('java') {
-        repositories {
-            mavenLocal()
-            maven { url "https://repo.grails.org/grails/core" }
-            maven { url "https://dl.bintray.com/9ci/grails-plugins" }
-            maven { url "http://repo.9ci.com/oss-snapshots" }
-        }
 
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
@@ -70,6 +66,12 @@ subprojects {
 
         test {
             testLogging.exceptionFormat = 'full'
+        }
+    }
+    configurations {
+        testCompile.extendsFrom compileOnly //includes the compileOnly in tests too so we don't have to list twice
+        all {
+            resolutionStrategy.cacheChangingModulesFor 1, 'seconds' //when changing = true this sets the cache time
         }
     }
 }

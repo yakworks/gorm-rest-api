@@ -4,6 +4,7 @@ import geb.spock.GebSpec
 import gorm.restapi.testing.RestApiTestTrait
 import grails.testing.mixin.integration.Integration
 import spock.lang.Ignore
+import spock.lang.IgnoreRest
 import taskify.Project
 
 import static grails.web.http.HttpHeaders.CONTENT_TYPE
@@ -32,7 +33,7 @@ class ProjectControllerSpec extends GebSpec implements RestApiTestTrait {
         [name: "project", num: "test", inactive: true, billable: true]
     }
 
-
+    // @IgnoreRest
     void test_get_index() {
         given:
         def response = post_a_valid_resource()
@@ -42,6 +43,7 @@ class ProjectControllerSpec extends GebSpec implements RestApiTestTrait {
 
         then: "The response is correct"
         response.status == OK.value()
+        println "response.json ${response.json}"
         response.json.size() >= 0 // == []
     }
 
@@ -143,8 +145,8 @@ class ProjectControllerSpec extends GebSpec implements RestApiTestTrait {
         def response = restBuilder.post(resourcePath) {
             json insertData
         }
-        println response.body
-        println response
+        // println response.body
+        // println response
         verifyHeaders(response)
         assert response.status == CREATED.value()
         assert response.json.id

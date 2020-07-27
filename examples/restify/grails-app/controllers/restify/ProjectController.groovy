@@ -13,7 +13,10 @@ class ProjectController extends RestApiRepoController<Project> {
 
     def post() {
         Map q = getDataMap()
-        q.num = q.num == null ? null : "foo"
+        println "q $q"
+        String comments = q.comments ?: ""
+        q.comments = "$comments - post was here"
+        //q.num = q.num == null ? null : "foo"
         Project instance = getRepo().create(q)
         respond instance, [status: CREATED] //201
     }
