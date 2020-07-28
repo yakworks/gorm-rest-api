@@ -136,6 +136,7 @@ abstract class RestApiFuncSpec extends GebSpec implements RestApiTestTrait {
             json insertData
         }
         verifyHeaders(response)
+        // println "response.json ${response.json}"
         assert response.status == CREATED.value()
         assert response.json.id
         return response

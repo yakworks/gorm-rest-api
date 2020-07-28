@@ -36,6 +36,7 @@ class Project {
 
     String num
     String name
+    String comments
     Boolean inactive = false
     Boolean billable = true
     LocalDate startDate

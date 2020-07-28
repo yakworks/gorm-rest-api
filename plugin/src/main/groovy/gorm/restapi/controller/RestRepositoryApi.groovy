@@ -10,6 +10,7 @@ import groovy.transform.CompileStatic
 import org.codehaus.groovy.runtime.InvokerHelper
 import org.springframework.core.GenericTypeResolver
 
+import gorm.tools.Pager
 import gorm.tools.repository.GormRepoEntity
 import gorm.tools.repository.api.RepositoryApi
 import grails.artefact.controller.RestResponder
@@ -108,7 +109,7 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
 
     @Action
     def index() {
-        listGet()
+        list()
     }
 
     /**
@@ -127,8 +128,19 @@ trait RestRepositoryApi<D extends GormRepoEntity> implements RestResponder, Serv
      * returns the list of domain objects
      */
     @Action
-    def listGet() {
-        respond query(params)
+    def list() {
+        println "list action"
+        Pager pager = new Pager(params)
+        ['max', 'offset', 'page'].each{ String k ->
+            params[k] = pager[k]
+        }
+        // params.max = Math.min(max ?: 10, 100)
+        def dlist = query(params)
+        pager.setupData(dlist)
+        println "list params $params"
+        Map renderArgs = [:] //[includes: ['name']]
+        respond([view: '/object/_list'], [data: dlist, pager: pager, renderArgs: renderArgs])
+        // respond query(params)
     }
 
     /**

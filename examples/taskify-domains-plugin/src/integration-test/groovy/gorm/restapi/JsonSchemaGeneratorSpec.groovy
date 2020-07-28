@@ -27,37 +27,38 @@ class JsonSchemaGeneratorSpec extends Specification {
         //schema.required.containsAll(["name", "project", "note", "dueDate", "reminderEmail", "estimatedHours", "estimatedCost", "progressPct", "roleVisibility", "flex"])
 
         //verify properties
-        schema.properties != null
-        schema.properties.size() == 16 //12 props, + id/version/dateCreated/lastUpdated
+        def props = schema.props
+        props != null
+        props.size() == 17 //13 props, + id/version/dateCreated/lastUpdated
 
-        schema.properties.id != null
-        schema.properties.id.type == "integer"
-        schema.properties.id.readOnly == true
+        props.id != null
+        props.id.type == "integer"
+        props.id.readOnly == true
 
-        schema.properties.version != null
-        schema.properties.version.type == "integer"
-        schema.properties.version.readOnly == true
+        props.version != null
+        props.version.type == "integer"
+        props.version.readOnly == true
 
-        schema.properties.name != null
-        schema.properties.name.type == "string"
-        schema.properties.name.description == "The task summary/description"
-        schema.properties.name.example == "Design App"
-        schema.properties.name.maxLength == 100
+        props.name != null
+        props.name.type == "string"
+        props.name.description == "The task summary/description"
+        props.name.example == "Design App"
+        props.name.maxLength == 100
 
         //verify enum property
-        schema.properties.type != null
-        schema.properties.type.type == "string"
-        schema.properties.type.enum.size() == 5
-        (schema.properties.type.enum as List).containsAll(["Todo", "Call", "Meeting", "Review", "Development"])
-        //schema.properties.type.required == null
-        //schema.properties.type.default == "Todo"
+        props.type != null
+        props.type.type == "string"
+        props.type.enum.size() == 5
+        (props.type.enum as List).containsAll(["Todo", "Call", "Meeting", "Review", "Development"])
+        //props.type.required == null
+        //props.type.default == "Todo"
 
         //associations
-        schema.properties.project != null
-        //schema.properties.project['$ref'] == "Project.json"
+        props.project != null
+        props.project['$ref'] == "taskify.Project.json"
 
-        schema.properties.flex != null
-        //schema.properties.flex['$ref'] == "#/definitions/TaskFlex"
+        props.flex != null
+        props.flex['$ref'] == "#/definitions/taskify.TaskFlex"
 
         //verify definitions
         schema.definitions != null

@@ -27,7 +27,7 @@ class OrganisationControllerSpec extends GebSpec implements RestApiTestTrait {
         when:
         def response = restBuilder.get(resourcePath)
         then:
-        response.json.size() == 10
+        response.json.data.size() == 10
     }
 
     def "Filter by Name eq"() {
@@ -420,16 +420,16 @@ class OrganisationControllerSpec extends GebSpec implements RestApiTestTrait {
 
     def "test paging"() {
         when:
-        List list = restBuilder.get(resourcePath + "/list?max=20").json
+        def envelope = restBuilder.get(resourcePath + "?max=20").json
         then:
-        list.size() == 20
-        list[0].id == 1
+        envelope.data.size() == 20
+        envelope.data[0].id == 1
 
         when:
-        list = restBuilder.get(resourcePath + "/list?page=2").json
+        envelope = restBuilder.get(resourcePath + "?page=2").json
         then:
-        list.size() == 10
-        list[0].id == 11
+        envelope.data.size() == 10
+        envelope.data[0].id == 11
 
     }
 

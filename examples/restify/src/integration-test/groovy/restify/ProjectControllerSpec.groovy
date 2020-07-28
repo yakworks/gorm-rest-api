@@ -4,6 +4,7 @@ import geb.spock.GebSpec
 import gorm.restapi.testing.RestApiTestTrait
 import grails.testing.mixin.integration.Integration
 import spock.lang.Ignore
+import spock.lang.IgnoreRest
 import taskify.Project
 
 import static grails.web.http.HttpHeaders.CONTENT_TYPE
@@ -16,6 +17,7 @@ class ProjectControllerSpec extends GebSpec implements RestApiTestTrait {
     boolean vndHeaderOnError = false
 
     String getResourcePath() {
+        println "${baseUrl}api/project"
         "${baseUrl}api/project"
     }
 
@@ -32,17 +34,18 @@ class ProjectControllerSpec extends GebSpec implements RestApiTestTrait {
         [name: "project", num: "test", inactive: true, billable: true]
     }
 
-
+    // @IgnoreRest
     void test_get_index() {
-        given:
-        def response = post_a_valid_resource()
-
-        when: "The index action is requested"
-        response = restBuilder.get(resourcePath)
+        // BootStrap should have loaded up projects already
+        when: "The default index action is requested"
+        def response = restBuilder.get(resourcePath)
 
         then: "The response is correct"
         response.status == OK.value()
-        response.json.size() >= 0 // == []
+        println "response.json ${response.json}"
+        response.json.data.size() == 10
+        response.json.page == 1
+        response.json.total >= 1
     }
 
     @Ignore
@@ -143,8 +146,8 @@ class ProjectControllerSpec extends GebSpec implements RestApiTestTrait {
         def response = restBuilder.post(resourcePath) {
             json insertData
         }
-        println response.body
-        println response
+        // println response.body
+        // println response
         verifyHeaders(response)
         assert response.status == CREATED.value()
         assert response.json.id

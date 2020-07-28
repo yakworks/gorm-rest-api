@@ -1,8 +1,11 @@
-package funcytown
+package restify
 
 import gorm.restapi.testing.RestApiFuncSpec
 import grails.gorm.transactions.Rollback
 import grails.testing.mixin.integration.Integration
+import spock.lang.IgnoreRest
+
+import static org.springframework.http.HttpStatus.OK
 
 @Integration(applicationClass = Application)
 @Rollback
