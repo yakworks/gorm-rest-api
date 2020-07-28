@@ -1,5 +1,8 @@
-import groovy.transform.Field
 
-@Field Object object
+model {
+    List foo
+}
 
+
+System.out.println "Model in _object $binding.variables"
 json g.render(object)

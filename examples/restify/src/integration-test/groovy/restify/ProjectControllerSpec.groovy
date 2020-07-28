@@ -17,6 +17,7 @@ class ProjectControllerSpec extends GebSpec implements RestApiTestTrait {
     boolean vndHeaderOnError = false
 
     String getResourcePath() {
+        println "${baseUrl}api/project"
         "${baseUrl}api/project"
     }
 
@@ -35,16 +36,16 @@ class ProjectControllerSpec extends GebSpec implements RestApiTestTrait {
 
     // @IgnoreRest
     void test_get_index() {
-        given:
-        def response = post_a_valid_resource()
-
-        when: "The index action is requested"
-        response = restBuilder.get(resourcePath)
+        // BootStrap should have loaded up projects already
+        when: "The default index action is requested"
+        def response = restBuilder.get(resourcePath)
 
         then: "The response is correct"
         response.status == OK.value()
         println "response.json ${response.json}"
-        response.json.size() >= 0 // == []
+        response.json.data.size() == 10
+        response.json.page == 1
+        response.json.total >= 1
     }
 
     @Ignore

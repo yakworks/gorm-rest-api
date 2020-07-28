@@ -6,7 +6,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"
     compile "org.grails:grails-core"
-    compile "org.springframework.boot:spring-boot-starter-tomcat"
+    compile "org.springframework.boot:spring-boot-starter-undertow"
 
     compile "org.grails:grails-web-boot"
 
@@ -14,13 +14,25 @@ dependencies {
     compile "org.grails:grails-plugin-databinding"
     compile "org.grails:grails-plugin-services"
 
+    compile 'org.grails.plugins:grails-java8:1.2.3'
+
+    compile "org.grails.plugins:events"
+    compile "org.codehaus.gpars:gpars:1.2.1"
+
+    compile "org.grails.plugins:hibernate5"
+    compile "org.hibernate:hibernate-core:$versionHibernate"
+    compile "org.hibernate:hibernate-ehcache:$versionHibernate"
+
+    //used for json parsing but require it to be added to project that uses this
+    compileOnly "org.grails.plugins:views-json:$versionViews"
+    compileOnly "org.grails.plugins:views-json-templates:$versionViews"
+    compileOnly "org.grails:views-json-testing-support:$versionViews"
 
     compileOnly "org.grails:grails-gorm-testing-support"
     compileOnly "org.grails:grails-web-testing-support"
     compileOnly "org.grails:grails-datastore-rest-client"
     compileOnly "org.grails.plugins:build-test-data:$versionBuildTestData"
 
-    testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
     compile "org.grails.plugins:gorm-tools:6.1.11-v.13"
     compile "org.grails:grails-plugin-testing"
     compile "org.grails.plugins:geb"
