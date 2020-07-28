@@ -1,8 +1,8 @@
 
 model {
-    List foo
+    Object object
+    Map renderArgs = [:]
 }
-
-
-System.out.println "Model in _object $binding.variables"
-json g.render(object)
+// println("_object $object")
+System.out.println "Model in plugins _object $binding.variables"
+json g.render(object, renderArgs)
