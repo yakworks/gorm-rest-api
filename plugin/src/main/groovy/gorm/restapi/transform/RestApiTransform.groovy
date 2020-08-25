@@ -96,6 +96,7 @@ class RestApiTransform implements ASTTransformation, CompilationUnitAware {
         }
 
         ClassNode parent = (ClassNode) astNodes[1]
+        // println "RestApiTransform ${parent.name}"
         AnnotationNode annotationNode = (AnnotationNode) astNodes[0]
         if (!MY_TYPE.equals(annotationNode.getClassNode())) {
             return
